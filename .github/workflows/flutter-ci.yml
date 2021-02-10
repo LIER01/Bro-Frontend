@@ -4,8 +4,8 @@ name: Flutter CI
 
 on:
   push:
-    branches:
-    - ci_cd
+    branches-ignore: 
+      - '**/alpha'
     
 # on: push    # Default will running for every branch.
     
