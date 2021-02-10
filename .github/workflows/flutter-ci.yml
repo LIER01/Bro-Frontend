@@ -5,7 +5,9 @@ name: Flutter CI
 on:
   push:
     branches:
-    - ci_cd
+      - master
+    paths-ignore:
+      - '**/README.md'
     
 # on: push    # Default will running for every branch.
     
@@ -32,6 +34,9 @@ jobs:
     
     # Check for any formatting issues in the code.
     - run: flutter format --set-exit-if-changed .
+    
+    # Check for formatting with dartfmt
+    - run: dartfmt .
     
     # Statically analyze the Dart code for any errors.
     - run: flutter analyze .
