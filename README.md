@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+[![Pub](https://img.shields.io/pub/v/pedantic.svg)](https://pub.dev/packages/pedantic)
+
 ## Getting Started
 
 1. Navigate into the github repo
