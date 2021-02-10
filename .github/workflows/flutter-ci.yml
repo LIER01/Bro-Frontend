@@ -6,6 +6,8 @@ on:
   push:
     branches:
     - master
+    paths-ignore:
+      - '**/README.md'
     
 # on: push    # Default will running for every branch.
     
