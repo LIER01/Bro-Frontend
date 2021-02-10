@@ -4,8 +4,8 @@ name: Flutter CI
 
 on:
   push:
-    branches:
-      - master
+    branches-ignore:
+      - '**/alpha'
     paths-ignore:
       - '**/README.md'
     
