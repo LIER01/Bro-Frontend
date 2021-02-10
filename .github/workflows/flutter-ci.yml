@@ -6,7 +6,9 @@ on:
   push:
     branches-ignore: 
       - '**/alpha'
-    
+    paths-ignore:
+      - '**/README.md'
+
 # on: push    # Default will running for every branch.
     
 jobs:
