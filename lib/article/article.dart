@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'api.dart';
+import '../utils/api.dart';
 import 'package:flutter/foundation.dart';
+import 'queries.dart';
 
 class ArticleApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print("Test");
     return GraphQLProvider(
         child: MaterialApp(
           title: 'GraphQl Article',
@@ -66,6 +66,7 @@ class TaskList extends StatelessWidget {
         final task = this.list[index];
         return ListTile(
           title: Text(task['title']),
+          trailing: Icon(Icons.keyboard_arrow_right),
         );
       },
     );
