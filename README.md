@@ -12,6 +12,7 @@ A new Flutter project.
 2. In the target selector, choose your Device to run the app simulation
 3. Run the code
 4. Flutter should now display on your chosen device
+<<<<<<< HEAD
 
 For more information, consult the flutter guide: https://flutter.dev/docs/get-started/test-drive?tab=vscode
 
@@ -25,3 +26,7 @@ For more information, consult the flutter guide: https://flutter.dev/docs/get-st
 
 #### To lint your code:
 In terminal window navigate to root and use ``` flutter analyze . ```
+=======
+
+For more information, consult the flutter guide: https://flutter.dev/docs/get-started/test-drive?tab=vscode
+>>>>>>> BL-45
