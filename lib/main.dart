@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'article/article.dart';
+import 'api_example/article.dart';
 import 'utils/api.dart';
 
 void main() {
