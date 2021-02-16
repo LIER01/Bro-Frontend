@@ -4,7 +4,7 @@ import '../utils/api.dart';
 import 'package:flutter/foundation.dart';
 import 'queries.dart';
 
-class ArticleApp extends StatelessWidget {
+class ExampleApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
