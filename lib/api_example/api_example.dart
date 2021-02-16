@@ -38,7 +38,7 @@ class _ListPageState extends State<ListPage> {
             {VoidCallback refetch, FetchMore fetchMore}) {
           return Scaffold(
             appBar: AppBar(
-              title: Text("TODO App With GraphQL"),
+              title: Text('TODO App With GraphQL'),
             ),
             body: Center(
                 child: result.hasException
@@ -61,9 +61,9 @@ class TaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: this.list.length,
+      itemCount: list.length,
       itemBuilder: (context, index) {
-        final task = this.list[index];
+        final task = list[index];
         return ListTile(
           title: Text(task['title']),
           trailing: Icon(Icons.keyboard_arrow_right),

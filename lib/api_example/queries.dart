@@ -1,4 +1,4 @@
-final String getArticlesQuery = """
+final String getArticlesQuery = '''
 query {
   articles {
     id,
@@ -6,4 +6,4 @@ query {
     body
   }
 }
-""";
+''';
