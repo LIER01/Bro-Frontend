@@ -3,7 +3,7 @@ query {
   articles {
     id,
     title,
-    body
+    body.dart
   }
 }
 ''';
