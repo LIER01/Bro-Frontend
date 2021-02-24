@@ -3,7 +3,6 @@ import 'package:bro/models/home.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-
 class HomeView extends StatefulWidget {
   HomeView({Key key, this.title}) : super(key: key);
 
@@ -14,7 +13,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  Future<Home> futureHome;
 
   @override
   void initState() {
@@ -32,11 +30,11 @@ class _HomeViewState extends State<HomeView> {
                 child: result.hasException
                     ? Text(result.exception.toString())
                     : result.isLoading
-                    ? CircularProgressIndicator()
-                    : Body(
-                    header: result.data['home']['header'],
-                    introduction: result.data['home']['introduction'], onRefresh:
-                refetch)),
+                        ? CircularProgressIndicator()
+                        : Body(
+                            header: result.data['home']['header'],
+                            introduction: result.data['home']['introduction'],
+                            onRefresh: refetch)),
           );
         });
   }
@@ -44,7 +42,9 @@ class _HomeViewState extends State<HomeView> {
 
 class Body extends StatelessWidget {
   Body(
-      {@required this.header, @required this.introduction, @required this.onRefresh});
+      {@required this.header,
+      @required this.introduction,
+      @required this.onRefresh});
 
   final header;
   final introduction;
@@ -57,37 +57,38 @@ class Body extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.deepPurple),
-        title: Text(header,style: TextStyle(color: Colors.deepPurple),),
+        title: Text(
+          header,
+          style: TextStyle(color: Colors.deepPurple),
+        ),
         centerTitle: true,
         actions: <Widget>[
-          PopupMenuButton(itemBuilder: (BuildContext context){
-            return[
+          PopupMenuButton(itemBuilder: (BuildContext context) {
+            return [
               PopupMenuItem(child: Text('Flutter')),
               PopupMenuItem(child: Text('Android')),
             ];
           })
         ],
       ),
-      body:Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                title: Text(introduction)
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  TextButton(
-                    child: const Text('Les Mer'),
-                    onPressed: () {/* ... */},
-                  ),
-                  const SizedBox(width: 8),
-                ],
-              ),
-            ],
-          ),
+      body: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(title: Text(introduction)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                TextButton(
+                  child: const Text('Les Mer'),
+                  onPressed: () {/* ... */},
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }

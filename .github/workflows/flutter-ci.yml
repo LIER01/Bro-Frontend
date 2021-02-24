@@ -4,10 +4,15 @@ name: Flutter CI
 
 on:
   push:
+    branches: 
+      - master
     branches-ignore:
       - '**/alpha'
     paths-ignore:
       - '**/README.md'
+  pull_request:
+    branches:
+      - master
     
 # on: push    # Default will running for every branch.
     
