@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             // is not restarted.
             primarySwatch: Colors.blue,
           ),
-          home: HomeView(title: 'Flutter Demo r'),
+          home: HomeView(),
         ),
         client: client);
   }

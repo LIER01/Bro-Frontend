@@ -1,19 +1,16 @@
 import 'package:bro/api_example/queries.dart';
-import 'package:bro/models/home.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({Key key, this.title}) : super(key: key);
+  HomeView({Key key}) : super(key: key);
 
-  final String title;
 
   @override
   _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
-
   @override
   void initState() {
     super.initState();
