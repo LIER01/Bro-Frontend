@@ -1,4 +1,4 @@
-import 'file:///C:/Users/kari/git/Bro-Frontend/lib/views/home_view/home_view.dart';
+import 'package:bro/views/home_view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'utils/api.dart';
