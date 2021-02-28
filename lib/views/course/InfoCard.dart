@@ -18,35 +18,40 @@ class _InfoCardState extends State<InfoCard> {
   bool active = false;
   @override
   Widget build(BuildContext context) {
-    return AnimatedCrossFade(
-      duration: const Duration(milliseconds: 1000),
-      firstChild: GestureDetector(
-          onTap: () => {
-                print('active second'),
-                setState(() {
-                  widget == false ? active = true : active = false;
-                })
-              },
-          child: InfoCardContent(
-              title: widget.title,
-              description: widget.description,
-              image: widget.image,
-              active: true)),
-      secondChild: GestureDetector(
-          onTap: () => {
-                print('active first'),
-                setState(() {
-                  active == false ? active = true : active = false;
-                })
-              },
-          child: InfoCardContent(
-              title: widget.title,
-              description: widget.description,
-              image: widget.image,
-              active: false)),
-      crossFadeState:
-          active ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-    );
+    return FractionallySizedBox(
+        heightFactor: 0.5,
+        widthFactor: 0.9,
+        child: AnimatedCrossFade(
+          duration: const Duration(milliseconds: 1000),
+          firstChild: GestureDetector(
+              onTap: () => {
+                    print('active second'),
+                    setState(() {
+                      widget == false ? active = true : active = false;
+                    })
+                  },
+              behavior: HitTestBehavior.deferToChild,
+              child: InfoCardContent(
+                  title: widget.title,
+                  description: widget.description,
+                  image: widget.image,
+                  active: true)),
+          secondChild: GestureDetector(
+              onTap: () => {
+                    print('active first'),
+                    setState(() {
+                      active == false ? active = true : active = false;
+                    })
+                  },
+              behavior: HitTestBehavior.deferToChild,
+              child: InfoCardContent(
+                  title: widget.title,
+                  description: widget.description,
+                  image: widget.image,
+                  active: false)),
+          crossFadeState:
+              active ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        ));
   }
 }
 
@@ -68,22 +73,6 @@ class _InfoCardContentState extends State<InfoCardContent> {
     print(widget.image['url']);
     return Scaffold(
         body: Center(
-            child: GestureDetector(
-      onTap: () => {
-        widget.active = !widget.active,
-        //print(widget.active)
-        setState(() {
-          widget.active == false ? widget.active = true : widget.active = false;
-        }),
-        /* print(widget.active) */
-        /* opaque == 0
-                          ? setState(() {
-                              opaque = 0.85;
-                            })
-                          : setState(() {
-                              opaque = 0;
-                            }) */
-      },
       //Allows for animated color transition when card is clicked
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -142,6 +131,6 @@ class _InfoCardContentState extends State<InfoCardContent> {
               )),
         ],
       ),
-    )));
+    ));
   }
 }

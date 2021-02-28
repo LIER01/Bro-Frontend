@@ -14,7 +14,7 @@ class CourseApp extends StatelessWidget {
     return GraphQLProvider(
         child: MaterialApp(
           theme: ThemeData(
-            primarySwatch: Colors.green,
+            primarySwatch: Colors.teal,
           ),
           home: CourseView(),
         ),
