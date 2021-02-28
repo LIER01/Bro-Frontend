@@ -6,7 +6,7 @@ import 'utils/create_widget_for_testing.dart';
 import 'utils/graphql_mutation_mocker.dart';
 
 void main() {
-  group('Test mutation', () {
+  group('Test HomeView', () {
     testWidgets('It should show the the header and introduction text',
         (WidgetTester tester) async {
       await tester.pumpWidget(GraphQLMutationMocker(

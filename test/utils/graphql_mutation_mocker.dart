@@ -55,7 +55,9 @@ class GraphQLMutationMocker extends StatelessWidget {
     );
     final graphQLClient = ValueNotifier(
       GraphQLClient(
-        cache: GraphQLCache(store: InMemoryStore(),partialDataPolicy: PartialDataCachePolicy.accept),
+        cache: GraphQLCache(
+            store: InMemoryStore(),
+            partialDataPolicy: PartialDataCachePolicy.accept),
         link: httpLink,
       ),
     );
