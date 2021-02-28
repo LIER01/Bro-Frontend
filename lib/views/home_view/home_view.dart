@@ -5,7 +5,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
 
-
   @override
   _HomeViewState createState() => _HomeViewState();
 }
@@ -59,14 +58,6 @@ class Body extends StatelessWidget {
           style: TextStyle(color: Colors.deepPurple),
         ),
         centerTitle: true,
-        actions: <Widget>[
-          PopupMenuButton(itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(child: Text('Flutter')),
-              PopupMenuItem(child: Text('Android')),
-            ];
-          })
-        ],
       ),
       body: Card(
         child: Column(
