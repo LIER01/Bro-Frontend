@@ -4,6 +4,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 
+/// Mockclient
 class MockClient extends Mock implements Client {
   MockClient({
     this.mockedResult,
@@ -24,6 +25,7 @@ class MockClient extends Mock implements Client {
   }
 }
 
+/// GraphqlMutationMocker should be passed your mockedResult and the widget to be rendered
 class GraphQLMutationMocker extends StatelessWidget {
   const GraphQLMutationMocker({
     @required this.child,

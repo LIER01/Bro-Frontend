@@ -2,6 +2,7 @@ import 'package:bro/api_example/queries.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+/// The HomeView, first page
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
 
