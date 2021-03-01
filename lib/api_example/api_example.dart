@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../utils/api.dart';
 import 'package:flutter/foundation.dart';
-import 'queries.dart';
+import '../net/queries.dart';
 
 class ExampleApp extends StatelessWidget {
   // This widget is the root of your application.
