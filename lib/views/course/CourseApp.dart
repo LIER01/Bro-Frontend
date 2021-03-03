@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../../utils/api.dart';
 import 'package:flutter/foundation.dart';
@@ -78,12 +79,82 @@ class CardContainerView extends StatefulWidget {
 
 class _CardContainerViewState extends State<CardContainerView> {
   Future<List> futureList;
+
   @override
   Widget build(BuildContext context) {
     if (context == null) {
-      return Text('Context is null, yo');
+      print('CONTEXT NULL              CONTEXT NULL');
+      return Scaffold(body: Text('Context is null, yo'));
     }
-    return FutureBuilder<List>(
+    if (widget.list.isNotEmpty) {
+      print(widget.list.length);
+      return SizedBox(
+          width: 1100,
+          height: 1100,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              physics: PageScrollPhysics(),
+              itemCount: widget.list.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InfoCard(
+                    title: widget.list[index]['title'],
+                    description: widget.list[index]['description'],
+                    image: widget.list[index]['image']);
+              }));
+    } else {
+      print('LIST EMPTY');
+      return Container(width: 0.0, height: 0.0);
+    }
+
+    /* if (widget.list.isNotEmpty) {
+      print(widget.list);
+      return Expanded(
+          child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        physics: BouncingScrollPhysics(parent: PageScrollPhysics()),
+        itemCount: widget.list.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Row(
+            children: <Widget>[
+              InfoCard(
+                  title: widget.list[index]['title'],
+                  description: widget.list[index]['description'],
+                  image: widget.list[index]['image'])
+            ],
+          );
+        },
+      ));
+    } else {
+      return Container();
+    } */
+    /* ListView(
+      // This next line does the trick.
+      scrollDirection: Axis.horizontal,
+      physics: BouncingScrollPhysics(parent: PageScrollPhysics()),
+      children: <Widget>[ */
+    /* Container(
+          width: 160.0,
+          color: Colors.red,
+        ),
+        Container(
+          width: 160.0,
+          color: Colors.blue,
+        ),
+        Container(
+          width: 160.0,
+          color: Colors.green,
+        ),
+        Container(
+          width: 160.0,
+          color: Colors.yellow,
+        ),
+        Container(
+          width: 160.0,
+          color: Colors.orange,
+        ), */
+/*       ],
+    ); */
+    /* return FutureBuilder<List>(
         future: widget.onRefresh,
         builder: (BuildContext context, snapshot) {
           if (widget.list.isNotEmpty) {
@@ -96,12 +167,12 @@ class _CardContainerViewState extends State<CardContainerView> {
           } else {
             return Container();
           }
-        }
+        }); */
 
 /*         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[],
         ), */
-        ); // This trailing comma makes auto-formatting nicer for build methods.
+    // This trailing comma makes auto-formatting nicer for build methods.
   }
 }

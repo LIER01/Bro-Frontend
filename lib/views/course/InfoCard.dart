@@ -18,27 +18,32 @@ class _InfoCardState extends State<InfoCard> {
   bool active = false;
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(
-        heightFactor: 0.5,
-        widthFactor: 0.9,
-        child: AnimatedCrossFade(
-          duration: const Duration(milliseconds: 1000),
-          firstChild: GestureDetector(
+    return
+        //Crossfades between InfoCardContent with active true and false. Activate is used to decide what content is shown
+        AnimatedCrossFade(
+      duration: const Duration(milliseconds: 1000),
+      //GestureDetectors changes card to active if not active and vice versa
+      firstChild: Container(
+          constraints: BoxConstraints(
+              maxHeight: 1000, maxWidth: MediaQuery.of(context).size.width),
+          child: GestureDetector(
               onTap: () => {
-                    print('active second'),
                     setState(() {
-                      widget == false ? active = true : active = false;
+                      active == false ? active = true : active = false;
                     })
                   },
+              //Makes the GestureDetector click area within the bounds of the child
               behavior: HitTestBehavior.deferToChild,
               child: InfoCardContent(
                   title: widget.title,
                   description: widget.description,
                   image: widget.image,
-                  active: true)),
-          secondChild: GestureDetector(
+                  active: true))),
+      secondChild: Container(
+          constraints: BoxConstraints(
+              maxHeight: 1000, maxWidth: MediaQuery.of(context).size.width),
+          child: GestureDetector(
               onTap: () => {
-                    print('active first'),
                     setState(() {
                       active == false ? active = true : active = false;
                     })
@@ -48,13 +53,14 @@ class _InfoCardState extends State<InfoCard> {
                   title: widget.title,
                   description: widget.description,
                   image: widget.image,
-                  active: false)),
-          crossFadeState:
-              active ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-        ));
+                  active: false))),
+      crossFadeState:
+          active ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+    );
   }
 }
 
+//Child widget made so that two versions can be used by animatedCrossFade
 class InfoCardContent extends StatefulWidget {
   InfoCardContent({this.title, this.description, this.image, this.active});
   bool active;
@@ -95,7 +101,7 @@ class _InfoCardContentState extends State<InfoCardContent> {
                   children: [
                     ListTile(
                       title: Text(
-                        'Title',
+                        'Testslide', //widget.title,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

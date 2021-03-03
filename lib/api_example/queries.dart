@@ -3,7 +3,16 @@ query {
   articles {
     id,
     title,
-    body
+    body.dart
   }
+}
+''';
+
+final String getHomeViewQuery = '''
+query{
+  home {  
+    introduction,
+    header
+    }
 }
 ''';
