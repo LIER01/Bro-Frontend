@@ -17,5 +17,13 @@ query {
     questions {id},
     slides {id},
   }
+''';
+
+final String getHomeViewQuery = '''
+query{
+  home {  
+    introduction,
+    header
+    }
 }
 ''';
