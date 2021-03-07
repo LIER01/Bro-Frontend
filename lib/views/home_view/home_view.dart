@@ -1,4 +1,4 @@
-import 'package:bro/api_example/queries.dart';
+import 'package:bro/net/queries.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
