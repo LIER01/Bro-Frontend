@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'queries.dart';
-import 'InfoCard.dart';
+import 'info_card.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
 class CourseView extends StatelessWidget {

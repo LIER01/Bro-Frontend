@@ -1,10 +1,10 @@
-import 'package:bro/api_example/queries.dart';
+import 'package:bro/net/queries.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+/// The HomeView, first page
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
-
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -59,14 +59,6 @@ class Body extends StatelessWidget {
           style: TextStyle(color: Colors.deepPurple),
         ),
         centerTitle: true,
-        actions: <Widget>[
-          PopupMenuButton(itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(child: Text('Flutter')),
-              PopupMenuItem(child: Text('Android')),
-            ];
-          })
-        ],
       ),
       body: Card(
         child: Column(

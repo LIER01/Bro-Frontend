@@ -6,10 +6,9 @@ on:
   push:
     branches: 
       - master
-    branches-ignore:
-      - '**/alpha'
     paths-ignore:
-      - '**/README.md'
+      - 'README.md'
+
   pull_request:
     branches:
       - master

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../utils/api.dart';
-import 'course/Course.dart';
+import 'course/course.dart';
 
 void main() {
   runApp(MyApp());
