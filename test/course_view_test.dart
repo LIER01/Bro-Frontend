@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bro/views/course/CourseApp.dart';
+import 'package:bro/views/course/Course.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'mock_data/info_card_mock.dart';

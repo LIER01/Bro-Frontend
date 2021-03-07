@@ -1,8 +1,8 @@
-import 'home_view/home_view.dart';
+//import 'home_view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../utils/api.dart';
-import 'course/CourseApp.dart';
+import 'course/Course.dart';
 
 void main() {
   runApp(MyApp());
