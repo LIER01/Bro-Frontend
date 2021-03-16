@@ -17,6 +17,7 @@ query {
     questions {id},
     slides {id},
   }
+}
 ''';
 
 final String getHomeViewQuery = r'''

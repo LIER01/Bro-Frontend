@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bro/blocs/course/course_bucket.dart';
 import 'package:bro/data/course_repository.dart';
+import 'package:bro/models/course.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -17,10 +18,23 @@ class CourseBloc extends Bloc<CourseEvents, CourseStates> {
     if (event is CourseRequested) {
       try {
         final result = await repository.getCourses();
+
         final List<dynamic> courses = result.data['courses'] as List<dynamic>;
-        yield Success(courses: courses);
-      } catch (e) {
+
+        final List<Course> listOfCourses = courses
+            .map((dynamic e) => Course(
+                  title: e['title'],
+                  description: e['description'],
+                  questions: e['questions'],
+                  slides: e['slides'],
+                ))
+            .toList();
+
+        yield Success(courses: listOfCourses);
+      } catch (e, stackTrace) {
         log(e.toString());
+        log(stackTrace.toString());
+
         yield Failed();
       }
     }

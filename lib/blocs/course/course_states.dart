@@ -1,11 +1,12 @@
+import 'package:bro/models/course.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 abstract class CourseStates extends Equatable {
-  CourseStates();
+  //CourseStates([List props = const []]) : super(props);
 
   @override
-  List<Object> get props => [];
+  List get props => [];
 }
 
 class Initial extends CourseStates {}
@@ -13,12 +14,12 @@ class Initial extends CourseStates {}
 class Loading extends CourseStates {}
 
 class Success extends CourseStates {
-  final List<Object> courses;
+  final List<Course> courses;
 
   Success({@required this.courses}) : assert(courses != null);
 
   @override
-  List<Object> get props => [courses];
+  List<Course> get props => courses;
 }
 
 class Failed extends CourseStates {}

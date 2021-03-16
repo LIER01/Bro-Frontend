@@ -8,6 +8,7 @@ class GraphQLDataProvider {
 
   GraphQLProvider() {
     HttpLink link = HttpLink('https://bro-strapi.herokuapp.com/graphql/');
+    // Image is missing
 
     _client = GraphQLClient(
       link: link,

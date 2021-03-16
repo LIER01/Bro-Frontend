@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bro/blocs/course/course_bucket.dart';
+import 'package:bro/models/course.dart';
 import 'package:bro/views/course/course_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,13 +15,13 @@ class CourseListView extends StatefulWidget {
 }
 
 class _CourseListViewState extends State<CourseListView> {
-  List data = [];
-  CourseBloc _courseBloc;
+  //CourseBloc _courseBloc;
+  List<Course> data;
 
   @override
   void initState() {
     super.initState();
-    _courseBloc = BlocProvider.of<CourseBloc>(context);
+    BlocProvider.of<CourseBloc>(context).add(CourseRequested());
   }
 
   AppBar _buildAppBar() {
@@ -67,10 +68,10 @@ class _CourseListViewState extends State<CourseListView> {
         itemBuilder: (BuildContext context, int index) {
           var item = data[index];
           return CourseListTile(
-            title: item['title'],
-            description: item['description'],
-            length: item['questions'].length,
-            time: item['questions'].length + item['slides'].length,
+            title: item.title,
+            description: item.description,
+            length: item.questions.length,
+            time: item.questions.length + item.slides.length,
             difficulty: 'Middels',
           );
         },
