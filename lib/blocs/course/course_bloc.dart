@@ -6,7 +6,8 @@ import "package:bro/data/GraphQLProvider.dart";
 class CourseBloc extends Bloc<CourseEvents, CourseStates> {
   GraphQLProvider provider;
 
-  CourseBloc() {
+  // Won't compile without super(null), look into this.
+  CourseBloc() : super(null) {
     provider = GraphQLProvider();
   }
 

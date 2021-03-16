@@ -7,7 +7,12 @@ class GraphQLProvider {
   GraphQLProvider() {
     HttpLink link = HttpLink("https://bro-strapi.herokuapp.com/graphql/");
 
-    _client = GraphQLClient(link: link, cache: InMemoryCache());
+    _client = GraphQLClient(
+      link: link,
+      cache: GraphQLCache(
+        store: InMemoryStore(),
+      ),
+    );
   }
 
   Future<QueryResult> performQuery(String query,
