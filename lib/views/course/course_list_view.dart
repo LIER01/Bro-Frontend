@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:bro/blocs/course/course_bucket.dart';
-import 'package:bro/net/queries.dart';
 import 'package:bro/views/course/course_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,10 +15,12 @@ class CourseListView extends StatefulWidget {
 
 class _CourseListViewState extends State<CourseListView> {
   List data = [];
+  CourseBloc _courseBloc;
 
   @override
   void initState() {
     super.initState();
+    _courseBloc = BlocProvider.of<CourseBloc>(context);
   }
 
   AppBar _buildAppBar() {
@@ -29,19 +32,25 @@ class _CourseListViewState extends State<CourseListView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CourseBloc, CourseStates>(
-      builder: (BuildContext context, CourseStates state) {
+      builder: (context, state) {
+        //log(state.toString());
         if (state is Loading) {
           return Scaffold(
             appBar: _buildAppBar(),
             body: LinearProgressIndicator(),
           );
-        } else if (state is Failed) {
+        }
+
+        if (state is Failed) {
           return Scaffold(
             appBar: _buildAppBar(),
-            body: Center(child: Text(state.error)),
+            body: Center(child: Text("Det har skjedd en feil")),
           );
-        } else {
-          data = (state as Success).data["courses"];
+        }
+
+        if (state is Success) {
+          data = state.courses;
+          log(data.toString());
           return Scaffold(
             appBar: _buildAppBar(),
             body: _buildBody(),
@@ -103,8 +112,79 @@ class _CourseListViewState extends State<CourseListView> {
   */
 }
 
+/*
 class CourseList extends StatelessWidget {
-  CourseList({@required this.list, @required this.onRefresh});
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: Text("Kurs"),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CourseBloc, CourseStates>(
+      builder: (context, state) {
+        BlocProvider.of<CourseBloc>(context).add(CourseRequested());
+
+        if (state is Loading) {
+          return Scaffold(
+            appBar: _buildAppBar(),
+            body: LinearProgressIndicator(),
+          );
+        }
+
+        if (state is Failed) {
+          return Scaffold(
+            appBar: _buildAppBar(),
+            body: Center(child: Text(state.error)),
+          );
+        }
+
+        if (state is Success) {
+          final data = state.courses["courses"];
+          return Scaffold(
+            appBar: _buildAppBar(),
+            body: Container(
+              child: ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var item = data[index];
+                  return CourseListTile(
+                    title: item['title'],
+                    description: item['description'],
+                    length: item['questions'].length,
+                    time: item['questions'].length + item['slides'].length,
+                    difficulty: 'Middels',
+                  );
+                },
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+/*
+  Widget _buildBody() {
+    return Container(
+      child: ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index) {
+          var item = data[index];
+          return CourseListTile(
+            title: item['title'],
+            description: item['description'],
+            length: item['questions'].length,
+            time: item['questions'].length + item['slides'].length,
+            difficulty: 'Middels',
+          );
+        },
+      ),
+    );
+  }*/
+
+  /*CourseList({@required this.list, @required this.onRefresh});
 
   final List list;
   final onRefresh;
@@ -125,5 +205,6 @@ class CourseList extends StatelessWidget {
         );
       },
     );
-  }
+  }*/
 }
+*/

@@ -24,6 +24,7 @@ dependencies:
     flutter:
         sdk: flutter
     graphql_flutter: ^4.0.0-beta
+    gql: ^0.12.4
     cached_network_image: ^2.5.0
     font_awesome_flutter: ^8.11.0
     http: ^0.12.2

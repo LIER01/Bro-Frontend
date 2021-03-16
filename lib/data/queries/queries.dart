@@ -1,4 +1,4 @@
-final String getArticlesQuery = '''
+final String getArticlesQuery = r'''
 query {
   articles {
     id,
@@ -8,7 +8,7 @@ query {
 }
 ''';
 
-final String getCoursesQuery = ''' 
+final String getCoursesQuery = r''' 
 query {
   courses {
     id,
@@ -19,7 +19,7 @@ query {
   }
 ''';
 
-final String getHomeViewQuery = '''
+final String getHomeViewQuery = r'''
 query{
   home {  
     introduction,

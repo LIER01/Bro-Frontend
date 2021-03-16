@@ -1,34 +1,40 @@
+import 'dart:developer';
+
 import 'package:bro/blocs/course/course_bucket.dart';
-import 'package:bro/blocs/course/course_events.dart';
-import "package:flutter_bloc/flutter_bloc.dart";
-import "package:bro/data/GraphQLProvider.dart";
+import 'package:bro/data/course_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meta/meta.dart';
 
 class CourseBloc extends Bloc<CourseEvents, CourseStates> {
-  GraphQLProvider provider;
+  CourseRepository repository;
 
-  // Won't compile without super(null), look into this.
-  CourseBloc() : super(null) {
-    provider = GraphQLProvider();
-  }
-
-  @override
-  CourseStates get initialState => Loading();
+  CourseBloc({@required this.repository})
+      : assert(repository != null),
+        super(Loading());
 
   @override
   Stream<CourseStates> mapEventToState(CourseEvents event) async* {
-    if (event is FetchCourseData) {
-      yield* _mapFetchCourseDataToStates(event);
+    if (event is CourseRequested) {
+      try {
+        final result = await repository.getCourses();
+        final List<dynamic> courses = result.data['courses'] as List<dynamic>;
+        yield Success(courses: courses);
+      } catch (e) {
+        log(e.toString());
+        yield Failed();
+      }
     }
   }
+}
 
+/*
   Stream<CourseStates> _mapFetchCourseDataToStates(
-      FetchCourseData event) async* {
+      CourseRequested event) async* {
     final query = event.query;
     final variables = event.variables ?? null;
 
     try {
-      final result =
-          await provider.performMutation(query, variables: variables);
+      final result = await repository.getCourses();
 
       if (result.hasException) {
         print("graphQLErrors: ${result.exception.graphqlErrors.toString()}");
@@ -43,3 +49,4 @@ class CourseBloc extends Bloc<CourseEvents, CourseStates> {
     }
   }
 }
+*/

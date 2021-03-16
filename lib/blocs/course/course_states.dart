@@ -1,32 +1,24 @@
-import 'dart:html';
-
-import "package:equatable/equatable.dart";
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 abstract class CourseStates extends Equatable {
   CourseStates();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
-class Loading extends CourseStates {
-  Loading() : super();
-}
+class Initial extends CourseStates {}
+
+class Loading extends CourseStates {}
 
 class Success extends CourseStates {
-  final dynamic data;
+  final List<Object> courses;
 
-  Success(this.data) : super();
-
-  @override
-  List<Object> get props => data;
-}
-
-class Failed extends CourseStates {
-  final dynamic error;
-
-  Failed(this.error) : super();
+  Success({@required this.courses}) : assert(courses != null);
 
   @override
-  List<Object> get props => error;
+  List<Object> get props => [courses];
 }
+
+class Failed extends CourseStates {}

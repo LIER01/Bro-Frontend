@@ -4,15 +4,7 @@ abstract class CourseEvents extends Equatable {
   CourseEvents();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
-class FetchCourseData extends CourseEvents {
-  final String query;
-  final Map<String, dynamic> variables;
-
-  FetchCourseData(this.query, {this.variables}) : super();
-
-  @override
-  List<Object> get props => [query, variables];
-}
+class CourseRequested extends CourseEvents {}

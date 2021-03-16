@@ -269,7 +269,7 @@ packages:
     source: hosted
     version: "1.2.0"
   gql:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: gql
       url: "https://pub.dartlang.org"
