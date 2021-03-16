@@ -23,3 +23,13 @@ class Success extends CourseStates {
 }
 
 class Failed extends CourseStates {}
+
+class Course_Success extends CourseStates {
+  final Course course;
+
+  Course_Success({@required this.course}) : assert(course != null);
+}
+
+class Switch_to_Quiz extends CourseStates {
+  Switch_to_Quiz();
+}

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:developer';
 
 import 'package:bro/blocs/course/course_bucket.dart';
@@ -15,7 +16,7 @@ class CourseBloc extends Bloc<CourseEvents, CourseStates> {
 
   @override
   Stream<CourseStates> mapEventToState(CourseEvents event) async* {
-    if (event is CourseRequested) {
+    if (event is CoursesRequested) {
       try {
         final result = await repository.getCourses();
 
@@ -37,6 +38,28 @@ class CourseBloc extends Bloc<CourseEvents, CourseStates> {
 
         yield Failed();
       }
+    } else if (event is CourseRequested) {
+      yield (Loading());
+      try {
+        final result = await repository.getCourse(event.course_id);
+        final c_d = result.data["course"];
+
+        final course = Course(
+          title: c_d["title"],
+          description: c_d["description"],
+          questions: c_d["questions"],
+          slides: c_d["slides"],
+        );
+
+        yield Course_Success(course: course);
+      } catch (e, stackTrace) {
+        log(e.toString());
+        log(stackTrace.toString());
+
+        yield Failed();
+      }
+    } else if (event is QuizSwitchRequested) {
+      yield Switch_to_Quiz();
     }
   }
 }

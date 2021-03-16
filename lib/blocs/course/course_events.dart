@@ -1,4 +1,5 @@
 import "package:equatable/equatable.dart";
+import 'package:flutter/cupertino.dart';
 
 abstract class CourseEvents extends Equatable {
   CourseEvents();
@@ -7,4 +8,11 @@ abstract class CourseEvents extends Equatable {
   List get props => [];
 }
 
-class CourseRequested extends CourseEvents {}
+class CoursesRequested extends CourseEvents {}
+
+class CourseRequested extends CourseEvents {
+  final int course_id;
+  CourseRequested({@required this.course_id}) : assert(course_id != null);
+}
+
+class QuizSwitchRequested extends CourseEvents {}

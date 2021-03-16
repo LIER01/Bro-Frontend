@@ -6,6 +6,7 @@ import 'package:bro/views/course/course_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:bro/views/course/alternative_container.dart';
 
 class CourseListView extends StatefulWidget {
   CourseListView({Key key}) : super(key: key);
@@ -21,7 +22,7 @@ class _CourseListViewState extends State<CourseListView> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<CourseBloc>(context).add(CourseRequested());
+    BlocProvider.of<CourseBloc>(context).add(CoursesRequested());
   }
 
   AppBar _buildAppBar() {
