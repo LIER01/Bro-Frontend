@@ -17,8 +17,6 @@ void main() {
           find.text(mockedResult['data']['course']['title']), findsOneWidget);
       expect(find.text(mockedResult['data']['course']['description']),
           findsOneWidget);
-      expect(find.text(mockedResult['data']['course']['description']),
-          findsOneWidget);
     });
   });
 }

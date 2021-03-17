@@ -1,4 +1,4 @@
-import 'package:bro/blocs/course/course_bucket.dart';
+import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/simple_bloc_observer.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/views/course/course_list_view.dart';
@@ -19,14 +19,24 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'GraphQl Article',
+      debugShowCheckedModeBanner: false,
+      title: 'Bro',
       theme: ThemeData(
         primarySwatch: Colors.teal,
         primaryColor: Colors.teal,
         accentColor: Colors.tealAccent,
+        scaffoldBackgroundColor: Colors.grey.shade50,
         brightness: Brightness.light,
+        // Don't mess with this without reading: https://github.com/flutter/flutter/issues/50606
         appBarTheme: AppBarTheme(
-          color: Colors.transparent,
+          color: Colors.grey.shade50,
+          brightness: Brightness.light,
+          textTheme: Typography.material2018()
+              .black
+              .copyWith(headline6: TextStyle(color: Colors.teal))
+              .merge(Typography.englishLike2018),
+          iconTheme: const IconThemeData(color: Colors.teal),
+          actionsIconTheme: const IconThemeData(color: Colors.teal),
           centerTitle: true,
           elevation: 0,
         ),
@@ -64,7 +74,7 @@ class App extends StatelessWidget {
       ),
       routes: {
         'course-view': (_) => BlocProvider(
-              create: (context) => CourseBloc(
+              create: (context) => CourseListBloc(
                 repository: CourseRepository(
                   client: _client(),
                 ),
@@ -77,7 +87,7 @@ class App extends StatelessWidget {
   }
 
   GraphQLClient _client() {
-    final HttpLink _link = HttpLink('https://bro-strapi.herokuapp.com/graphql');
+    final _link = HttpLink('https://bro-strapi.herokuapp.com/graphql');
 
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),
@@ -91,12 +101,12 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Velkommen til Bro!"),
+        title: Text('Velkommen til Bro!'),
       ),
       body: ListView(
         children: [
           ListTile(
-            title: Text("CourseListView"),
+            title: Text('CourseListView'),
             onTap: () => Navigator.of(context).pushNamed('course-view'),
           ),
         ],

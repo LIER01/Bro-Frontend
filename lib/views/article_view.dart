@@ -1,4 +1,4 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 
 class ArticleView extends StatefulWidget {
   @override
@@ -8,7 +8,7 @@ class ArticleView extends StatefulWidget {
 class _ArticleViewState extends State<ArticleView> {
   @override
   Widget build(BuildContext context) {
-    final body = "Dette er en artikkel kropp";
+    final body = 'Dette er en artikkel kropp';
     return Text(body);
   }
 }

@@ -1,21 +1,12 @@
+import 'package:bro/models/course.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Public class for building tile
 class CourseListTile extends StatelessWidget {
-  const CourseListTile({
-    this.title,
-    this.description,
-    this.length,
-    this.time,
-    this.difficulty,
-  });
+  CourseListTile({Key key, @required this.course}) : super(key: key);
 
-  final String title;
-  final String description;
-  final int length;
-  final int time;
-  final String difficulty;
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +18,11 @@ class CourseListTile extends StatelessWidget {
           Expanded(
             flex: 3,
             child: _CourseDescription(
-              title: title,
-              description: description,
-              length: length,
-              time: time,
-              difficulty: difficulty,
+              title: course.title,
+              description: course.description,
+              length: course.slides.length + course.questions.length,
+              time: course.slides.length + course.questions.length * 2,
+              difficulty: 'Middels',
             ),
           ),
         ],
@@ -40,10 +31,9 @@ class CourseListTile extends StatelessWidget {
   }
 }
 
-// Private class for constructing single course tile
+// Private class for constructing single course tile content
 class _CourseDescription extends StatelessWidget {
   const _CourseDescription({
-    Key key,
     this.title,
     this.description,
     this.length,
@@ -111,7 +101,7 @@ class _CourseDescription extends StatelessWidget {
                         ),
                         Padding(padding: EdgeInsets.fromLTRB(2, 0, 0, 0)),
                         Text(
-                          time.toString() + " min",
+                          time.toString() + ' min',
                           style: Theme.of(context)
                               .textTheme
                               .caption
