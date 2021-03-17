@@ -59,6 +59,15 @@ class _CardContainerViewState extends State<CardContainerView> {
   @override
   void initState() {
     _controller = ScrollController();
+    _controller.addListener(() {
+      if (indx != (_controller.offset / context.size.width).round()) {
+        setState(() {
+          indx = (_controller.offset / context.size.width).roundToDouble();
+        });
+      }
+      print(indx);
+      //SET LIMITER PÅ ANTALL UTREGNINGER?
+    });
     super.initState();
   }
 
