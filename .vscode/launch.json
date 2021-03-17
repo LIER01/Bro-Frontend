@@ -5,10 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "program": "lib/views/main.dart",
-            "name": "Bro-Frontend",
+            "name": "bro-frontend",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "program": "lib/views/main.dart",
+
         }
     ]
 }
