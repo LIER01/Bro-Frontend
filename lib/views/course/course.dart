@@ -1,3 +1,4 @@
+import 'package:bro/views/course/quiz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -38,15 +39,15 @@ class _CourseViewState extends State<CourseView> {
         //log(state.toString());
         if (state is Loading) {
           return Scaffold(
-            appBar: AppBar(title: Text("Loading")),
+            appBar: AppBar(title: Text('Loading')),
             body: CircularProgressIndicator(),
           );
         }
 
         if (state is Failed) {
           return Scaffold(
-            appBar: AppBar(title: Text("     ")),
-            body: Center(child: Text("Det har skjedd en feil")),
+            appBar: AppBar(title: Text('     ')),
+            body: Center(child: Text('Det har skjedd en feil')),
           );
         }
 
@@ -60,10 +61,13 @@ class _CourseViewState extends State<CourseView> {
         }
         if (state is Switch_to_Quiz) {
           return Scaffold(
-            appBar: AppBar(title: Text(data.title)),
-            body: Center(child: AlternativeContainer()),
+            appBar: AppBar(
+                title: Text(data.title, style: TextStyle(color: Colors.teal))),
+            body: Center(
+                child: QuizView(title: data.title, questions: data.questions)),
           );
         }
+        return Container();
       },
     );
   }

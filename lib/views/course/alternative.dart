@@ -9,7 +9,7 @@ class Alternative extends StatefulWidget {
   // This lets us trigger the border color change if it is pressed.
   final LinkedHashMap<String, dynamic> image;
 
-  Alternative(this.name, @required this.isTrue, this.image);
+  Alternative(this.name, this.isTrue, this.image);
 
   @override
   _AlternativeState createState() => _AlternativeState();
@@ -19,24 +19,21 @@ class _AlternativeState extends State<Alternative> {
   bool isPressed = false;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: FractionalOffset.center,
-      color: Colors.white,
-      decoration: isPressed
-          ? BoxDecoration(
-              border:
-                  Border.all(color: widget.isTrue ? Colors.green : Colors.red))
-          : BoxDecoration(border: Border.all(color: Colors.black)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GestureDetector(
-            onTap: () {
-              isPressed = true;
-            },
-          )
-        ],
-      ),
+    return GestureDetector(
+      child: Container(
+          alignment: FractionalOffset.center,
+          decoration: BoxDecoration(
+              border: Border.all(
+                  width: 2,
+                  color: isPressed
+                      ? widget.isTrue
+                          ? Colors.green
+                          : Colors.red
+                      : Colors.grey)),
+          child: Text(widget.name)),
+      onTap: () {
+        setState(() => isPressed = true);
+      },
     );
   }
 }
