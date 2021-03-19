@@ -1,4 +1,4 @@
-import "package:bloc/bloc.dart";
+import 'package:bloc/bloc.dart';
 
 class SimpleBlocObserver extends BlocObserver {
   @override
@@ -8,7 +8,7 @@ class SimpleBlocObserver extends BlocObserver {
   }
 
   @override
-  onTransition(Bloc bloc, Transition transition) {
+  void onTransition(Bloc bloc, Transition transition) {
     print('onTransition $transition');
     super.onTransition(bloc, transition);
   }

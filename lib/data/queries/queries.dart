@@ -9,8 +9,8 @@ query {
 ''';
 
 final String getCoursesQuery = r''' 
-query {
-  courses {
+query getCourseQuery($start: Int!, $limit: Int!) {
+  courses(start: $start, limit: $limit) {
     id,
     title,
     description,

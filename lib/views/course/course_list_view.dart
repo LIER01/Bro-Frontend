@@ -1,12 +1,8 @@
-import 'dart:developer';
-
-import 'package:bro/blocs/course/course_bucket.dart';
-import 'package:bro/models/course.dart';
+import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/views/course/course_list_tile.dart';
+import 'package:bro/views/widgets/bottom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:bro/views/course/alternative_container.dart';
 
 class CourseListView extends StatefulWidget {
   CourseListView({Key key}) : super(key: key);
@@ -16,24 +12,28 @@ class CourseListView extends StatefulWidget {
 }
 
 class _CourseListViewState extends State<CourseListView> {
-  //CourseBloc _courseBloc;
-  List<Course> data;
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+  CourseListBloc _courseListBloc;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<CourseBloc>(context).add(CoursesRequested());
+    _scrollController.addListener(_onScroll);
+    _courseListBloc = BlocProvider.of<CourseListBloc>(context);
+    _courseListBloc.add(CourseListRequested());
   }
 
   AppBar _buildAppBar() {
     return AppBar(
-      title: Text("Kurs"),
+      title: Text('Kurs'),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CourseBloc, CourseStates>(
+    return BlocBuilder<CourseListBloc, CourseListState>(
+      // ignore: missing_return
       builder: (context, state) {
         //log(state.toString());
         if (state is Loading) {
@@ -46,167 +46,43 @@ class _CourseListViewState extends State<CourseListView> {
         if (state is Failed) {
           return Scaffold(
             appBar: _buildAppBar(),
-            body: Center(child: Text("Det har skjedd en feil")),
+            body: Center(child: Text('Det har skjedd en feil')),
           );
         }
 
         if (state is Success) {
-          data = state.courses;
-          log(data.toString());
           return Scaffold(
             appBar: _buildAppBar(),
-            body: _buildBody(),
+            body: ListView.builder(
+              itemCount: state.hasReachedMax
+                  ? state.courses.length
+                  : state.courses.length + 1,
+              controller: _scrollController,
+              itemBuilder: (BuildContext context, int index) {
+                return index >= state.courses.length
+                    ? BottomLoader()
+                    : CourseListTile(
+                        course: state.courses[index],
+                      );
+              },
+            ),
           );
         }
       },
-    );
-  }
-
-  Widget _buildBody() {
-    return Container(
-      child: ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (BuildContext context, int index) {
-          var item = data[index];
-          return CourseListTile(
-            title: item.title,
-            description: item.description,
-            length: item.questions.length,
-            time: item.questions.length + item.slides.length,
-            difficulty: 'Middels',
-          );
-        },
-      ),
     );
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     super.dispose();
   }
 
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return Query(
-      options: QueryOptions(document: gql(getCoursesQuery)),
-      builder: (QueryResult result,
-          {VoidCallback refetch, FetchMore fetchMore}) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              "Course List",
-              style: TextStyle(color: Theme.of(context).primaryColor),
-            ),
-          ),
-          body: Center(
-            child: result.hasException
-                ? Text(result.exception.toString())
-                : result.isLoading
-                    ? CircularProgressIndicator()
-                    : CourseList(
-                        list: result.data["courses"], onRefresh: refetch),
-          ),
-        );
-      },
-    );
-  } 
-  */
-}
-
-/*
-class CourseList extends StatelessWidget {
-  AppBar _buildAppBar() {
-    return AppBar(
-      title: Text("Kurs"),
-    );
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      _courseListBloc.add(CourseListRequested());
+    }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<CourseBloc, CourseStates>(
-      builder: (context, state) {
-        BlocProvider.of<CourseBloc>(context).add(CourseRequested());
-
-        if (state is Loading) {
-          return Scaffold(
-            appBar: _buildAppBar(),
-            body: LinearProgressIndicator(),
-          );
-        }
-
-        if (state is Failed) {
-          return Scaffold(
-            appBar: _buildAppBar(),
-            body: Center(child: Text(state.error)),
-          );
-        }
-
-        if (state is Success) {
-          final data = state.courses["courses"];
-          return Scaffold(
-            appBar: _buildAppBar(),
-            body: Container(
-              child: ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var item = data[index];
-                  return CourseListTile(
-                    title: item['title'],
-                    description: item['description'],
-                    length: item['questions'].length,
-                    time: item['questions'].length + item['slides'].length,
-                    difficulty: 'Middels',
-                  );
-                },
-              ),
-            ),
-          );
-        }
-      },
-    );
-  }
-
-/*
-  Widget _buildBody() {
-    return Container(
-      child: ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (BuildContext context, int index) {
-          var item = data[index];
-          return CourseListTile(
-            title: item['title'],
-            description: item['description'],
-            length: item['questions'].length,
-            time: item['questions'].length + item['slides'].length,
-            difficulty: 'Middels',
-          );
-        },
-      ),
-    );
-  }*/
-
-  /*CourseList({@required this.list, @required this.onRefresh});
-
-  final List list;
-  final onRefresh;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        final item = list[index];
-        debugPrint("Current item:" + item['title']);
-        return CourseListTile(
-          title: item['title'],
-          description: item['description'],
-          length: item['questions'].length,
-          time: item['questions'].length + item["slides"].length,
-          difficulty: "Middels",
-        );
-      },
-    );
-  }*/
 }
-*/

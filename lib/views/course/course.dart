@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
-import 'queries.dart';
 import 'info_card.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'dart:developer';
-import 'package:bro/blocs/course/course_bucket.dart';
+import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/models/course.dart';
 import 'package:bro/views/course/course_list_tile.dart';
 import 'package:flutter/material.dart';
@@ -15,42 +14,45 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:bro/views/course/alternative_container.dart';
 
-class CourseView extends StatefulWidget {
-  CourseView({Key key}) : super(key: key);
+class CourseDetailView extends StatefulWidget {
+  CourseDetailView({Key key}) : super(key: key);
 
   @override
-  _CourseViewState createState() => _CourseViewState();
+  _CourseDetailViewState createState() => _CourseDetailViewState();
 }
 
-class _CourseViewState extends State<CourseView> {
+class _CourseDetailViewState extends State<CourseDetailView> {
   Course data;
+  CourseDetailBloc _courseDetailBloc;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<CourseBloc>(context).add(CourseRequested(course_id: 1));
+    _courseDetailBloc = BlocProvider.of<CourseDetailBloc>(context);
+    _courseDetailBloc.add(CourseDetailRequested(course_id: 1));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CourseBloc, CourseStates>(
+    return BlocBuilder<CourseDetailBloc, CourseDetailState>(
+      // ignore: missing_return
       builder: (context, state) {
         //log(state.toString());
         if (state is Loading) {
           return Scaffold(
-            appBar: AppBar(title: Text("Loading")),
+            appBar: AppBar(title: Text('Loading')),
             body: CircularProgressIndicator(),
           );
         }
 
         if (state is Failed) {
           return Scaffold(
-            appBar: AppBar(title: Text("     ")),
-            body: Center(child: Text("Det har skjedd en feil")),
+            appBar: AppBar(title: Text('     ')),
+            body: Center(child: Text('Det har skjedd en feil')),
           );
         }
 
-        if (state is Course_Success) {
+        if (state is CourseState) {
           data = state.course;
           log(data.toString());
           return Scaffold(
@@ -58,7 +60,7 @@ class _CourseViewState extends State<CourseView> {
             body: _course_view_builder(context, data),
           );
         }
-        if (state is Switch_to_Quiz) {
+        if (state is QuizState) {
           return Scaffold(
             appBar: AppBar(title: Text(data.title)),
             body: Center(child: AlternativeContainer()),
@@ -129,7 +131,7 @@ class _CardContainerViewState extends State<CardContainerView> {
         FloatingActionButton(
           child: Text('test'),
           onPressed: () {
-            BlocProvider.of<CourseBloc>(context).add(QuizSwitchRequested());
+            BlocProvider.of<CourseDetailBloc>(context).add(QuizRequested());
           },
         ),
         Container(
