@@ -16,24 +16,21 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
   @override
   Stream<CourseDetailState> mapEventToState(CourseDetailEvent event) async* {
     // Not able to access state methods without this. Do not know why.
-    final currentState = state;
     if (event is CourseDetailRequested) {
       try {
-        if (currentState is Loading) {
-          final result = await repository.getCourse(event.course_id);
+        final result = await repository.getCourse(event.course_id);
 
-          final course_data = result.data['course'];
+        final course_data = result.data['course'];
 
-          final return_course = Course(
-            title: course_data['title'],
-            description: course_data['description'],
-            questions: course_data['questions'],
-            slides: course_data['slides'],
-          );
+        final return_course = Course(
+          title: course_data['title'],
+          description: course_data['description'],
+          questions: course_data['questions'],
+          slides: course_data['slides'],
+        );
 
-          yield CourseState(course: return_course);
-          return;
-        }
+        yield CourseState(course: return_course);
+        return;
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
@@ -42,10 +39,8 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
       }
     } else if (event is QuizRequested) {
       try {
-        if (currentState is CourseState) {
-          yield QuizState();
-          return;
-        }
+        yield QuizState();
+        return;
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
