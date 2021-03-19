@@ -1,7 +1,9 @@
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
+import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/blocs/simple_bloc_observer.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/views/course/course_list_view.dart';
+import 'package:bro/views/course/course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -81,6 +83,14 @@ class App extends StatelessWidget {
               ),
               child: CourseListView(),
             ),
+        'course-detail': (_) => BlocProvider(
+              create: (context) => CourseDetailBloc(
+                repository: CourseRepository(
+                  client: _client(),
+                ),
+              ),
+              child: CourseDetailView(),
+            ),
       },
       home: Home(),
     );
@@ -107,7 +117,7 @@ class Home extends StatelessWidget {
         children: [
           ListTile(
             title: Text('CourseListView'),
-            onTap: () => Navigator.of(context).pushNamed('course-view'),
+            onTap: () => Navigator.of(context).pushNamed('course-detail'),
           ),
         ],
       ),
