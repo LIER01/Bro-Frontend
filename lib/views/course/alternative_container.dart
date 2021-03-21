@@ -1,32 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'alternative.dart';
 
 class AlternativeContainer extends StatefulWidget {
-  AlternativeContainer({Key key}) : super(key: key);
-
+  AlternativeContainer({Key key, this.alternatives, this.name})
+      : super(key: key);
+  final List alternatives;
+  final String name;
   @override
   _AlternativeContainerState createState() => _AlternativeContainerState();
 }
 
 class _AlternativeContainerState extends State<AlternativeContainer> {
-  List list = ['asd', 'qwe', '123', 'zxc', 'fgh'];
-
   @override
   Widget build(BuildContext context) {
-    return Container(
+    //print(widget.question['question']);
+    return Expanded(
       child: GridView.count(
-        // Create a grid with 2 columns. If you change the scrollDirection to
-        // horizontal, this produces 2 rows.
+        //2 columns
         crossAxisCount: 2,
-        // Generate 100 widgets that display their index in the List.
-        children: List.generate(100, (index) {
-          return Center(
-            child: Text(
-              'Item $index',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-          );
+        children: List.generate(widget.alternatives.length, (index) {
+          return /* Center(child: Text(widget.alternatives[index]['name']) */
+              Alternative(
+                  widget.alternatives[index]['name'],
+                  widget.alternatives[index]['correct'],
+                  widget.alternatives[index]['image']);
         }),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:bro/views/course/quiz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -62,10 +63,13 @@ class _CourseDetailViewState extends State<CourseDetailView> {
         }
         if (state is QuizState) {
           return Scaffold(
-            appBar: AppBar(title: Text(data.title)),
-            body: Center(child: AlternativeContainer()),
+            appBar: AppBar(
+                title: Text(data.title, style: TextStyle(color: Colors.teal))),
+            body: Center(
+                child: QuizView(title: data.title, questions: data.questions)),
           );
         }
+        return Container();
       },
     );
   }
@@ -98,6 +102,15 @@ class _CardContainerViewState extends State<CardContainerView> {
   @override
   void initState() {
     _controller = ScrollController();
+    _controller.addListener(() {
+      if (indx != (_controller.offset / context.size.width).round()) {
+        setState(() {
+          indx = (_controller.offset / context.size.width).roundToDouble();
+        });
+      }
+      print(indx);
+      //SET LIMITER PÅ ANTALL UTREGNINGER?
+    });
     super.initState();
   }
 
