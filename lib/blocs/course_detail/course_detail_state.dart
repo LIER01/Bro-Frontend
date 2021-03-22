@@ -13,15 +13,15 @@ class Loading extends CourseDetailState {}
 
 class CourseState extends CourseDetailState {
   final Course course;
-  bool is_quiz;
-  bool is_answer;
-  int answer_id;
+  bool isQuiz;
+  bool isAnswer;
+  int answerId;
 
-  CourseState({this.course, this.is_quiz, this.is_answer, this.answer_id})
+  CourseState({this.course, this.isQuiz, this.isAnswer, this.answerId})
       : assert(course != null);
 
   @override
-  List<Object> get props => [course, is_quiz, is_answer];
+  List<Object> get props => [course, isQuiz, isAnswer];
 }
 
 class Failed extends CourseDetailState {}

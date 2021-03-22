@@ -32,9 +32,9 @@ class _CourseDetailViewState extends State<CourseDetailView> {
     super.initState();
     _courseDetailBloc = BlocProvider.of<CourseDetailBloc>(context);
     _courseDetailBloc.add(CourseDetailRequested(
-      course_id: 1,
-      is_quiz: false,
-      is_answer: false,
+      courseId: 1,
+      isQuiz: false,
+      isAnswer: false,
     ));
   }
 
@@ -60,8 +60,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
 
         if (state is CourseState) {
           data = state.course;
-          debugPrint(state.is_quiz.toString());
-          if (!state.is_quiz) {
+          if (!state.isQuiz) {
             return Scaffold(
               appBar: AppBar(title: Text(data.title)),
               body: _course_view_builder(context, data),
@@ -72,9 +71,9 @@ class _CourseDetailViewState extends State<CourseDetailView> {
               body: Center(
                   child: QuizView(
                       questions: data.questions,
-                      isAnswer: state.is_answer,
+                      isAnswer: state.isAnswer,
                       title: data.title,
-                      answerId: state.answer_id)),
+                      answerId: state.answerId)),
             );
           }
         }
@@ -158,7 +157,7 @@ class _CardContainerViewState extends State<CardContainerView> {
           onPressed: () {
             BlocProvider.of<CourseDetailBloc>(context).add(
                 CourseDetailRequested(
-                    course: widget.course, is_quiz: true, is_answer: false));
+                    course: widget.course, isQuiz: true, isAnswer: false));
           },
         ),
         Container(

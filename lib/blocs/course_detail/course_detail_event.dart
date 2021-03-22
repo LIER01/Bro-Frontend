@@ -10,18 +10,18 @@ abstract class CourseDetailEvent extends Equatable {
 }
 
 class CourseDetailRequested extends CourseDetailEvent {
-  int course_id;
+  int courseId;
   Course course;
-  bool is_quiz;
-  bool is_answer;
-  int answer_id = 0;
+  bool isQuiz;
+  bool isAnswer;
+  int answerId = 0;
   CourseDetailRequested({
     this.course,
-    this.course_id,
-    this.is_quiz,
-    this.is_answer,
-    this.answer_id,
-  }) : assert(course_id != null || course != null);
+    this.courseId,
+    this.isQuiz,
+    this.isAnswer,
+    this.answerId,
+  }) : assert(courseId != null || course != null);
 
-  List get props => [is_quiz, is_answer, answer_id];
+  List get props => [isQuiz, isAnswer, answerId];
 }
