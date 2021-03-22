@@ -8,6 +8,7 @@ import 'package:bro/views/course/course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
   Bloc.observer = SimpleBlocObserver();
@@ -122,6 +123,13 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.home), label: 'Hjem',),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.book), label: 'Artikler',),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.solidCheckSquare), label: 'Kurs',),
+          BottomNavigationBarItem(icon: FaIcon(FontAwesomeIcons.cog),label: 'Instillinger',),
+    ],
     );
   }
 }
