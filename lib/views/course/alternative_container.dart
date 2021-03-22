@@ -7,10 +7,17 @@ import 'package:bro/views/course/alternative.dart' as alt;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AlternativeContainer extends StatefulWidget {
-  AlternativeContainer({Key key, this.alternatives, this.name})
-      : super(key: key);
+  AlternativeContainer({
+    Key key,
+    this.alternatives,
+    this.name,
+    this.isAnswer,
+    this.answerId,
+  }) : super(key: key);
   final List alternatives;
   final String name;
+  bool isAnswer;
+  int answerId;
   @override
   _AlternativeContainerState createState() => _AlternativeContainerState();
 }

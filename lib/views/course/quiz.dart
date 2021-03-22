@@ -25,12 +25,14 @@ class _QuizViewState extends State<QuizView> {
   @override
   Widget build(BuildContext context) {
     print(widget.questions[index]['alternatives']);
-    return Text("Test");
-    // return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-    //   Container(height: 300, child: Text(widget.questions[index]['question'])),
-    //   AlternativeContainer(
-    //       name: widget.questions[index]['question'],
-    //       alternatives: widget.questions[index]['alternatives']),
-    // ]);
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      Container(height: 300, child: Text(widget.questions[index]['question'])),
+      AlternativeContainer(
+        name: widget.questions[index]['question'],
+        alternatives: widget.questions[index]['alternatives'],
+        answerId: widget.answerId,
+        isAnswer: widget.isAnswer,
+      )
+    ]);
   }
 }
