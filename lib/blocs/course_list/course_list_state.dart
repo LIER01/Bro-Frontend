@@ -31,6 +31,10 @@ class Success extends CourseListState {
 
   @override
   List<Object> get props => [courses, hasReachedMax];
+
+  @override
+  String toString() =>
+      'Success { courses: $courses, hasReachedMax: $hasReachedMax }';
 }
 
 class Failed extends CourseListState {}
