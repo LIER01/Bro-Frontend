@@ -28,6 +28,7 @@ dependencies:
     cached_network_image: ^2.5.0
     font_awesome_flutter: ^8.11.0
     http: ^0.12.2
+    html: ^0.15.0
     bloc: ^6.0.0
     flutter_bloc: ^6.0.0
     equatable: ^2.0.0
@@ -44,6 +45,8 @@ dev_dependencies:
     flutter_test:
         sdk: flutter
     mockito: ^4.1.4
+    test:
+    bloc_test: ^7.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
