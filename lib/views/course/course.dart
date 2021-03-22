@@ -1,9 +1,9 @@
+import 'package:bro/data/queries/queries.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
-import 'queries.dart';
 import 'info_card.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
@@ -13,7 +13,7 @@ class CourseView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Query(
-        options: QueryOptions(document: gql(getCourseQuery)),
+        options: QueryOptions(document: gql(getCoursesQuery)),
         builder: (QueryResult result,
             {VoidCallback refetch, FetchMore fetchMore}) {
           return Scaffold(
