@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 class Alternative extends StatefulWidget {
   final String name;
   final bool isTrue;
+  final int id;
   // This lets us trigger the border color change if it is pressed.
   final LinkedHashMap<String, dynamic> image;
 
-  Alternative(this.name, this.isTrue, this.image);
+  Alternative(this.id, this.name, @required this.isTrue, this.image);
 
   @override
   _AlternativeState createState() => _AlternativeState();
@@ -20,20 +21,29 @@ class _AlternativeState extends State<Alternative> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Container(
+        onTap: () {
+          debugPrint('triggerd');
+          setState(() {
+            isPressed = true;
+          });
+        },
+        child: Container(
+          width: 50,
+          height: 50,
           alignment: FractionalOffset.center,
-          decoration: BoxDecoration(
-              border: Border.all(
-                  width: 2,
-                  color: isPressed
-                      ? widget.isTrue
-                          ? Colors.green
-                          : Colors.red
-                      : Colors.grey)),
-          child: Text(widget.name)),
-      onTap: () {
-        setState(() => isPressed = true);
-      },
-    );
+          decoration: isPressed
+              ? BoxDecoration(
+                  border: Border.all(
+                      color: widget.isTrue ? Colors.green : Colors.red))
+              : BoxDecoration(border: Border.all(color: Colors.black)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Text(widget.name),
+              )
+            ],
+          ),
+        ));
   }
 }

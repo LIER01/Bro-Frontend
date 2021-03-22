@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:bro/views/course/alternative_container.dart';
+import 'quiz.dart';
 
 class CourseDetailView extends StatefulWidget {
   CourseDetailView({Key key}) : super(key: key);
@@ -30,7 +31,11 @@ class _CourseDetailViewState extends State<CourseDetailView> {
   void initState() {
     super.initState();
     _courseDetailBloc = BlocProvider.of<CourseDetailBloc>(context);
-    _courseDetailBloc.add(CourseDetailRequested(course_id: 1));
+    _courseDetailBloc.add(CourseDetailRequested(
+      course_id: 1,
+      is_quiz: false,
+      is_answer: false,
+    ));
   }
 
   @override
@@ -55,19 +60,23 @@ class _CourseDetailViewState extends State<CourseDetailView> {
 
         if (state is CourseState) {
           data = state.course;
-          log(data.toString());
-          return Scaffold(
-            appBar: AppBar(title: Text(data.title)),
-            body: _course_view_builder(context, data),
-          );
-        }
-        if (state is QuizState) {
-          return Scaffold(
-            appBar: AppBar(
-                title: Text(data.title, style: TextStyle(color: Colors.teal))),
-            body: Center(
-                child: QuizView(title: data.title, questions: data.questions)),
-          );
+          debugPrint(state.is_quiz.toString());
+          if (!state.is_quiz) {
+            return Scaffold(
+              appBar: AppBar(title: Text(data.title)),
+              body: _course_view_builder(context, data),
+            );
+          } else {
+            return Scaffold(
+              appBar: AppBar(title: Text(data.title)),
+              body: Center(
+                  child: QuizView(
+                      questions: data.questions,
+                      isAnswer: state.is_answer,
+                      title: data.title,
+                      answerId: state.answer_id)),
+            );
+          }
         }
         return Container();
       },
@@ -81,6 +90,7 @@ Widget _course_view_builder(context, data) {
       height: MediaQuery.of(context).size.height * 0.7,
       child: CardContainerView(
         list: data.slides,
+        course: data,
       ));
 }
 
@@ -89,9 +99,11 @@ class CardContainerView extends StatefulWidget {
     Key key,
     this.list,
     this.res,
+    this.course,
   }) : super(key: key);
   final List list;
   final QueryResult res;
+  final Course course;
   @override
   _CardContainerViewState createState() => _CardContainerViewState();
 }
@@ -144,7 +156,9 @@ class _CardContainerViewState extends State<CardContainerView> {
         FloatingActionButton(
           child: Text('test'),
           onPressed: () {
-            BlocProvider.of<CourseDetailBloc>(context).add(QuizRequested());
+            BlocProvider.of<CourseDetailBloc>(context).add(
+                CourseDetailRequested(
+                    course: widget.course, is_quiz: true, is_answer: false));
           },
         ),
         Container(

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:bro/models/course.dart';
 
 abstract class CourseDetailEvent extends Equatable {
   CourseDetailEvent();
@@ -9,8 +10,18 @@ abstract class CourseDetailEvent extends Equatable {
 }
 
 class CourseDetailRequested extends CourseDetailEvent {
-  final int course_id;
-  CourseDetailRequested({@required this.course_id}) : assert(course_id != null);
-}
+  int course_id;
+  Course course;
+  bool is_quiz;
+  bool is_answer;
+  int answer_id = 0;
+  CourseDetailRequested({
+    this.course,
+    this.course_id,
+    this.is_quiz,
+    this.is_answer,
+    this.answer_id,
+  }) : assert(course_id != null || course != null);
 
-class QuizRequested extends CourseDetailEvent {}
+  List get props => [is_quiz, is_answer, answer_id];
+}
