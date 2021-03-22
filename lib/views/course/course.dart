@@ -3,42 +3,81 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
-import 'queries.dart';
 import 'info_card.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'dart:developer';
+import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
+import 'package:bro/models/course.dart';
+import 'package:bro/views/course/course_list_tile.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:bro/views/course/alternative_container.dart';
 
-class CourseView extends StatelessWidget {
-  CourseView({Key key}) : super(key: key);
+class CourseDetailView extends StatefulWidget {
+  CourseDetailView({Key key}) : super(key: key);
+
+  @override
+  _CourseDetailViewState createState() => _CourseDetailViewState();
+}
+
+class _CourseDetailViewState extends State<CourseDetailView> {
+  Course data;
+  CourseDetailBloc _courseDetailBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _courseDetailBloc = BlocProvider.of<CourseDetailBloc>(context);
+    _courseDetailBloc.add(CourseDetailRequested(course_id: 1));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Query(
-        options: QueryOptions(document: gql(getCourseQuery)),
-        builder: (QueryResult result,
-            {VoidCallback refetch, FetchMore fetchMore}) {
+    return BlocBuilder<CourseDetailBloc, CourseDetailState>(
+      // ignore: missing_return
+      builder: (context, state) {
+        //log(state.toString());
+        if (state is Loading) {
           return Scaffold(
-            appBar: result.hasException
-                ? AppBar(title: Text(result.exception.toString()))
-                : (result.isLoading)
-                    ? AppBar(title: Text('Loading'))
-                    : AppBar(
-                        title: Text(result.data['course']['title']),
-                      ),
-            body: Center(
-                child: result.hasException
-                    ? Text(result.exception.toString())
-                    : (result.isLoading)
-                        ? CircularProgressIndicator()
-                        : Container(
-                            width: MediaQuery.of(context).size.width,
-                            //height: MediaQuery.of(context).size.height * 0.7,
-                            child: CardContainerView(
-                              list: result.data['course']['slides'],
-                              res: result,
-                            ))),
+            appBar: AppBar(title: Text('Loading')),
+            body: CircularProgressIndicator(),
           );
-        });
+        }
+
+        if (state is Failed) {
+          return Scaffold(
+            appBar: AppBar(title: Text('     ')),
+            body: Center(child: Text('Det har skjedd en feil')),
+          );
+        }
+
+        if (state is CourseState) {
+          data = state.course;
+          log(data.toString());
+          return Scaffold(
+            appBar: AppBar(title: Text(data.title)),
+            body: _course_view_builder(context, data),
+          );
+        }
+        if (state is QuizState) {
+          return Scaffold(
+            appBar: AppBar(title: Text(data.title)),
+            body: Center(child: AlternativeContainer()),
+          );
+        }
+      },
+    );
   }
+}
+
+Widget _course_view_builder(context, data) {
+  return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: CardContainerView(
+        list: data.slides,
+      ));
 }
 
 class CardContainerView extends StatefulWidget {
@@ -89,6 +128,12 @@ class _CardContainerViewState extends State<CardContainerView> {
 
     if (widget.list.isNotEmpty) {
       return Column(children: [
+        FloatingActionButton(
+          child: Text('test'),
+          onPressed: () {
+            BlocProvider.of<CourseDetailBloc>(context).add(QuizRequested());
+          },
+        ),
         Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.5,
