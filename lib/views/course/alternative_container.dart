@@ -1,12 +1,8 @@
-import 'package:bro/blocs/course_detail/course_detail_bloc.dart';
-import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
-import 'package:bro/blocs/course_detail/course_detail_event.dart';
 import 'package:bro/models/course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:bro/views/course/alternative.dart' as alt;
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AlternativeContainer extends StatefulWidget {
   AlternativeContainer({
@@ -17,11 +13,11 @@ class AlternativeContainer extends StatefulWidget {
     this.isAnswer,
     this.answerId,
   }) : super(key: key);
-  Course course;
+  final Course course;
   final List alternatives;
   final String name;
-  bool isAnswer;
-  int answerId;
+  final bool isAnswer;
+  final int answerId;
   @override
   _AlternativeContainerState createState() => _AlternativeContainerState();
 }

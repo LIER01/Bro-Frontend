@@ -9,11 +9,11 @@ abstract class CourseDetailEvent extends Equatable {
 }
 
 class CourseDetailRequested extends CourseDetailEvent {
-  int courseId;
-  Course course;
-  bool isQuiz;
-  bool isAnswer;
-  int answerId = 0;
+  final int courseId;
+  final Course course;
+  final bool isQuiz;
+  final bool isAnswer;
+  final int answerId;
   CourseDetailRequested({
     this.course,
     this.courseId,
@@ -22,5 +22,6 @@ class CourseDetailRequested extends CourseDetailEvent {
     this.answerId,
   }) : assert(courseId != null || course != null);
 
+  @override
   List get props => [isQuiz, isAnswer, answerId];
 }

@@ -4,7 +4,6 @@ import 'package:bro/blocs/simple_bloc_observer.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:bro/views/course/course_list_view.dart';
-import 'package:bro/views/course/course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';

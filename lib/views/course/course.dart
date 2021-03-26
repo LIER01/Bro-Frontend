@@ -6,14 +6,9 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'info_card.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'dart:developer';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/models/course.dart';
-import 'package:bro/views/course/course_list_tile.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:bro/views/course/alternative_container.dart';
 import 'quiz.dart';
 
 class CourseDetailView extends StatefulWidget {

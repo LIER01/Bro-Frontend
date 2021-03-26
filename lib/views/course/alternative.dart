@@ -11,8 +11,8 @@ class Alternative extends StatefulWidget {
   final String name;
   final bool isTrue;
   final int id;
-  bool isPressed;
-  Course course;
+  final bool isPressed;
+  final Course course;
   // This lets us trigger the border color change if it is pressed.
   final LinkedHashMap<String, dynamic> image;
 

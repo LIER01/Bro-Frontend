@@ -13,7 +13,7 @@ class QuizView extends StatefulWidget {
     this.answerId,
     Key key,
   }) : super(key: key);
-  Course course;
+  final Course course;
   final String title;
   final List questions;
   final bool isAnswer;
