@@ -12,12 +12,14 @@ class AlternativeContainer extends StatefulWidget {
     this.name,
     this.isAnswer,
     this.answerId,
+    this.clarification,
   }) : super(key: key);
   final Course course;
   final List alternatives;
   final String name;
   final bool isAnswer;
   final int answerId;
+  final String clarification;
   @override
   _AlternativeContainerState createState() => _AlternativeContainerState();
 }
@@ -25,16 +27,20 @@ class AlternativeContainer extends StatefulWidget {
 class _AlternativeContainerState extends State<AlternativeContainer> {
   bool clicked = false;
   List alts;
+  String validation;
 
   @override
   Widget build(BuildContext context) {
     alts ??= widget.alternatives;
+    validation = widget.answerId == null
+        ? ''
+        : alts[widget.answerId]['correct']
+            ? 'Korrekt'
+            : 'Feil';
     if (widget.isAnswer) {
       alts = alts.sublist(widget.answerId, widget.answerId + 1);
       clicked = true;
     }
-
-    print('WHATISITNOW: ' + alts.toString());
     return Column(children: [
       Expanded(
           child: Container(
@@ -57,27 +63,14 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
           }),
         ),
       )),
-      GestureDetector(
-          onTap: () => {
-                setState(() => alts = alts.sublist(0, 1)),
-                debugPrint('CLICKCLICK: ' + alts.toString()),
-
-                /* BlocProvider.of<CourseDetailBloc>(context).add(
-                    CourseDetailRequested(
-                        course: widget.course,
-                        isAnswer: true,
-                        answerId: 1,
-                        isQuiz: true)) */
-              },
-          child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-              child: RotatedBox(
-                  quarterTurns: 3,
-                  child: Container(
-                    decoration: BoxDecoration(color: Colors.amber),
-                    width: 100,
-                    height: 100,
-                  )))),
+      Container(
+          alignment: Alignment.topCenter,
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Text(validation, style: TextStyle(color: Colors.teal))),
+      Container(
+          padding: EdgeInsets.fromLTRB(0, 30, 0, 150),
+          child:
+              Text(widget.clarification, style: TextStyle(color: Colors.teal))),
     ]);
   }
 }
