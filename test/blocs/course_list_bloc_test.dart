@@ -28,20 +28,20 @@ void main() {
         return courseListBloc;
       },
       act: (CourseListBloc bloc) async => bloc.add(CourseListRequested()),
-      expect: <CourseListState>[Failed()],
+      expect: () => <CourseListState>[Failed()],
     );
 
     blocTest(
       'initial state is correct',
       build: () => courseListBloc,
-      expect: <CourseListState>[],
+      expect: () => <CourseListState>[],
     );
 
     blocTest(
       'should load more items in response to an CourseListRequested event',
       build: () => courseListBloc,
       act: (CourseListBloc bloc) async => bloc.add(CourseListRequested()),
-      expect: [
+      expect: () => [
         isA<Success>(),
       ],
     );
