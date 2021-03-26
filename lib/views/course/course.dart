@@ -70,6 +70,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
               appBar: AppBar(title: Text(data.title)),
               body: Center(
                   child: QuizView(
+                      course: data,
                       questions: data.questions,
                       isAnswer: state.isAnswer,
                       title: data.title,

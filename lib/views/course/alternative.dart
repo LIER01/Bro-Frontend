@@ -7,10 +7,12 @@ class Alternative extends StatefulWidget {
   final String name;
   final bool isTrue;
   final int id;
+  bool isPressed;
   // This lets us trigger the border color change if it is pressed.
   final LinkedHashMap<String, dynamic> image;
 
-  Alternative(this.id, this.name, @required this.isTrue, this.image);
+  Alternative(
+      this.id, this.name, @required this.isTrue, this.image, this.isPressed);
 
   @override
   _AlternativeState createState() => _AlternativeState();
@@ -24,15 +26,16 @@ class _AlternativeState extends State<Alternative> {
         onTap: () {
           debugPrint('triggerd');
           setState(() {
-            isPressed = true;
+            widget.isPressed = true;
           });
         },
         child: Container(
           width: 50,
           height: 50,
           alignment: FractionalOffset.center,
-          decoration: isPressed
+          decoration: widget.isPressed
               ? BoxDecoration(
+                  color: Colors.teal,
                   border: Border.all(
                       color: widget.isTrue ? Colors.green : Colors.red))
               : BoxDecoration(border: Border.all(color: Colors.black)),
