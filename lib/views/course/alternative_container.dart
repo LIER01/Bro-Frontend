@@ -33,25 +33,31 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
   @override
   Widget build(BuildContext context) {
     alts ??= widget.alternatives;
+    if (widget.isAnswer) {
+      alts = alts.sublist(widget.answerId, widget.answerId + 1);
+      clicked = true;
+    }
 
     print('WHATISITNOW: ' + alts.toString());
     return Column(children: [
       Expanded(
           child: Container(
-        padding: EdgeInsets.all(50),
+        padding: EdgeInsets.all(25),
         child: GridView.count(
-          mainAxisSpacing: 50,
-          crossAxisSpacing: 50,
-          //2 columns
+          mainAxisSpacing: 25,
+          crossAxisSpacing: 25,
+          //2 columns, unless there is only one item in list
           crossAxisCount: alts.length == 1 ? 1 : 2,
           children: List.generate(alts.length, (index) {
             return /* Center(child: Text(widget.alternatives[index]['name']) */
-                Container(
-                    width: 10,
-                    constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width / 4),
-                    child: alt.Alternative(index, alts[index]['name'],
-                        alts[index]['correct'], alts[index]['image'], clicked));
+                Align(
+                    child: alt.Alternative(
+                        widget.course,
+                        index,
+                        alts[index]['name'],
+                        alts[index]['correct'],
+                        alts[index]['image'],
+                        clicked));
           }),
         ),
       )),
