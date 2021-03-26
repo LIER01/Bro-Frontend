@@ -4,6 +4,7 @@ import 'package:bro/blocs/simple_bloc_observer.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:bro/views/course/course_list_view.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -17,6 +18,15 @@ void main() {
 // This widget is the root of your application.
 class App extends StatelessWidget {
   App({Key key}) : super(key: key);
+
+  GraphQLClient _client() {
+    final _link = HttpLink('https://bro-strapi.herokuapp.com/graphql');
+
+    return GraphQLClient(
+      cache: GraphQLCache(store: InMemoryStore()),
+      link: _link,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,33 +85,12 @@ class App extends StatelessWidget {
         ),
       ),
       routes: {
-        'course-view': (_) => BlocProvider(
-              create: (context) => CourseListBloc(
-                repository: CourseRepository(
-                  client: _client(),
-                ),
-              ),
-              child: CourseListView(),
-            ),
-        'course-detail': (_) => BlocProvider(
-              create: (context) => CourseDetailBloc(
-                repository: CourseRepository(
-                  client: _client(),
-                ),
-              ),
-              child: CourseDetailView(),
-            ),
+        ExtractCourseDetailScreen.routeName: (context) =>
+            ExtractCourseDetailScreen(client: _client()),
+        ExtractCourseListScreen.routeName: (context) =>
+            ExtractCourseListScreen(client: _client()),
       },
       home: Home(),
-    );
-  }
-
-  GraphQLClient _client() {
-    final _link = HttpLink('https://bro-strapi.herokuapp.com/graphql');
-
-    return GraphQLClient(
-      cache: GraphQLCache(store: InMemoryStore()),
-      link: _link,
     );
   }
 }
@@ -117,7 +106,7 @@ class Home extends StatelessWidget {
         children: [
           ListTile(
             title: Text('CourseListView'),
-            onTap: () => Navigator.of(context).pushNamed('course-detail'),
+            onTap: () => Navigator.of(context).pushNamed('/courseList'),
           ),
         ],
       ),
