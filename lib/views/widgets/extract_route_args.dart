@@ -1,7 +1,6 @@
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/data/course_repository.dart';
-import 'package:bro/utils/api.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:bro/views/course/course_list_view.dart';
 import 'package:flutter/material.dart';

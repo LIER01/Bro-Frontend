@@ -1,9 +1,4 @@
-import 'package:bro/blocs/course_list/course_list_bucket.dart';
-import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/blocs/simple_bloc_observer.dart';
-import 'package:bro/data/course_repository.dart';
-import 'package:bro/views/course/course.dart';
-import 'package:bro/views/course/course_list_view.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
