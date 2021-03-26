@@ -37,12 +37,18 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
               answerId: event.answerId);
 
           return;
-        } else {
+        } else if (event.isQuiz) {
           yield CourseState(
               course: event.course,
               isQuiz: event.isQuiz,
               isAnswer: event.isAnswer,
               answerId: event.answerId);
+          return;
+        } else {
+          // If the value of quiz is not defined, we yield a failure. This is due to the fact that "isQuiz"
+          // is a required parameter in the "CourseDetailRequested" event, and thus any event without that defined
+          // must be malicious.
+          yield Failed();
           return;
         }
       } catch (e, stackTrace) {
@@ -52,5 +58,6 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
         yield Failed();
       }
     }
+    yield Failed();
   }
 }

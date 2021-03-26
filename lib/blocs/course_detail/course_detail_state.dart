@@ -18,8 +18,13 @@ class CourseState extends CourseDetailState {
   final int answerId;
 
   CourseState(
-      {@required this.course, this.isQuiz, this.isAnswer, this.answerId})
-      : assert(course != null);
+      {@required this.course,
+      @required this.isQuiz,
+      this.isAnswer,
+      this.answerId})
+      : assert(course != null),
+        assert(isQuiz != null),
+        assert(!isAnswer || (isAnswer && answerId != null));
 
   @override
   List<Object> get props => [course, isQuiz, isAnswer];
