@@ -50,7 +50,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
         if (state is Failed) {
           return Scaffold(
             appBar: AppBar(title: Text('     ')),
-            body: Center(child: Text('Det har skjedd en feil')),
+            body: Center(child: Text(state.err)),
           );
         }
 

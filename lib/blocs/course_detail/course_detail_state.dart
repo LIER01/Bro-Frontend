@@ -30,4 +30,10 @@ class CourseState extends CourseDetailState {
   List<Object> get props => [course, isQuiz, isAnswer];
 }
 
-class Failed extends CourseDetailState {}
+class Failed extends CourseDetailState {
+  final String err;
+  Failed({@required this.err}) : assert(err != null);
+
+  @override
+  List<Object> get props => [err];
+}
