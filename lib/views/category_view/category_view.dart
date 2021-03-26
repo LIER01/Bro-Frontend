@@ -86,9 +86,9 @@ class _CategoryViewState extends State<CategoryView> {
                 children: <Widget>[
                   GestureDetector(
                     onHorizontalDragEnd: (DragEndDetails details) {
-                      if (details.velocity.pixelsPerSecond.dx < 0) {
+                      if (details.velocity.pixelsPerSecond.dx > 0) {
                         _prev();
-                      } else if (details.velocity.pixelsPerSecond.dx > 0) {
+                      } else if (details.velocity.pixelsPerSecond.dx < 0) {
                         _next();
                       }
                     },
