@@ -12,12 +12,14 @@ class AlternativeContainer extends StatefulWidget {
     this.name,
     this.isAnswer,
     this.answerId,
+    this.clarification,
   }) : super(key: key);
   final Course course;
   final List alternatives;
   final String name;
   final bool isAnswer;
   final int answerId;
+  final String clarification;
   @override
   _AlternativeContainerState createState() => _AlternativeContainerState();
 }
@@ -25,59 +27,41 @@ class AlternativeContainer extends StatefulWidget {
 class _AlternativeContainerState extends State<AlternativeContainer> {
   bool clicked = false;
   List alts;
+  String validation;
 
   @override
   Widget build(BuildContext context) {
-    alts ??= widget.alternatives;
-    if (widget.isAnswer) {
-      alts = alts.sublist(widget.answerId, widget.answerId + 1);
-      clicked = true;
-    }
+    alts = widget.alternatives;
 
-    print('WHATISITNOW: ' + alts.toString());
     return Column(children: [
       Expanded(
           child: Container(
-        padding: EdgeInsets.all(25),
-        child: GridView.count(
+        padding: EdgeInsets.all(0),
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          runSpacing: 2,
+          /* physics: NeverScrollableScrollPhysics(),
           mainAxisSpacing: 25,
           crossAxisSpacing: 25,
           //2 columns, unless there is only one item in list
-          crossAxisCount: alts.length == 1 ? 1 : 2,
+          crossAxisCount: alts.length == 1 ? 1 : 2, */
           children: List.generate(alts.length, (index) {
             return /* Center(child: Text(widget.alternatives[index]['name']) */
-                Align(
-                    child: alt.Alternative(
-                        widget.course,
-                        index,
-                        alts[index]['name'],
-                        alts[index]['correct'],
-                        alts[index]['image'],
-                        clicked));
+                Container(
+                    width:
+                        (MediaQuery.of(context).size.width - 2 * (2 - 1)) / 2,
+                    child: Align(
+                        alignment: Alignment.topCenter,
+                        child: alt.Alternative(
+                            widget.course,
+                            index,
+                            alts[index]['name'],
+                            alts[index]['correct'],
+                            alts[index]['image'],
+                            widget.isAnswer)));
           }),
         ),
       )),
-      GestureDetector(
-          onTap: () => {
-                setState(() => alts = alts.sublist(0, 1)),
-                debugPrint('CLICKCLICK: ' + alts.toString()),
-
-                /* BlocProvider.of<CourseDetailBloc>(context).add(
-                    CourseDetailRequested(
-                        course: widget.course,
-                        isAnswer: true,
-                        answerId: 1,
-                        isQuiz: true)) */
-              },
-          child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-              child: RotatedBox(
-                  quarterTurns: 3,
-                  child: Container(
-                    decoration: BoxDecoration(color: Colors.amber),
-                    width: 100,
-                    height: 100,
-                  )))),
     ]);
   }
 }
