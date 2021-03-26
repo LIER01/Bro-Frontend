@@ -13,7 +13,6 @@ class Alternative extends StatefulWidget {
   final int id;
   final bool isPressed;
   final Course course;
-  // This lets us trigger the border color change if it is pressed.
   final LinkedHashMap<String, dynamic> image;
 
   Alternative(
@@ -24,11 +23,12 @@ class Alternative extends StatefulWidget {
 }
 
 class _AlternativeState extends State<Alternative> {
+  Color validColor;
   @override
   Widget build(BuildContext context) {
+    validColor = widget.isTrue ? Colors.teal : Colors.red;
     return GestureDetector(
         onTap: () {
-          debugPrint('triggerd');
           BlocProvider.of<CourseDetailBloc>(context).add(CourseDetailRequested(
               course: widget.course,
               isAnswer: true,
@@ -43,14 +43,22 @@ class _AlternativeState extends State<Alternative> {
           decoration: widget.isPressed
               ? BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: widget.isTrue ? Colors.green : Colors.red))
-              : BoxDecoration(border: Border.all(color: Colors.black)),
+                  border: Border.all(color: validColor))
+              : BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Colors.black)),
           child: Stack(
             children: [
               Center(
-                child: Text(widget.name),
+                child: Text(widget.name, style: TextStyle(color: validColor)),
               ),
+              Align(
+                  alignment: Alignment.topRight,
+                  child: Icon(
+                    widget.isTrue ? Icons.check_box : Icons.clear,
+                    color: validColor,
+                    size: widget.isPressed ? 35 : 0,
+                  ))
             ],
           ),
         ));

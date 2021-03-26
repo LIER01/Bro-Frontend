@@ -33,6 +33,7 @@ class _QuizViewState extends State<QuizView> {
       Expanded(
           child: AlternativeContainer(
         course: widget.course,
+        clarification: widget.questions[index]['clarification'],
         name: widget.questions[index]['question'],
         alternatives: widget.questions[index]['alternatives'],
         answerId: widget.answerId,
