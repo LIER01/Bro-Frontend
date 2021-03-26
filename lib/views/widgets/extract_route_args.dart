@@ -1,6 +1,9 @@
+import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
+import 'package:bro/data/category_repository.dart';
 import 'package:bro/data/course_repository.dart';
+import 'package:bro/views/category_view/category_view.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:bro/views/course/course_list_view.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +46,24 @@ class ExtractCourseListScreen extends StatelessWidget {
         ),
       ),
       child: CourseListView(),
+    );
+  }
+}
+
+class ExtractCategoryListScreen extends StatelessWidget {
+  static const routeName = '/categoryList';
+  final GraphQLClient client;
+  ExtractCategoryListScreen({@required this.client});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CategoryBloc(
+        repository: CategoryRepository(
+          client: client,
+        ),
+      ),
+      child: CategoryView(),
     );
   }
 }
