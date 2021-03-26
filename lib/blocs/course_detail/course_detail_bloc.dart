@@ -19,13 +19,13 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
   Stream<CourseDetailState> mapEventToState(CourseDetailEvent event) async* {
     // Not able to access state methods without this. Do not know why.
     if (event is CourseDetailRequested) {
+      yield Loading();
       if (event.isQuiz == null ||
-          (event.course == null || event.courseId == null) ||
+          (event.course == null && event.courseId == null) ||
           (event.isAnswer == true && event.answerId == null)) {
         yield Failed(err: 'Error, bad request');
         return;
       }
-      yield Loading();
       try {
         if (!event.isQuiz) {
           // ignore: omit_local_variable_types
@@ -45,18 +45,6 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
 
             yield Failed(err: 'Error, bad request');
             return;
-          }
-
-          // ignore: omit_local_variable_types
-          int attempt = 1;
-          while (result.hasException) {
-            // If the result has an exception, we attempt to connect two more times before yielding a failure
-            if (attempt == 3) {
-              yield Failed(err: 'Failed to connect to server');
-              return;
-            }
-            result = await repository.getCourse(event.courseId);
-            attempt += 1;
           }
 
           final course_data = result.data['course'];
