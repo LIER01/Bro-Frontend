@@ -30,7 +30,7 @@ dependencies:
     http: ^0.12.2
     bloc: ^7.0.0
     flutter_bloc: ^7.0.0
-    bloc_test: ^8.0.0
+    html: ^0.15.0
     equatable: ^2.0.0
     meta: ^1.2.2
     dots_indicator: ^2.0.0
@@ -45,6 +45,8 @@ dev_dependencies:
     flutter_test:
         sdk: flutter
     mockito: ^4.1.4
+    test:
+    bloc_test: ^8.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
