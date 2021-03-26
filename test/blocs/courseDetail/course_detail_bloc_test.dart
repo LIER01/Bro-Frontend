@@ -50,7 +50,27 @@ void mainBloc() {
           isAnswer: true,
           answerId: 1)),
       expect: () => [
+        Loading(),
         isInstanceOf<Failed>(),
+      ],
+    );
+
+    blocTest(
+      'should emit failed if server does not respond',
+      build: () {
+        when(() => courseRepository.getCourse(1)).thenThrow(
+            NetworkException(message: 'Error,connection failed', uri: Uri()));
+        return courseDetailBloc;
+      },
+      act: (CourseDetailBloc bloc) async => bloc.add(CourseDetailRequested(
+          course: Course(),
+          courseId: 1,
+          isQuiz: false,
+          isAnswer: false,
+          answerId: 1)),
+      expect: () => [
+        Loading(),
+        Failed(err: 'Error, failed to contact server'),
       ],
     );
   });

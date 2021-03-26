@@ -29,12 +29,28 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
       try {
         if (!event.isQuiz) {
           // ignore: omit_local_variable_types
-          QueryResult result = await repository.getCourse(event.courseId);
+          QueryResult result;
+
+          // Try to contact the server.
+          try {
+            result = await repository.getCourse(event.courseId);
+          } on NetworkException catch (e, stackTrace) {
+            log(e.toString());
+            log(stackTrace.toString());
+            yield Failed(err: 'Error, failed to contact server');
+            return;
+          } catch (e, stackTrace) {
+            log(e.toString());
+            log(stackTrace.toString());
+
+            yield Failed(err: 'Error, bad request');
+            return;
+          }
 
           // ignore: omit_local_variable_types
           int attempt = 1;
-          // If the result has an exception, we attempt to connect two more times before yielding a failure
           while (result.hasException) {
+            // If the result has an exception, we attempt to connect two more times before yielding a failure
             if (attempt == 3) {
               yield Failed(err: 'Failed to connect to server');
               return;
@@ -78,8 +94,10 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
         log(stackTrace.toString());
 
         yield Failed(err: 'Error, bad request');
+        return;
       }
     }
     yield Failed(err: 'Error, bad request');
+    return;
   }
 }
