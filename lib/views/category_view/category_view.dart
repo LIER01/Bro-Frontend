@@ -184,7 +184,7 @@ class _CategoryViewState extends State<CategoryView> {
                             child: Align(
                               child: GestureDetector(
                                 onTap: () {
-                                  log("ROUTING HER");
+                                  log('ROUTING HER');
                                 },
                                 child: Container(
                                   height: 50,

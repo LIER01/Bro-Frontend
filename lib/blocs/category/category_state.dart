@@ -1,6 +1,5 @@
 import 'package:bro/models/category.dart';
 import 'package:equatable/equatable.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:meta/meta.dart';
 
 abstract class CategoryState extends Equatable {
@@ -24,14 +23,4 @@ class Success extends CategoryState {
   String toString() => 'Success { categories: $categories }';
 }
 
-class Failed extends CategoryState {
-  /*final List<dynamic> errors;
-
-  Failed({@required this.errors}) : assert(errors != null);
-
-  @override
-  List<dynamic> get props => errors;
-
-  @override
-  String toString() => 'Failed( errors: $errors )';*/
-}
+class Failed extends CategoryState {}
