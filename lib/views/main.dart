@@ -99,7 +99,7 @@ class App extends StatelessWidget {
         ExtractCourseListScreen.routeName: (context) =>
             ExtractCourseListScreen(client: _client()),
         ExtractCategoryListScreen.routeName: (context) =>
-            ExtractCourseListScreen(client: _client()),
+            ExtractCategoryListScreen(client: _client()),
       },
       home: Home(),
     );
