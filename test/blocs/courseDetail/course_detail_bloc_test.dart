@@ -1,21 +1,11 @@
-import 'dart:io';
-
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/models/course.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:bloc_test/bloc_test.dart';
-import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
-import 'package:bro/data/category_repository.dart';
-import 'package:bro/models/course.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:mocktail/mocktail.dart';
 import '../../mock_data/course_detail_mock.dart';
-import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/data/course_repository.dart';
-import '../../mock_data/course_detail_mock.dart';
-import 'package:meta/meta.dart';
 import 'test_helpers.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}

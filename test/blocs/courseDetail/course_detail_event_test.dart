@@ -15,6 +15,7 @@ void main() {
 void mainState() {
   group('CourseDetailState', () {
     test('inserting no parameters throws assertionerror', () {
+      // ignore: missing_required_param
       expect(() => CourseState(), throwsAssertionError);
     });
 
