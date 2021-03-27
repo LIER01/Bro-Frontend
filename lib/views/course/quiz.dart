@@ -33,24 +33,29 @@ class _QuizViewState extends State<QuizView> {
   Widget build(BuildContext context) {
     print(index.toString());
     alts = widget.questions[index]['alternatives'];
-    return Column(children: [
-      Container(child: Text(widget.questions[index]['question'])),
-      Expanded(
-          child: Align(
-              alignment: Alignment.center,
-              child: AlternativeContainer(
-                course: widget.course,
-                clarification: widget.questions[index]['clarification'],
-                name: widget.questions[index]['question'],
-                alternatives: widget.isAnswer
-                    ? alts.sublist(widget.answerId, widget.answerId + 1)
-                    : alts,
-                answerId: widget.answerId,
-                isAnswer: widget.isAnswer,
-              ))),
+    return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+            padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height * 0.07),
+            child: Text(widget.questions[index]['question'],
+                style: TextStyle(color: Colors.teal, fontSize: 20))),
+      ),
+      Align(
+          child: AlternativeContainer(
+        course: widget.course,
+        clarification: widget.questions[index]['clarification'],
+        name: widget.questions[index]['question'],
+        alternatives: widget.isAnswer
+            ? alts.sublist(widget.answerId, widget.answerId + 1)
+            : alts,
+        answerId: widget.answerId,
+        isAnswer: widget.isAnswer,
+      )),
       Container(
-          alignment: Alignment.topCenter,
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+          padding: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.height * 0.03),
           child: Text(
               widget.answerId == null
                   ? ''
@@ -78,7 +83,7 @@ class _QuizViewState extends State<QuizView> {
                     setState(() => {
                           index + 1 < widget.questions.length
                               ? index += 1
-                              : print('exit quiz'),
+                              : Navigator.of(context).pop(),
                         }),
                     BlocProvider.of<CourseDetailBloc>(context).add(
                         CourseDetailRequested(

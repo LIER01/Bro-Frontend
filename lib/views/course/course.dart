@@ -173,80 +173,65 @@ class _CardContainerViewState extends State<CardContainerView> {
         //Scroll buttons
         Container(
           width: MediaQuery.of(context).size.width,
-          child: Expanded(
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <
-                Widget>[
-              GestureDetector(
-                  onTap: () => {_moveLeft()},
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.073),
-                        child: RotatedBox(
-                            quarterTurns: 1,
-                            child: Icon(
-                              Icons.arrow_circle_down,
-                              color: Colors.teal,
-                              size: MediaQuery.of(context).size.width * 0.175,
-                            ))),
-                  )),
-              indx + 1 != widget.list.length
-                  ? Expanded(
-                      child: Row(
-                        children: [
-                          Spacer(),
-                          GestureDetector(
-                              onTap: () => {_moveRight()},
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 30),
-                                    child: RotatedBox(
-                                        quarterTurns: 3,
-                                        child: Icon(
-                                          Icons.arrow_circle_down,
-                                          color: Colors.teal,
-                                          size: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.175,
-                                        ))),
-                              )),
-                        ],
-                      ),
-                    )
-                  : Expanded(
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width * 0.05),
-                            child: ButtonTheme(
-                              child: ElevatedButton(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 40, vertical: 15),
-                                  child: Center(child: Text('Start Quiz')),
-                                ),
-                                onPressed: () {
-                                  BlocProvider.of<CourseDetailBloc>(context)
-                                      .add(CourseDetailRequested(
-                                          course: widget.course,
-                                          isQuiz: true,
-                                          isAnswer: false));
-                                },
-                              ),
+          child: Row(
+              mainAxisAlignment: indx + 1 == widget.list.length
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                    onTap: () => {_moveLeft()},
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.073),
+                          child: RotatedBox(
+                              quarterTurns: 1,
+                              child: Icon(
+                                Icons.arrow_circle_down,
+                                color: Colors.teal,
+                                size: MediaQuery.of(context).size.width * 0.175,
+                              ))),
+                    )),
+                indx + 1 != widget.list.length
+                    ? GestureDetector(
+                        onTap: () => {_moveRight()},
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 30),
+                              child: RotatedBox(
+                                  quarterTurns: 3,
+                                  child: Icon(
+                                    Icons.arrow_circle_down,
+                                    color: Colors.teal,
+                                    size: MediaQuery.of(context).size.width *
+                                        0.175,
+                                  ))),
+                        ))
+                    : Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.05),
+                        child: ButtonTheme(
+                          child: ElevatedButton(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 15),
+                              child: Center(child: Text('Start Quiz')),
                             ),
+                            onPressed: () {
+                              BlocProvider.of<CourseDetailBloc>(context).add(
+                                  CourseDetailRequested(
+                                      course: widget.course,
+                                      isQuiz: true,
+                                      isAnswer: false));
+                            },
                           ),
-                          Spacer()
-                        ],
-                      ),
-                    )
-            ]),
-          ),
+                        ),
+                      )
+              ]),
         )
       ]);
     } else {
