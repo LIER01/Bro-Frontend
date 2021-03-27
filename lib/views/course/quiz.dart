@@ -63,7 +63,7 @@ class _QuizViewState extends State<QuizView> {
                   color: widget.answerId == null
                       ? Colors.red
                       : alts[widget.answerId]['correct']
-                          ? Colors.green
+                          ? Colors.teal
                           : Colors.red))),
       Container(
           padding: EdgeInsets.fromLTRB(20, 30, 20, 50),

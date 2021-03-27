@@ -3,6 +3,7 @@ import 'package:bro/views/course/course_list_tile.dart';
 import 'package:bro/views/widgets/bottom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bro/utils/navigator_arguments.dart';
 
 class CourseListView extends StatefulWidget {
   CourseListView({Key key}) : super(key: key);
@@ -61,8 +62,14 @@ class _CourseListViewState extends State<CourseListView> {
               itemBuilder: (BuildContext context, int index) {
                 return index >= state.courses.length
                     ? BottomLoader()
-                    : CourseListTile(
-                        course: state.courses[index],
+                    : GestureDetector(
+                        onTap: () => Navigator.of(context).pushNamed(
+                            '/courseDetail',
+                            arguments:
+                                CourseDetailArguments(courseId: index + 1)),
+                        child: CourseListTile(
+                          course: state.courses[index],
+                        ),
                       );
               },
             ),

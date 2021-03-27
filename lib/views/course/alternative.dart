@@ -52,6 +52,7 @@ class _AlternativeState extends State<Alternative> {
             children: [
               Center(
                 child: Text(widget.name,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         color: widget.isPressed ? validColor : Colors.teal)),
               ),

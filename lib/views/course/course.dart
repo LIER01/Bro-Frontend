@@ -12,7 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'quiz.dart';
 
 class CourseDetailView extends StatefulWidget {
-  CourseDetailView({Key key}) : super(key: key);
+  final int courseId;
+  CourseDetailView({this.courseId, Key key}) : super(key: key);
 
   @override
   _CourseDetailViewState createState() => _CourseDetailViewState();
@@ -27,7 +28,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
     super.initState();
     _courseDetailBloc = BlocProvider.of<CourseDetailBloc>(context);
     _courseDetailBloc.add(CourseDetailRequested(
-      courseId: 1,
+      courseId: widget.courseId,
       isQuiz: false,
       isAnswer: false,
     ));
