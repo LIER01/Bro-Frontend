@@ -1,4 +1,4 @@
-import 'package:bro/data/queries/queries.dart';
+import 'package:bro/views/course/quiz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -6,39 +6,88 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'info_card.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
+import 'package:bro/models/course.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'quiz.dart';
 
-class CourseView extends StatelessWidget {
-  CourseView({Key key}) : super(key: key);
+class CourseDetailView extends StatefulWidget {
+  final int courseId;
+  CourseDetailView({this.courseId, Key key}) : super(key: key);
+
+  @override
+  _CourseDetailViewState createState() => _CourseDetailViewState();
+}
+
+class _CourseDetailViewState extends State<CourseDetailView> {
+  Course data;
+  CourseDetailBloc _courseDetailBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _courseDetailBloc = BlocProvider.of<CourseDetailBloc>(context);
+    _courseDetailBloc.add(CourseDetailRequested(
+      courseId: widget.courseId,
+      isQuiz: false,
+      isAnswer: false,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Query(
-        options: QueryOptions(document: gql(getCoursesQuery)),
-        builder: (QueryResult result,
-            {VoidCallback refetch, FetchMore fetchMore}) {
+    return BlocBuilder<CourseDetailBloc, CourseDetailState>(
+      // ignore: missing_return
+      builder: (context, state) {
+        //log(state.toString());
+        if (state is Loading) {
           return Scaffold(
-            appBar: result.hasException
-                ? AppBar(title: Text(result.exception.toString()))
-                : (result.isLoading)
-                    ? AppBar(title: Text('Loading'))
-                    : AppBar(
-                        title: Text(result.data['course']['title']),
-                      ),
-            body: Center(
-                child: result.hasException
-                    ? Text(result.exception.toString())
-                    : (result.isLoading)
-                        ? CircularProgressIndicator()
-                        : Container(
-                            width: MediaQuery.of(context).size.width,
-                            //height: MediaQuery.of(context).size.height * 0.7,
-                            child: CardContainerView(
-                              list: result.data['course']['slides'],
-                              res: result,
-                            ))),
+            appBar: AppBar(title: Text('Loading')),
+            body: LinearProgressIndicator(),
           );
-        });
+        }
+
+        if (state is Failed) {
+          return Scaffold(
+            appBar: AppBar(title: Text('     ')),
+            body: Center(child: Text(state.err)),
+          );
+        }
+
+        if (state is CourseState) {
+          data = state.course;
+          if (!state.isQuiz) {
+            return Scaffold(
+              appBar: AppBar(title: Text(data.title)),
+              body: _course_view_builder(context, data),
+            );
+          } else {
+            return Scaffold(
+              appBar: AppBar(title: Text(data.title)),
+              body: Center(
+                  child: QuizView(
+                      course: data,
+                      questions: data.questions,
+                      isAnswer: state.isAnswer,
+                      title: data.title,
+                      answerId: state.answerId)),
+            );
+          }
+        }
+        return Container();
+      },
+    );
   }
+}
+
+Widget _course_view_builder(context, data) {
+  return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: CardContainerView(
+        list: data.slides,
+        course: data,
+      ));
 }
 
 class CardContainerView extends StatefulWidget {
@@ -46,9 +95,11 @@ class CardContainerView extends StatefulWidget {
     Key key,
     this.list,
     this.res,
+    this.course,
   }) : super(key: key);
   final List list;
   final QueryResult res;
+  final Course course;
   @override
   _CardContainerViewState createState() => _CardContainerViewState();
 }
@@ -59,6 +110,15 @@ class _CardContainerViewState extends State<CardContainerView> {
   @override
   void initState() {
     _controller = ScrollController();
+    _controller.addListener(() {
+      if (indx != (_controller.offset / context.size.width).round()) {
+        setState(() {
+          indx = (_controller.offset / context.size.width).roundToDouble();
+        });
+      }
+      print(indx);
+      //SET LIMITER PÅ ANTALL UTREGNINGER?
+    });
     super.initState();
   }
 
@@ -111,30 +171,83 @@ class _CardContainerViewState extends State<CardContainerView> {
             decorator: DotsDecorator(
                 color: Colors.grey[350], activeColor: Colors.teal)),
         //Scroll buttons
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          GestureDetector(
-              onTap: () => {_moveLeft()},
-              child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                  child: RotatedBox(
-                      quarterTurns: 1,
-                      child: Icon(
-                        Icons.arrow_circle_down,
-                        color: Colors.teal,
-                        size: 72,
-                      )))),
-          GestureDetector(
-              onTap: () => {_moveRight()},
-              child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                  child: RotatedBox(
-                      quarterTurns: 3,
-                      child: Icon(
-                        Icons.arrow_circle_down,
-                        color: Colors.teal,
-                        size: 72,
-                      )))),
-        ])
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: Expanded(
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <
+                Widget>[
+              GestureDetector(
+                  onTap: () => {_moveLeft()},
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.073),
+                        child: RotatedBox(
+                            quarterTurns: 1,
+                            child: Icon(
+                              Icons.arrow_circle_down,
+                              color: Colors.teal,
+                              size: MediaQuery.of(context).size.width * 0.175,
+                            ))),
+                  )),
+              indx + 1 != widget.list.length
+                  ? Expanded(
+                      child: Row(
+                        children: [
+                          Spacer(),
+                          GestureDetector(
+                              onTap: () => {_moveRight()},
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 30),
+                                    child: RotatedBox(
+                                        quarterTurns: 3,
+                                        child: Icon(
+                                          Icons.arrow_circle_down,
+                                          color: Colors.teal,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.175,
+                                        ))),
+                              )),
+                        ],
+                      ),
+                    )
+                  : Expanded(
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * 0.05),
+                            child: ButtonTheme(
+                              child: ElevatedButton(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 40, vertical: 15),
+                                  child: Center(child: Text('Start Quiz')),
+                                ),
+                                onPressed: () {
+                                  BlocProvider.of<CourseDetailBloc>(context)
+                                      .add(CourseDetailRequested(
+                                          course: widget.course,
+                                          isQuiz: true,
+                                          isAnswer: false));
+                                },
+                              ),
+                            ),
+                          ),
+                          Spacer()
+                        ],
+                      ),
+                    )
+            ]),
+          ),
+        )
       ]);
     } else {
       return Container(width: 0.0, height: 0.0);

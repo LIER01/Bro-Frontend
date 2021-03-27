@@ -20,4 +20,14 @@ class CourseRepository {
 
     return await client.query(_options);
   }
+
+  Future<QueryResult> getCourse(int i) async {
+    final _options = WatchQueryOptions(
+      document: parseString(getCourseQuery),
+      variables: {'course_id': i},
+      fetchResults: true,
+    );
+
+    return await client.query(_options);
+  }
 }

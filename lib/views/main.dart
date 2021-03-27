@@ -1,9 +1,5 @@
-import 'package:bro/blocs/category/category_bucket.dart';
-import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/simple_bloc_observer.dart';
-import 'package:bro/data/category_repository.dart';
-import 'package:bro/data/course_repository.dart';
-import 'package:bro/views/course/course_list_view.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -11,8 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 // ignore: library_prefixes
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
-
-import 'category_view/category_view.dart';
 
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
@@ -23,6 +17,15 @@ Future main() async {
 // This widget is the root of your application.
 class App extends StatelessWidget {
   App({Key key}) : super(key: key);
+
+  GraphQLClient _client() {
+    final _link = HttpLink(env['API_URL'] + '/graphql');
+
+    return GraphQLClient(
+      cache: GraphQLCache(store: InMemoryStore()),
+      link: _link,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,33 +94,14 @@ class App extends StatelessWidget {
         ),
       ),
       routes: {
-        'course-view': (_) => BlocProvider(
-              create: (context) => CourseListBloc(
-                repository: CourseRepository(
-                  client: _client(),
-                ),
-              ),
-              child: CourseListView(),
-            ),
-        'category-view': (_) => BlocProvider(
-              create: (context) => CategoryBloc(
-                repository: CategoryRepository(
-                  client: _client(),
-                ),
-              ),
-              child: CategoryView(),
-            ),
+        ExtractCourseDetailScreen.routeName: (context) =>
+            ExtractCourseDetailScreen(client: _client()),
+        ExtractCourseListScreen.routeName: (context) =>
+            ExtractCourseListScreen(client: _client()),
+        ExtractCategoryListScreen.routeName: (context) =>
+            ExtractCategoryListScreen(client: _client()),
       },
       home: Home(),
-    );
-  }
-
-  GraphQLClient _client() {
-    final _link = HttpLink(env['API_URL'] + '/graphql');
-
-    return GraphQLClient(
-      cache: GraphQLCache(store: InMemoryStore()),
-      link: _link,
     );
   }
 }
@@ -133,11 +117,11 @@ class Home extends StatelessWidget {
         children: [
           ListTile(
             title: Text('CourseListView'),
-            onTap: () => Navigator.of(context).pushNamed('course-view'),
+            onTap: () => Navigator.of(context).pushNamed('/courseList'),
           ),
           ListTile(
             title: Text('CategoryView'),
-            onTap: () => Navigator.of(context).pushNamed('category-view'),
+            onTap: () => Navigator.of(context).pushNamed('/categoryList'),
           ),
         ],
       ),

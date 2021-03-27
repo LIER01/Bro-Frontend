@@ -5,12 +5,21 @@ import 'package:bro/views/course/course_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-class MockCourseListView extends MockBloc<CourseListEvent>
+class MockCourseListView extends MockBloc<CourseListEvent, CourseListState>
     implements CourseListBloc {}
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue<CourseListState>(Failed());
+    registerFallbackValue<CourseListEvent>(CourseListRequested());
+  });
+
+  mainTest();
+}
+
+void mainTest() {
   group('CourseListView', () {
     CourseListBloc courseListBloc;
 
@@ -24,7 +33,7 @@ void main() {
 
     testWidgets('renders properly without courses',
         (WidgetTester tester) async {
-      when(courseListBloc.state)
+      when(() => courseListBloc.state)
           .thenReturn(Success(courses: [], hasReachedMax: true));
       await tester.pumpWidget(
         BlocProvider.value(
@@ -39,7 +48,7 @@ void main() {
     });
 
     testWidgets('renders properly with courses', (WidgetTester tester) async {
-      when(courseListBloc.state).thenReturn(
+      when(() => courseListBloc.state).thenReturn(
         Success(courses: [
           Course(
             title: 'Kurstittel',

@@ -6,12 +6,21 @@ import 'package:bro/views/category_view/category_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-class MockCategoryView extends MockBloc<CategoryEvent> implements CategoryBloc {
-}
+class MockCategoryView extends MockBloc<CategoryEvent, CategoryState>
+    implements CategoryBloc {}
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue<CategoryState>(Failed());
+    registerFallbackValue<CategoryEvent>((CategoriesRequested()));
+  });
+
+  mainTest();
+}
+
+void mainTest() {
   group('CategoryView', () {
     CategoryBloc categoryBloc;
 
@@ -25,7 +34,7 @@ void main() {
 
     testWidgets('renders properly without categories',
         (WidgetTester tester) async {
-      when(categoryBloc.state).thenReturn(
+      when(() => categoryBloc.state).thenReturn(
         Success(
           categories: [],
         ),
@@ -46,7 +55,7 @@ void main() {
 
     testWidgets('renders properly with categories',
         (WidgetTester tester) async {
-      when(categoryBloc.state).thenReturn(
+      when(() => categoryBloc.state).thenReturn(
         Success(
           categories: [
             Category(name: 'Testkategori', cover_photo: '/image.url.png')

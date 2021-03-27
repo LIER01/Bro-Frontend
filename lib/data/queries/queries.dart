@@ -28,3 +28,29 @@ query{
     }
 }
 ''';
+
+final String getCourseQuery = r'''
+    query getCourseQuery ($course_id: ID!){
+    course (id:$course_id){
+        title
+        questions{
+            question
+            alternatives{
+                name
+                image{
+                    url
+                }
+                correct
+            }
+            clarification
+        }
+        slides{
+            title
+            description
+            image{
+                url
+            }
+        }
+    }
+}
+    ''';
