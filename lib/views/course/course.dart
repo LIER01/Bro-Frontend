@@ -43,14 +43,14 @@ class _CourseDetailViewState extends State<CourseDetailView> {
         if (state is Loading) {
           return Scaffold(
             appBar: AppBar(title: Text('Loading')),
-            body: CircularProgressIndicator(),
+            body: LinearProgressIndicator(),
           );
         }
 
         if (state is Failed) {
           return Scaffold(
             appBar: AppBar(title: Text('     ')),
-            body: Center(child: Text('Det har skjedd en feil')),
+            body: Center(child: Text(state.err)),
           );
         }
 
@@ -149,14 +149,6 @@ class _CardContainerViewState extends State<CardContainerView> {
 
     if (widget.list.isNotEmpty) {
       return Column(children: [
-        FloatingActionButton(
-          child: Text('test'),
-          onPressed: () {
-            BlocProvider.of<CourseDetailBloc>(context).add(
-                CourseDetailRequested(
-                    course: widget.course, isQuiz: true, isAnswer: false));
-          },
-        ),
         Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.5,
@@ -179,30 +171,83 @@ class _CardContainerViewState extends State<CardContainerView> {
             decorator: DotsDecorator(
                 color: Colors.grey[350], activeColor: Colors.teal)),
         //Scroll buttons
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          GestureDetector(
-              onTap: () => {_moveLeft()},
-              child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                  child: RotatedBox(
-                      quarterTurns: 1,
-                      child: Icon(
-                        Icons.arrow_circle_down,
-                        color: Colors.teal,
-                        size: 72,
-                      )))),
-          GestureDetector(
-              onTap: () => {_moveRight()},
-              child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                  child: RotatedBox(
-                      quarterTurns: 3,
-                      child: Icon(
-                        Icons.arrow_circle_down,
-                        color: Colors.teal,
-                        size: 72,
-                      )))),
-        ])
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: Expanded(
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <
+                Widget>[
+              GestureDetector(
+                  onTap: () => {_moveLeft()},
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.073),
+                        child: RotatedBox(
+                            quarterTurns: 1,
+                            child: Icon(
+                              Icons.arrow_circle_down,
+                              color: Colors.teal,
+                              size: MediaQuery.of(context).size.width * 0.175,
+                            ))),
+                  )),
+              indx + 1 != widget.list.length
+                  ? Expanded(
+                      child: Row(
+                        children: [
+                          Spacer(),
+                          GestureDetector(
+                              onTap: () => {_moveRight()},
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0, horizontal: 30),
+                                    child: RotatedBox(
+                                        quarterTurns: 3,
+                                        child: Icon(
+                                          Icons.arrow_circle_down,
+                                          color: Colors.teal,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.175,
+                                        ))),
+                              )),
+                        ],
+                      ),
+                    )
+                  : Expanded(
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * 0.05),
+                            child: ButtonTheme(
+                              child: ElevatedButton(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 40, vertical: 15),
+                                  child: Center(child: Text('Start Quiz')),
+                                ),
+                                onPressed: () {
+                                  BlocProvider.of<CourseDetailBloc>(context)
+                                      .add(CourseDetailRequested(
+                                          course: widget.course,
+                                          isQuiz: true,
+                                          isAnswer: false));
+                                },
+                              ),
+                            ),
+                          ),
+                          Spacer()
+                        ],
+                      ),
+                    )
+            ]),
+          ),
+        )
       ]);
     } else {
       return Container(width: 0.0, height: 0.0);

@@ -2,11 +2,15 @@ import 'package:bro/blocs/simple_bloc_observer.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+// ignore: library_prefixes
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
-void main() {
+Future main() async {
   Bloc.observer = SimpleBlocObserver();
-
+  await DotEnv.load();
   runApp(App());
 }
 
@@ -15,7 +19,7 @@ class App extends StatelessWidget {
   App({Key key}) : super(key: key);
 
   GraphQLClient _client() {
-    final _link = HttpLink('https://bro-strapi.herokuapp.com/graphql');
+    final _link = HttpLink(env['API_URL'] + '/graphql');
 
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),
@@ -40,7 +44,11 @@ class App extends StatelessWidget {
           brightness: Brightness.light,
           textTheme: Typography.material2018()
               .black
-              .copyWith(headline6: TextStyle(color: Colors.teal))
+              .copyWith(
+                  headline6: GoogleFonts.notoSans(
+                color: Colors.teal,
+                fontWeight: FontWeight.bold,
+              ))
               .merge(Typography.englishLike2018),
           iconTheme: const IconThemeData(color: Colors.teal),
           actionsIconTheme: const IconThemeData(color: Colors.teal),
@@ -50,32 +58,38 @@ class App extends StatelessWidget {
         cardTheme: CardTheme(elevation: 5.0),
         iconTheme: IconThemeData(size: 18.0, color: Colors.white),
         textTheme: TextTheme(
-          headline1: TextStyle(
+          headline1: GoogleFonts.notoSans(
             fontSize: 72.0,
             fontWeight: FontWeight.bold,
             color: Colors.teal,
           ),
-          headline6: TextStyle(
+          headline4: GoogleFonts.notoSans(color: Colors.teal),
+          headline6: GoogleFonts.notoSans(
             fontSize: 20.0,
             fontWeight: FontWeight.w500,
             color: Colors.teal,
           ),
-          subtitle1: TextStyle(
+          subtitle1: GoogleFonts.notoSans(
             fontSize: 16.0,
             fontWeight: FontWeight.normal,
             letterSpacing: 0.15,
             color: Colors.black,
           ),
-          subtitle2: TextStyle(
+          subtitle2: GoogleFonts.notoSans(
             fontSize: 14.0,
             fontWeight: FontWeight.w500,
             letterSpacing: 0.10,
             color: Colors.black,
           ),
-          caption: TextStyle(
+          caption: GoogleFonts.notoSans(
             fontSize: 12.0,
             fontWeight: FontWeight.normal,
             letterSpacing: 0.40,
+          ),
+          button: GoogleFonts.notoSans(
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.125,
           ),
         ),
       ),
@@ -84,6 +98,8 @@ class App extends StatelessWidget {
             ExtractCourseDetailScreen(client: _client()),
         ExtractCourseListScreen.routeName: (context) =>
             ExtractCourseListScreen(client: _client()),
+        ExtractCategoryListScreen.routeName: (context) =>
+            ExtractCategoryListScreen(client: _client()),
       },
       home: Home(),
     );
@@ -102,6 +118,10 @@ class Home extends StatelessWidget {
           ListTile(
             title: Text('CourseListView'),
             onTap: () => Navigator.of(context).pushNamed('/courseList'),
+          ),
+          ListTile(
+            title: Text('CategoryView'),
+            onTap: () => Navigator.of(context).pushNamed('/categoryList'),
           ),
         ],
       ),

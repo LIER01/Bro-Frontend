@@ -18,11 +18,22 @@ class CourseState extends CourseDetailState {
   final int answerId;
 
   CourseState(
-      {@required this.course, this.isQuiz, this.isAnswer, this.answerId})
-      : assert(course != null);
+      {@required this.course,
+      @required this.isQuiz,
+      this.isAnswer,
+      this.answerId})
+      : assert(course != null),
+        assert(isQuiz != null),
+        assert(!isAnswer || (isAnswer && answerId != null));
 
   @override
   List<Object> get props => [course, isQuiz, isAnswer];
 }
 
-class Failed extends CourseDetailState {}
+class Failed extends CourseDetailState {
+  final String err;
+  Failed({@required this.err}) : assert(err != null);
+
+  @override
+  List<Object> get props => [err];
+}

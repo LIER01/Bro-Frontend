@@ -3,7 +3,7 @@ import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../mock_data/course_mock.dart';
 
@@ -16,7 +16,7 @@ void main() {
 
     setUp(() {
       courseRepository = MockCourseRepository();
-      when(courseRepository.getCourses(0, 10)).thenAnswer(
+      when(() => courseRepository.getCourses(0, 10)).thenAnswer(
           (_) => Future.value(QueryResult(source: null, data: mockedResult)));
       courseListBloc = CourseListBloc(repository: courseRepository);
     });
@@ -24,7 +24,8 @@ void main() {
     blocTest(
       'should emit Failed if repository throws',
       build: () {
-        when(courseRepository.getCourses(0, 10)).thenThrow(Exception('Woops'));
+        when(() => courseRepository.getCourses(0, 10))
+            .thenThrow(Exception('Woops'));
         return courseListBloc;
       },
       act: (CourseListBloc bloc) async => bloc.add(CourseListRequested()),

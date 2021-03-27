@@ -1,21 +1,19 @@
-import 'package:equatable/equatable.dart';
+import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/models/course.dart';
 import 'package:meta/meta.dart';
 
-abstract class CourseDetailEvent extends Equatable {
-  CourseDetailEvent();
-
+class WrongEvent extends CourseDetailEvent implements CourseDetailRequested {
   @override
-  List get props => [];
-}
-
-class CourseDetailRequested extends CourseDetailEvent {
   final int courseId;
+  @override
   final Course course;
+  @override
   final bool isQuiz;
+  @override
   final bool isAnswer;
+  @override
   final int answerId;
-  CourseDetailRequested({
+  WrongEvent({
     this.course,
     this.courseId,
     @required this.isQuiz,
@@ -23,8 +21,6 @@ class CourseDetailRequested extends CourseDetailEvent {
     this.answerId,
     // Either you need to provide a course_id or you need to provide a course
   })  : assert(courseId != null || course != null),
-        // isQuiz cannot be null
-        assert(isQuiz != null),
         // If "isAnswer", you also need to provide an answerId
         assert(!isAnswer || (isAnswer && answerId != null));
 
