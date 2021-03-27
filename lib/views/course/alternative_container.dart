@@ -40,6 +40,8 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
         child: Wrap(
           alignment: WrapAlignment.center,
           runSpacing: 2,
+          spacing: 2,
+
           /* physics: NeverScrollableScrollPhysics(),
           mainAxisSpacing: 25,
           crossAxisSpacing: 25,
