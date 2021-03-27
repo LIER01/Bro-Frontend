@@ -91,9 +91,15 @@ class _QuizViewState extends State<QuizView> {
                             isAnswer: false,
                             isQuiz: true))
                   },
-              child: Text(index + 1 < widget.questions.length
-                  ? 'Neste Spørsmål'
-                  : 'Fullfør quiz'))
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  index + 1 < widget.questions.length
+                      ? 'Neste Spørsmål'
+                      : 'Fullfør quiz',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ))
           : Container(),
     ]);
   }
