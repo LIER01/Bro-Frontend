@@ -54,3 +54,15 @@ final String getCourseQuery = r'''
     }
 }
     ''';
+
+final String getRecommendedCourses = r'''
+query {
+  courses(where:{is_recommended:true}) {
+    id,
+    title,
+    description,
+    questions {id},
+    slides {id},
+  }
+}
+''';
