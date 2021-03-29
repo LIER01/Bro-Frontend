@@ -55,9 +55,9 @@ final String getCourseQuery = r'''
 }
     ''';
 
-final String getRecommendedCourses = r'''
-query {
-  courses(where:{is_recommended:true}) {
+final String getRecommendedCoursesQuery = r'''
+query getRecommendedCoursesQuery($start: Int!,$limit: Int!){
+  courses(where:{is_recommended:true},start:$start,limit: $limit) {
     id,
     title,
     description,
