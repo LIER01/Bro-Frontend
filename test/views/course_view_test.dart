@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
-import 'package:bro/models/course.dart';
+/* import 'package:bro/models/course.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'; */
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -12,7 +12,7 @@ class MockCourseView extends MockBloc<CourseDetailEvent, CourseDetailState>
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<CourseDetailState>(Failed());
+    //registerFallbackValue<CourseDetailState>(Failed());
     registerFallbackValue<CourseDetailEvent>(
         CourseDetailRequested(isAnswer: false, isQuiz: false));
   });
@@ -32,7 +32,7 @@ void mainTest() {
       courseListBloc.close();
     });
 
-    testWidgets('renders properly without courses',
+    /* testWidgets('renders',
         (WidgetTester tester) async {
       when(() => courseListBloc.state)
           //Must pass it course
@@ -59,6 +59,6 @@ void mainTest() {
           ),
         ),
       );
-    });
+    }); */
   });
 }
