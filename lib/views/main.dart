@@ -123,8 +123,8 @@ class Home extends StatelessWidget {
             onTap: () => Navigator.of(context).pushNamed('course-detail'),
           ),
         ],
-          BottomNavigationBar()
       ),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }
