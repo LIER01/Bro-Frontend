@@ -1,3 +1,4 @@
+import 'package:bro/views/flutter-demo/demoscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bro/views/main.dart';
@@ -10,21 +11,19 @@ class BottomNavBar extends StatefulWidget {
   _BottomNavBarState createState() => _BottomNavBarState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
-  final List<Widget> _widgetOptions = <Widget>[
+  final List<Widget> _widgetOptions =[
+    //har prøvd å sette inn Home() osv, men appen laster ikke når jeg gjør det.
     Text(
-    'Index 1: Hjem',
+      'Index 0: Hjem',
     ),
     Text(
-      'Index 2: Artikler',
+      'Index 1: Artikler',
     ),
+    MyHomePage(),
     Text(
-      'Index 3: Kurs',
-    ),
-    Text(
-      'Index 4: Instillinger',
+      'Index 3: Instillinger',
     ),
   ];
 
@@ -32,15 +31,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
     setState(() {
       _selectedIndex = index;
     });
+    //Attempting to make the change of widget to an ontapped event since commented out body solution renders navbar in conflict with non-_widgetoption page
+    _widgetOptions[_selectedIndex];
+    print(_selectedIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
+    return BottomNavigationBar(
+      //body:  _widgetOptions[_selectedIndex],
+      //bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.home),
@@ -65,8 +65,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.tealAccent,
         onTap: _onItemTapped,
-      ),
+      //),
     );
   }
 }
