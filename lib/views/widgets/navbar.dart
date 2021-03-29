@@ -79,7 +79,7 @@ class BottomNavigationBar extends StatefulWidget {
 }
 
 class _BottomNavigationBarState extends State<BottomNavigationBar> {
-  final List<Widget> _widgetOptions = <Widget>[
+  final List<Widget> pages = <Widget>[
     Home(),
     Text('Article page'),
     Text('Course'),
