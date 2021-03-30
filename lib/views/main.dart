@@ -95,7 +95,7 @@ class App extends StatelessWidget {
               child: CourseDetailView(),
             ),
       },
-      home: Home(),
+      home: BottomNavBar(),
     );
   }
 
@@ -112,19 +112,82 @@ class App extends StatelessWidget {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Velkommen til Bro!'),
-      ),
-      body: ListView(
+    return ListView(
         children: [
           ListTile(
             title: Text('CourseListView'),
             onTap: () => Navigator.of(context).pushNamed('course-detail'),
           ),
         ],
+    );
+  }
+}
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({Key key}) : super(key: key);
+
+  @override
+  _BottomNavBarState createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  int _selectedIndex = 0;
+  final List<Widget> _appBarOptions =[Text('Velkommen til Bro!'),Text('Artikler'),Text('Kurs'),Text('Instillinger'),];
+  final List<Widget> _widgetOptions =[
+    //har prøvd å sette inn Home() osv, men appen laster ikke når jeg gjør det.
+    Home(),
+    Text(
+      'Index 1: Artikler',
+    ),
+    Text(
+      'Index 2: Kurs',
+    ),
+    Text(
+      'Index 3: Instillinger',
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+
+    });
+    //Attempting to make the change of widget to an ontapped event since commented out body solution renders navbar in conflict with non-_widgetoption page
+    print(_selectedIndex);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: _appBarOptions[_selectedIndex],),
+      body:  _widgetOptions[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.home),
+          label: 'Hjem',
+          backgroundColor: Colors.teal,
+        ),
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.book),
+          label: 'Artikler',
+          backgroundColor: Colors.teal,
+        ),
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.solidCheckSquare),
+          label: 'Kurs',
+          backgroundColor: Colors.teal,
+        ),
+        BottomNavigationBarItem(
+          icon: FaIcon(FontAwesomeIcons.cog),
+          label: 'Instillinger',
+          backgroundColor: Colors.teal,
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.tealAccent,
+      onTap: _onItemTapped,
       ),
-      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

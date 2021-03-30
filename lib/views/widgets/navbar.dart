@@ -30,6 +30,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+
     });
     //Attempting to make the change of widget to an ontapped event since commented out body solution renders navbar in conflict with non-_widgetoption page
     _widgetOptions[_selectedIndex];
