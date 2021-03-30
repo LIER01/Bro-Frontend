@@ -21,7 +21,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (event is HomeEvent && !_hasReachedMax(currentState)) {
       try {
         if (currentState is Loading) {
-          final result = await repository.getCourses(0,  4);
+          final result = await repository.getCourses(0, 4);
 
           final courses = result.data['courses'] as List<dynamic>;
           final homeResult = await repository.getHome();

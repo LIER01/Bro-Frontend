@@ -23,9 +23,7 @@ class Success extends HomeState {
       {@required this.courses,
       @required this.hasReachedMax,
       @required this.home})
-      : assert(home.header != null &&
-            courses != null &&
-            hasReachedMax != null);
+      : assert(home.header != null && courses != null && hasReachedMax != null);
 
   Success copyWith({
     List<Course> courses,
