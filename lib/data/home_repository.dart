@@ -21,7 +21,7 @@ class HomeRepository {
     return await client.query(_options);
   }
 
-  Future<QueryResult> getIntroduction() async {
+  Future<QueryResult> getHome() async {
     final _options = WatchQueryOptions(
       document: parseString(getIntroductionQuery),
       fetchResults: true,

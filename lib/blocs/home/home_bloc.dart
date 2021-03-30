@@ -21,11 +21,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (event is HomeEvent && !_hasReachedMax(currentState)) {
       try {
         if (currentState is Loading) {
-          final result = await repository.getCourses(0, 4);
+          final result = await repository.getCourses(0,  4);
 
           final courses = result.data['courses'] as List<dynamic>;
-          final introduction = await repository.getIntroduction();
-          final introData = introduction.data;
+          final homeResult = await repository.getHome();
+          final homeData = homeResult.data;
           final listOfCourses = courses
               .map((dynamic e) => Course(
                     title: e['title'],
@@ -34,10 +34,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                     slides: e['slides'],
                   ))
               .toList();
-          final ir = Home.fromJson(introData);
-          debugPrint(ir.header);
+          final home = Home.fromJson(homeData);
           yield Success(
-              introduction: ir, courses: listOfCourses, hasReachedMax: false);
+              home: home, courses: listOfCourses, hasReachedMax: false);
           return;
         }
 
@@ -48,7 +47,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           yield courses.length == 0
               ? currentState.copyWith(hasReachedMax: true)
               : Success(
-                  introduction: currentState.introduction,
+                  home: currentState.home,
                   courses: currentState.courses + courses,
                   hasReachedMax: false,
                 );

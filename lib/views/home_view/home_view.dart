@@ -49,10 +49,10 @@ class _HomeViewState extends State<HomeView> {
         );
       }
       if (state is Success) {
-        debugPrint(state.introduction.header);
+        debugPrint(state.home.header);
         return Scaffold(
             appBar: AppBar(
-              title: Text(state.introduction.header),
+              title: Text(state.home.header),
             ),
             body: Column(children: [
               SingleChildScrollView(
@@ -63,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
                     headerBuilder: (context, isExpanded) =>
                         ListTile(title: Text('Hva er Bro?')),
                     body: Column(children: [
-                      ListTile(title: Text(state.introduction.introduction)),
+                      ListTile(title: Text(state.home.introduction)),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
