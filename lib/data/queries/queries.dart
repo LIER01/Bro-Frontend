@@ -66,3 +66,12 @@ query getRecommendedCoursesQuery($start: Int!,$limit: Int!){
   }
 }
 ''';
+
+final String getIntroductionQuery = r'''
+query{
+  home {  
+    introduction,
+    header
+    }
+}
+''';

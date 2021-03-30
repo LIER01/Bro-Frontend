@@ -5,10 +5,10 @@ import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:meta/meta.dart';
 
-class RecommendedCourseRepository {
+class HomeRepository {
   final GraphQLClient client;
 
-  RecommendedCourseRepository({@required this.client}) : assert(client != null);
+  HomeRepository({@required this.client}) : assert(client != null);
 
   // Course type should be made in a models/ directory
   Future<QueryResult> getCourses(int start, int limit) async {
@@ -16,6 +16,15 @@ class RecommendedCourseRepository {
       document: parseString(getRecommendedCoursesQuery),
       fetchResults: true,
       variables: <String, dynamic>{'start': start, 'limit': limit},
+    );
+
+    return await client.query(_options);
+  }
+
+  Future<QueryResult> getIntroduction() async {
+    final _options = WatchQueryOptions(
+      document: parseString(getIntroductionQuery),
+      fetchResults: true,
     );
 
     return await client.query(_options);

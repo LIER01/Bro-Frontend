@@ -1,29 +1,31 @@
 import 'dart:developer';
-
-import 'package:bro/blocs/course_list/course_list_bucket.dart';
-import 'package:bro/data/recommended_course_repository.dart';
+import 'package:bro/blocs/home/home_bucket.dart';
+import 'package:bro/data/home_repository.dart';
 import 'package:bro/models/course.dart';
+import 'package:bro/models/home.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
-class RecommendedCourseListBloc extends Bloc<CourseListEvent, CourseListState> {
-  RecommendedCourseRepository repository;
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  HomeRepository repository;
 
-  RecommendedCourseListBloc({@required this.repository})
+  HomeBloc({@required this.repository})
       : assert(repository != null),
         super(Loading());
 
   @override
-  Stream<CourseListState> mapEventToState(CourseListEvent event) async* {
+  Stream<HomeState> mapEventToState(HomeEvent event) async* {
     // Not able to access state methods without this. Do not know why.
     final currentState = state;
-    if (event is CourseListRequested && !_hasReachedMax(currentState)) {
+    if (event is HomeEvent && !_hasReachedMax(currentState)) {
       try {
         if (currentState is Loading) {
-          final result = await repository.getCourses(0, 10);
+          final result = await repository.getCourses(0, 4);
 
           final courses = result.data['courses'] as List<dynamic>;
-
+          final introduction = await repository.getIntroduction();
+          final introData = introduction.data;
           final listOfCourses = courses
               .map((dynamic e) => Course(
                     title: e['title'],
@@ -32,18 +34,21 @@ class RecommendedCourseListBloc extends Bloc<CourseListEvent, CourseListState> {
                     slides: e['slides'],
                   ))
               .toList();
-
-          yield Success(courses: listOfCourses, hasReachedMax: false);
+          final ir = Home.fromJson(introData);
+          debugPrint(ir.header);
+          yield Success(
+              introduction: ir, courses: listOfCourses, hasReachedMax: false);
           return;
         }
 
         if (currentState is Success) {
           final result =
-              await repository.getCourses(currentState.courses.length, 10);
+              await repository.getCourses(currentState.courses.length, 4);
           final courses = result.data['courses'];
           yield courses.length == 0
               ? currentState.copyWith(hasReachedMax: true)
               : Success(
+                  introduction: currentState.introduction,
                   courses: currentState.courses + courses,
                   hasReachedMax: false,
                 );
@@ -58,5 +63,4 @@ class RecommendedCourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   }
 }
 
-bool _hasReachedMax(CourseListState state) =>
-    state is Success && state.hasReachedMax;
+bool _hasReachedMax(HomeState state) => state is Success && state.hasReachedMax;
