@@ -15,18 +15,33 @@ Future main() async {
   runApp(App());
 }
 
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: Text('CourseListView'),
+            onTap: () => Navigator.of(context).pushNamed('/courseList'),
+          ),
+          ListTile(
+            title: Text('CategoryView'),
+            onTap: () => Navigator.of(context).pushNamed('/categoryList'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // This widget is the root of your application.
 class App extends StatelessWidget {
   App({Key key}) : super(key: key);
-
-  GraphQLClient _client() {
-    final _link = HttpLink(env['API_URL'] + '/graphql');
-
-    return GraphQLClient(
-      cache: GraphQLCache(store: InMemoryStore()),
-      link: _link,
-    );
-  }
+  var navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -94,38 +109,14 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      routes: {
-        ExtractCourseDetailScreen.routeName: (context) =>
-            ExtractCourseDetailScreen(client: _client()),
-        ExtractCourseListScreen.routeName: (context) =>
-            ExtractCourseListScreen(client: _client()),
-        ExtractCategoryListScreen.routeName: (context) =>
-            ExtractCategoryListScreen(client: _client()),
-      },
-      home: BottomNavBar(),
+      home: BottomNavBar(navKey: navigatorKey),
     );
   }
 }
 
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-        children: [
-          ListTile(
-            title: Text('CourseListView'),
-            onTap: () => Navigator.of(context).pushNamed('/courseList'),
-          ),
-          ListTile(
-            title: Text('CategoryView'),
-            onTap: () => Navigator.of(context).pushNamed('/categoryList'),
-          ),
-        ],
-    );
-  }
-}
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key key}) : super(key: key);
+  BottomNavBar({this.navKey, Key key}) : super(key: key);
+  var navKey = GlobalKey<NavigatorState>();
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -133,62 +124,88 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
-  final List<Widget> _appBarOptions =[Text('Velkommen til Bro!'),Text('Artikler'),Text('Kurs'),Text('Instillinger'),];
-  final List<Widget> _widgetOptions =[
-    //har prøvd å sette inn Home() osv, men appen laster ikke når jeg gjør det.
-    Home(),
-    Text(
-      'Index 1: Artikler',
-    ),
-    Text(
-      'Index 2: Kurs',
-    ),
-    Text(
-      'Index 3: Instillinger',
-    ),
+  final List _widgetOptions = [
+    '/',
+    ExtractCourseListScreen.routeName,
+    ExtractCourseListScreen.routeName,
+    ExtractCategoryListScreen.routeName,
   ];
 
   void _onItemTapped(int index) {
     setState(() {
+      widget.navKey.currentState.pushNamed(_widgetOptions[index]);
       _selectedIndex = index;
-
     });
-    //Attempting to make the change of widget to an ontapped event since commented out body solution renders navbar in conflict with non-_widgetoption page
-    print(_selectedIndex);
+  }
+
+  GraphQLClient _client() {
+    final _link = HttpLink(env['API_URL'] + '/graphql');
+
+    return GraphQLClient(
+      cache: GraphQLCache(store: InMemoryStore()),
+      link: _link,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: _appBarOptions[_selectedIndex],),
-      body:  _widgetOptions[_selectedIndex],
+      body: Navigator(
+        key: widget.navKey,
+        initialRoute: '/',
+        onGenerateRoute: (RouteSettings settings) {
+          WidgetBuilder builder;
+          switch (settings.name) {
+            case '/':
+              builder = (BuildContext context) => Home();
+              break;
+            case ExtractCourseDetailScreen.routeName:
+              builder =
+                  (context) => ExtractCourseDetailScreen(client: _client());
+              break;
+            case ExtractCourseListScreen.routeName:
+              builder = (context) => ExtractCourseListScreen(client: _client());
+              break;
+            case ExtractCategoryListScreen.routeName:
+              builder =
+                  (context) => ExtractCategoryListScreen(client: _client());
+              break;
+            default:
+              throw Exception('Invalid route: ${settings.name}');
+          }
+          return MaterialPageRoute(
+            builder: builder,
+            settings: settings,
+          );
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.home),
-          label: 'Hjem',
-          backgroundColor: Colors.teal,
-        ),
-        BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.book),
-          label: 'Artikler',
-          backgroundColor: Colors.teal,
-        ),
-        BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.solidCheckSquare),
-          label: 'Kurs',
-          backgroundColor: Colors.teal,
-        ),
-        BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.cog),
-          label: 'Instillinger',
-          backgroundColor: Colors.teal,
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.tealAccent,
-      onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.home),
+            label: 'Hjem',
+            backgroundColor: Colors.teal,
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.book),
+            label: 'Artikler',
+            backgroundColor: Colors.teal,
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.solidCheckSquare),
+            label: 'Kurs',
+            backgroundColor: Colors.teal,
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.cog),
+            label: 'Instillinger',
+            backgroundColor: Colors.teal,
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.tealAccent,
+        onTap: _onItemTapped,
       ),
     );
   }
