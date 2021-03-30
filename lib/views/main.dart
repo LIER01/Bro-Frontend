@@ -127,8 +127,7 @@ class Home extends StatelessWidget {
           ),
           ListTile(
             title: Text('HomeView'),
-            onTap: () =>
-                Navigator.of(context).pushNamed('/recommendedCourseList'),
+            onTap: () => Navigator.of(context).pushNamed('/homeView'),
           ),
         ],
       ),

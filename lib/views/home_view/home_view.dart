@@ -1,8 +1,11 @@
-import 'package:bro/data/queries/queries.dart';
+import 'package:bro/blocs/home/home_bloc.dart';
+import 'package:bro/blocs/home/home_event.dart';
+import 'package:bro/blocs/home/home_state.dart';
+import 'package:bro/views/course/course_list_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bro/utils/navigator_arguments.dart';
 
-/// The HomeView, first page
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
 
@@ -11,73 +14,111 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+  HomeBloc _homeBloc;
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
+    _homeBloc = BlocProvider.of<HomeBloc>(context);
+    _homeBloc.add(HomeRequested());
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(title: Text('Velkommen til Bro'));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Query(
-        options: QueryOptions(document: gql(getHomeViewQuery)),
-        builder: (QueryResult result,
-            {VoidCallback refetch, FetchMore fetchMore}) {
-          return Scaffold(
-            body: Center(
-                child: result.hasException
-                    ? Text(result.exception.toString())
-                    : result.isLoading
-                        ? CircularProgressIndicator()
-                        : Body(
-                            header: result.data['home']['header'],
-                            introduction: result.data['home']['introduction'],
-                            onRefresh: refetch)),
-          );
-        });
-  }
-}
+    return BlocBuilder<HomeBloc, HomeState>(
+        // ignore: missing_return
+        builder: (context, state) {
+      //log(state.toString());
+      if (state is Loading) {
+        return Scaffold(
+          appBar: _buildAppBar(),
+          body: LinearProgressIndicator(),
+        );
+      }
 
-class Body extends StatelessWidget {
-  Body(
-      {@required this.header,
-      @required this.introduction,
-      @required this.onRefresh});
-
-  final header;
-  final introduction;
-  final onRefresh;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: IconThemeData(color: Colors.deepPurple),
-        title: Text(
-          header,
-          style: TextStyle(color: Colors.deepPurple),
-        ),
-        centerTitle: true,
-      ),
-      body: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(title: Text(introduction)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextButton(
-                  child: const Text('Les Mer'),
-                  onPressed: () {/* ... */},
-                ),
-                const SizedBox(width: 8),
-              ],
+      if (state is Failed) {
+        return Scaffold(
+          appBar: _buildAppBar(),
+          body: Center(child: Text('Det har skjedd en feil')),
+        );
+      }
+      if (state is Success) {
+        debugPrint(state.introduction.header);
+        return Scaffold(
+            appBar: AppBar(
+              title: Text(state.introduction.header),
             ),
-          ],
-        ),
-      ),
-    );
+            body: Column(children: [
+              SingleChildScrollView(
+                  child: ExpansionPanelList.radio(children: [
+                ExpansionPanelRadio(
+                    value: 'Intro',
+                    canTapOnHeader: true,
+                    headerBuilder: (context, isExpanded) =>
+                        ListTile(title: Text('Hva er Bro?')),
+                    body: Column(children: [
+                      ListTile(title: Text(state.introduction.introduction)),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            TextButton(
+                              child: const Text('Les Mer'),
+                              onPressed: () {/* ... */},
+                            ),
+                            const SizedBox(width: 8)
+                          ]),
+                    ])),
+                ExpansionPanelRadio(
+                    canTapOnHeader: true,
+                    value: 'hey',
+                    headerBuilder: (context, isExpanded) =>
+                        ListTile(title: Text('Anbefalte Kurs')),
+                    body: SingleChildScrollView(
+                        controller: _scrollController,
+                        child: Column(
+                            children: state.courses
+                                .asMap()
+                                .keys
+                                .toList()
+                                .map((index) => GestureDetector(
+                                    onTap: () => Navigator.of(context)
+                                        .pushNamed('/courseDetail',
+                                            arguments: CourseDetailArguments(
+                                                courseId: index + 1)),
+                                    child: CourseListTile(
+                                      course: state.courses[index],
+                                    )))
+                                .toList()))),
+                ExpansionPanelRadio(
+                    canTapOnHeader: true,
+                    value: 'Anbefalte Artikler',
+                    headerBuilder: (context, isExpanded) => ListTile(
+                        leading: null, title: Text('Anbefalte Artikler')),
+                    body: Card())
+              ]))
+            ]));
+      }
+      ;
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      _homeBloc.add(HomeRequested());
+    }
   }
 }
