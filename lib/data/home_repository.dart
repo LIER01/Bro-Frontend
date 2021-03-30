@@ -11,7 +11,7 @@ class HomeRepository {
   HomeRepository({@required this.client}) : assert(client != null);
 
   // Course type should be made in a models/ directory
-  Future<QueryResult> getCourses(int start, int limit) async {
+  Future<QueryResult> getRecommendedCourses(int start, int limit) async {
     final _options = WatchQueryOptions(
       document: parseString(getRecommendedCoursesQuery),
       fetchResults: true,
@@ -23,7 +23,7 @@ class HomeRepository {
 
   Future<QueryResult> getHome() async {
     final _options = WatchQueryOptions(
-      document: parseString(getIntroductionQuery),
+      document: parseString(getHomeQuery),
       fetchResults: true,
     );
 

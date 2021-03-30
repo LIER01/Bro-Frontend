@@ -74,7 +74,7 @@ query getRecommendedCoursesQuery($start: Int!,$limit: Int!){
 }
 ''';
 
-final String getIntroductionQuery = r'''
+final String getHomeQuery = r'''
 query{
   home {  
     introduction,
