@@ -46,11 +46,15 @@ class _AlternativeState extends State<Alternative> {
                   border: Border.all(color: validColor))
               : BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Colors.black)),
+                  border: Border.all(
+                      color: widget.isPressed ? validColor : Colors.grey)),
           child: Stack(
             children: [
               Center(
-                child: Text(widget.name, style: TextStyle(color: validColor)),
+                child: Text(widget.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: widget.isPressed ? validColor : Colors.teal)),
               ),
               Align(
                   alignment: Alignment.topRight,
