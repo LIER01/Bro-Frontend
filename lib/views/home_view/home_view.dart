@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bro/utils/navigator_arguments.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({Key key}) : super(key: key);
+  HomeView({Key? key}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -16,7 +16,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  HomeBloc _homeBloc;
+  late HomeBloc _homeBloc;
   @override
   void initState() {
     super.initState();
@@ -52,7 +52,7 @@ class _HomeViewState extends State<HomeView> {
         debugPrint(state.home.header);
         return Scaffold(
             appBar: AppBar(
-              title: Text(state.home.header),
+              title: Text(state.home.header!),
             ),
             body: Column(children: [
               SingleChildScrollView(
@@ -63,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
                     headerBuilder: (context, isExpanded) =>
                         ListTile(title: Text('Hva er Bro?')),
                     body: Column(children: [
-                      ListTile(title: Text(state.home.introduction)),
+                      ListTile(title: Text(state.home.introduction!)),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
@@ -105,6 +105,10 @@ class _HomeViewState extends State<HomeView> {
             ]));
       }
       ;
+      return Scaffold(
+        appBar: _buildAppBar(),
+        body: Center(child: Text('Det har skjedd en feil')),
+      );
     });
   }
 

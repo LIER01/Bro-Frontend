@@ -5,11 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:bro/models/course.dart';
 
 class InfoCard extends StatefulWidget {
-  InfoCard({Key key, this.title, this.description, this.image})
+  InfoCard({Key? key, this.title, this.description, this.image})
       : super(key: key);
-  final String title;
-  final String description;
-  final SlideImage image;
+  final String? title;
+  final String? description;
+  final SlideImage? image;
   @override
   _InfoCardState createState() => _InfoCardState();
 }
@@ -68,10 +68,10 @@ class _InfoCardState extends State<InfoCard> {
 class InfoCardContent extends StatefulWidget {
   InfoCardContent({this.title, this.description, this.image, this.active});
   // Passes the active,title and description-parameters down to the state
-  final bool active;
-  final String title;
-  final String description;
-  final SlideImage image;
+  final bool? active;
+  final String? title;
+  final String? description;
+  final SlideImage? image;
 
   @override
   _InfoCardContentState createState() => _InfoCardContentState();
@@ -100,8 +100,10 @@ class _InfoCardContentState extends State<InfoCardContent> {
                   // Adds the image in the background of the container
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                    image: NetworkImage(
-                        'https://bro-strapi.herokuapp.com' + widget.image.url),
+                    image: widget.image == null || widget.image!.url == null
+                        ? Image.asset('assets/images/placeholder.png').image
+                        : NetworkImage('https://bro-strapi.herokuapp.com' +
+                            widget.image!.url!),
                     // This says that the image should be as small as possible while still covering the size of the box
                     fit: BoxFit.cover,
 
@@ -110,7 +112,7 @@ class _InfoCardContentState extends State<InfoCardContent> {
 
                     // This is the imagefilter that is applied when the image is pressed
                     colorFilter: ColorFilter.mode(
-                        Colors.teal.withOpacity(widget.active ? 0.85 : 0),
+                        Colors.teal.withOpacity(widget.active! ? 0.85 : 0),
                         BlendMode.srcOver),
                   )),
 
@@ -146,7 +148,7 @@ class _InfoCardContentState extends State<InfoCardContent> {
                                                 Center(
                                                     child: Text(
                                               // Retrieves the title of the widget
-                                              widget.title,
+                                              widget.title!,
                                               style: TextStyle(
                                                   color: Colors.white),
                                             )),
@@ -168,7 +170,7 @@ class _InfoCardContentState extends State<InfoCardContent> {
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
                                   // Displays the description
-                                  widget.description,
+                                  widget.description!,
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),

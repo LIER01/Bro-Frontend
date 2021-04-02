@@ -11,28 +11,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CardContainerView extends StatefulWidget {
   CardContainerView({
-    Key key,
+    Key? key,
     this.list,
     this.res,
     this.course,
   }) : super(key: key);
-  final List list;
-  final QueryResult res;
-  final Course course;
+  final List? list;
+  final QueryResult? res;
+  final Course? course;
   @override
   _CardContainerViewState createState() => _CardContainerViewState();
 }
 
 class _CardContainerViewState extends State<CardContainerView> {
-  ScrollController _controller;
+  ScrollController? _controller;
   double indx = 0;
   @override
   void initState() {
     _controller = ScrollController();
-    _controller.addListener(() {
-      if (indx != (_controller.offset / context.size.width).round()) {
+    _controller!.addListener(() {
+      if (indx != (_controller!.offset / context.size!.width).round()) {
         setState(() {
-          indx = (_controller.offset / context.size.width).roundToDouble();
+          indx = (_controller!.offset / context.size!.width).roundToDouble();
         });
       }
     });
@@ -41,20 +41,20 @@ class _CardContainerViewState extends State<CardContainerView> {
 
 //ScrollController functions for swiping right and left
   void _moveRight() {
-    _controller
-        .animateTo(_controller.offset + context.size.width,
+    _controller!
+        .animateTo(_controller!.offset + context.size!.width,
             curve: Curves.linear, duration: Duration(milliseconds: 200))
         .whenComplete(() => setState(() {
-              indx = _controller.offset / context.size.width;
+              indx = _controller!.offset / context.size!.width;
             }));
   }
 
   void _moveLeft() {
-    _controller
-        .animateTo(_controller.offset - context.size.width,
+    _controller!
+        .animateTo(_controller!.offset - context.size!.width,
             curve: Curves.linear, duration: Duration(milliseconds: 200))
         .whenComplete(() => setState(() {
-              indx = _controller.offset / context.size.width;
+              indx = _controller!.offset / context.size!.width;
             }));
   }
 
@@ -64,29 +64,31 @@ class _CardContainerViewState extends State<CardContainerView> {
       return Scaffold(body: Text('Context is null, yo'));
     }
 
-    if (widget.list.isNotEmpty) {
+    if (widget.list!.isNotEmpty) {
       return Column(children: [
-        Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.5,
-            child: ListView.builder(
-                shrinkWrap: true,
-                controller: _controller,
-                scrollDirection: Axis.horizontal,
-                physics: PageScrollPhysics(),
-                itemCount: widget.list.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InfoCard(
-                      title: widget.list[index].title,
-                      description: widget.list[index].description,
-                      image: widget.list[index].image);
-                })),
+        Expanded(
+          child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: _controller,
+                  scrollDirection: Axis.horizontal,
+                  physics: PageScrollPhysics(),
+                  itemCount: widget.list!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InfoCard(
+                        title: widget.list![index].title,
+                        description: widget.list![index].description,
+                        image: widget.list![index].image);
+                  })),
+        ),
         //Shows which page the user is on
         DotsIndicator(
-            dotsCount: widget.list.length,
+            dotsCount: widget.list!.length,
             position: indx.roundToDouble(),
             decorator: DotsDecorator(
-                color: Colors.grey[350], activeColor: Colors.teal)),
+                color: Colors.grey[350]!, activeColor: Colors.teal)),
         //Scroll buttons
         Container(
           width: MediaQuery.of(context).size.width,
@@ -106,7 +108,7 @@ class _CardContainerViewState extends State<CardContainerView> {
                             size: MediaQuery.of(context).size.width * 0.175,
                           ))),
                 )),
-            indx + 1 != widget.list.length
+            indx + 1 != widget.list!.length
                 ? GestureDetector(
                     onTap: () => {_moveRight()},
                     child: Align(

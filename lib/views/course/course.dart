@@ -12,16 +12,16 @@ import 'quiz.dart';
 import 'package:bro/views/course/exit_verification.dart';
 
 class CourseDetailView extends StatefulWidget {
-  final int courseId;
-  CourseDetailView({this.courseId, Key key}) : super(key: key);
+  final int? courseId;
+  CourseDetailView({this.courseId, Key? key}) : super(key: key);
 
   @override
   _CourseDetailViewState createState() => _CourseDetailViewState();
 }
 
 class _CourseDetailViewState extends State<CourseDetailView> {
-  Course data;
-  CourseDetailBloc _courseDetailBloc;
+  Course? data;
+  late CourseDetailBloc _courseDetailBloc;
 
   @override
   void initState() {
@@ -37,7 +37,6 @@ class _CourseDetailViewState extends State<CourseDetailView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CourseDetailBloc, CourseDetailState>(
-      // ignore: missing_return
       builder: (context, state) {
         //log(state.toString());
         if (state is Loading) {
@@ -56,24 +55,24 @@ class _CourseDetailViewState extends State<CourseDetailView> {
 
         if (state is CourseState) {
           data = state.course;
-          if (!state.isQuiz) {
+          if (state.isQuiz == false) {
             return Scaffold(
               appBar: AppBar(
-                  title: Text(data.title),
+                  title: Text(data!.title),
                   leading: ExitVerification(context, data)),
               body: _course_view_builder(context, data),
             );
           } else {
             return Scaffold(
               appBar: AppBar(
-                  title: Text(data.title),
+                  title: Text(data!.title),
                   leading: ExitVerification(context, data)),
               body: Center(
                   child: QuizView(
                       course: data,
-                      questions: data.questions,
+                      questions: data!.questions,
                       isAnswer: state.isAnswer,
-                      title: data.title,
+                      title: data!.title,
                       answerId: state.answerId)),
             );
           }

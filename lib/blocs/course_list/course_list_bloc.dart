@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/data/course_repository.dart';
-import 'package:bro/models/course.dart';
+import 'package:bro/models/reduced_course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -10,25 +10,31 @@ import 'package:meta/meta.dart';
 class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   CourseRepository repository;
 
-  CourseListBloc({@required this.repository})
+  CourseListBloc({required this.repository})
       : assert(repository != null),
         super(Loading());
 
   @override
   Stream<CourseListState> mapEventToState(CourseListEvent event) async* {
     // Not able to access state methods without this. Do not know why.
-    final currentState = state;
+    final CourseListState currentState = state;
     if (event is CourseListRequested && !_hasReachedMax(currentState)) {
+      debugPrint("test");
       try {
+        debugPrint("test2");
         if (currentState is Loading) {
+          debugPrint("test3");
           final result = await repository.getCourses(0, 10);
 
-          final courses = result.data['courses'] as List<dynamic>;
+          debugPrint("tes4");
+          final courses = result.data!['courses'] as List<dynamic>;
 
           debugPrint(courses.toString());
+          debugPrint("test5");
           final listOfCourses =
-              courses.map((dynamic e) => Course.fromJson(e)).toList();
+              courses.map((dynamic e) => ReducedCourse.fromJson(e)).toList();
 
+          debugPrint("test6");
           yield Success(courses: listOfCourses, hasReachedMax: false);
           return;
         }
@@ -36,7 +42,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
         if (currentState is Success) {
           final result =
               await repository.getCourses(currentState.courses.length, 10);
-          final courses = result.data['courses'];
+          final courses = result.data!['courses'];
           yield courses.length == 0
               ? currentState.copyWith(hasReachedMax: true)
               : Success(
@@ -47,7 +53,8 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
-
+        debugPrint(e.toString());
+        debugPrint(event.toString());
         yield Failed();
       }
     }

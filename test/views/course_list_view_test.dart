@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
-import 'package:bro/models/course.dart';
+import 'package:bro/models/reduced_course.dart';
 import 'package:bro/views/course/course_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +21,7 @@ void main() {
 
 void mainTest() {
   group('CourseListView', () {
-    CourseListBloc courseListBloc;
+    late CourseListBloc courseListBloc;
 
     setUp(() {
       courseListBloc = MockCourseListView();
@@ -50,14 +50,15 @@ void mainTest() {
     testWidgets('renders properly with courses', (WidgetTester tester) async {
       when(() => courseListBloc.state).thenReturn(
         Success(courses: [
-          Course(
+          ReducedCourse(
+            id: 1,
             title: 'Kurstittel',
             description: 'Kursbeskrivelse',
             slides: [
-              null,
+              Slide(id: 1),
             ],
             questions: [
-              null,
+              Question(id: 1),
             ],
           )
         ], hasReachedMax: true),

@@ -29,8 +29,8 @@ void main() {
 void mainTest() {
   group('CourseDetailView', () {
     CourseRepository courseRepository;
-    CourseDetailBloc courseDetailBloc;
-    Course refCourse;
+    late CourseDetailBloc courseDetailBloc;
+    late Course refCourse;
 
     setUp(() {
       courseRepository = MockCourseRepository();

@@ -11,7 +11,7 @@ import 'package:flutter/foundation.dart';
 class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
   CourseRepository repository;
 
-  CourseDetailBloc({@required this.repository})
+  CourseDetailBloc({required this.repository})
       : assert(repository != null),
         super(Loading());
 
@@ -32,7 +32,7 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
           return;
         } else if (event.isQuiz) {
           yield CourseState(
-              course: event.course,
+              course: event.course!,
               isQuiz: event.isQuiz,
               isAnswer: event.isAnswer,
               answerId: event.answerId);
@@ -59,7 +59,7 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
   Future<CourseDetailState> _retrieveCourse(CourseDetailRequested event) async {
     try {
       final result = await repository.getCourse(event.courseId).then((res) {
-        final returnCourse = Course.fromJson(res.data['course']);
+        final returnCourse = Course.fromJson(res.data!['course']);
         return CourseState(
             course: returnCourse,
             isQuiz: event.isQuiz,

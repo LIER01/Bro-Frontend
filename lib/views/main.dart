@@ -16,10 +16,10 @@ Future main() async {
 
 // This widget is the root of your application.
 class App extends StatelessWidget {
-  App({Key key}) : super(key: key);
+  App({Key? key}) : super(key: key);
 
   GraphQLClient _client() {
-    final _link = HttpLink(env['API_URL'] + '/graphql');
+    final _link = HttpLink(env['API_URL']! + '/graphql');
 
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),

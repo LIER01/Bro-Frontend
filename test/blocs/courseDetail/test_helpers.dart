@@ -4,20 +4,20 @@ import 'package:meta/meta.dart';
 
 class WrongEvent extends CourseDetailEvent {
   @override
-  final int courseId;
+  final int? courseId;
   @override
-  final Course course;
+  final Course? course;
   @override
   final bool isQuiz;
   @override
   final bool isAnswer;
   @override
-  final int answerId;
+  final int? answerId;
   WrongEvent({
     this.course,
     this.courseId,
-    @required this.isQuiz,
-    @required this.isAnswer,
+    required this.isQuiz,
+    required this.isAnswer,
     this.answerId,
     // Either you need to provide a course_id or you need to provide a course
   })  : assert(courseId != null || course != null),

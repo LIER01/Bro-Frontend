@@ -1,7 +1,8 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
-import 'package:bro/models/course.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+import '../../mock_data/course_detail_mock.dart';
 
 void main() {
   setUpAll(() {
@@ -14,11 +15,6 @@ void main() {
 
 void mainEvent() {
   group('CourseDetailRequested', () {
-    test('should throw assertionerror when inserting no parameters', () {
-      // ignore: missing_required_param
-      expect(() => CourseDetailRequested(), throwsAssertionError);
-    });
-
     test(
         'should throws assertionerror when inserting "isAnswer":true but not inserting answerId',
         () {
@@ -54,7 +50,7 @@ void mainEvent() {
         () {
       expect(
           CourseDetailRequested(
-              course: Course(), isQuiz: true, isAnswer: false),
+              course: referenceCourse, isQuiz: true, isAnswer: false),
           isInstanceOf<CourseDetailRequested>());
     });
 
@@ -63,7 +59,7 @@ void mainEvent() {
         () {
       expect(
           CourseDetailRequested(
-              course: Course(),
+              course: referenceCourse,
               courseId: 1,
               isQuiz: true,
               isAnswer: true,

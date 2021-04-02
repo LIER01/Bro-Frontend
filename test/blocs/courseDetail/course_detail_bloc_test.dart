@@ -20,8 +20,8 @@ void main() {
 
 void mainBloc() {
   group('CourseDetailBloc', () {
-    CourseRepository courseRepository;
-    CourseDetailBloc courseDetailBloc;
+    late CourseRepository courseRepository;
+    late CourseDetailBloc courseDetailBloc;
 
     setUp(() {
       courseRepository = MockCourseRepository();
@@ -39,7 +39,7 @@ void mainBloc() {
       build: () => courseDetailBloc,
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           WrongEvent(
-              course: Course(),
+              course: referenceCourse,
               courseId: 1,
               isQuiz: false,
               isAnswer: true,
@@ -58,7 +58,7 @@ void mainBloc() {
       },
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
-              course: Course(),
+              course: referenceCourse,
               courseId: 1,
               isQuiz: false,
               isAnswer: false,
@@ -74,7 +74,7 @@ void mainBloc() {
       build: () => courseDetailBloc,
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
-              course: Course(),
+              course: referenceCourse,
               courseId: 1,
               isQuiz: false,
               isAnswer: false,
@@ -92,7 +92,7 @@ void mainBloc() {
       },
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
-              course: Course(),
+              course: referenceCourse,
               courseId: 1,
               isQuiz: true,
               isAnswer: false,

@@ -11,8 +11,8 @@ class MockCourseRepository extends Mock implements CourseRepository {}
 
 void main() {
   group('CourseListBloc', () {
-    CourseRepository courseRepository;
-    CourseListBloc courseListBloc;
+    late CourseRepository courseRepository;
+    late CourseListBloc courseListBloc;
 
     setUp(() {
       courseRepository = MockCourseRepository();

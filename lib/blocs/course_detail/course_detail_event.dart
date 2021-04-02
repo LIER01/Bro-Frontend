@@ -10,16 +10,16 @@ abstract class CourseDetailEvent extends Equatable {
 }
 
 class CourseDetailRequested extends CourseDetailEvent {
-  final int courseId;
-  final Course course;
+  final int? courseId;
+  final Course? course;
   final bool isQuiz;
   final bool isAnswer;
-  final int answerId;
+  final int? answerId;
   CourseDetailRequested({
     this.course,
     this.courseId,
-    @required this.isQuiz,
-    @required this.isAnswer,
+    required this.isQuiz,
+    required this.isAnswer,
     this.answerId,
     // Either you need to provide a course_id or you need to provide a course
   })  : assert(courseId != null || course != null),

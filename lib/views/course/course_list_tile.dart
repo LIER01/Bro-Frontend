@@ -1,12 +1,12 @@
-import 'package:bro/models/course.dart';
+import 'package:bro/models/reduced_course.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Public class for building tile
 class CourseListTile extends StatelessWidget {
-  CourseListTile({Key key, @required this.course}) : super(key: key);
+  CourseListTile({Key? key, required this.course}) : super(key: key);
 
-  final Course course;
+  final ReducedCourse course;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,8 @@ class CourseListTile extends StatelessWidget {
             child: _CourseDescription(
               title: course.title,
               description: course.description,
-              length: course.slides.length + course.questions.length,
-              time: course.slides.length + course.questions.length * 2,
+              length: course.slides!.length + course.questions!.length,
+              time: course.slides!.length + course.questions!.length * 2,
               difficulty: 'Middels',
             ),
           ),
@@ -41,11 +41,11 @@ class _CourseDescription extends StatelessWidget {
     this.difficulty,
   });
 
-  final String title;
-  final String description;
-  final int length;
-  final int time;
-  final String difficulty;
+  final String? title;
+  final String? description;
+  final int? length;
+  final int? time;
+  final String? difficulty;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +58,12 @@ class _CourseDescription extends StatelessWidget {
           children: <Widget>[
             Container(
               padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
-              child: Text(title, style: Theme.of(context).textTheme.headline6),
+              child: Text(title!, style: Theme.of(context).textTheme.headline6),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(5, 5, 0, 5),
               child: Text(
-                description,
+                description!,
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
@@ -85,7 +85,7 @@ class _CourseDescription extends StatelessWidget {
                           length.toString(),
                           style: Theme.of(context)
                               .textTheme
-                              .caption
+                              .caption!
                               .copyWith(color: Colors.white),
                         ),
                       ],
@@ -104,7 +104,7 @@ class _CourseDescription extends StatelessWidget {
                           time.toString() + ' min',
                           style: Theme.of(context)
                               .textTheme
-                              .caption
+                              .caption!
                               .copyWith(color: Colors.white),
                         ),
                       ],
@@ -120,10 +120,10 @@ class _CourseDescription extends StatelessWidget {
                         ),
                         Padding(padding: EdgeInsets.fromLTRB(2, 0, 0, 0)),
                         Text(
-                          difficulty,
+                          difficulty!,
                           style: Theme.of(context)
                               .textTheme
-                              .caption
+                              .caption!
                               .copyWith(color: Colors.white),
                         ),
                       ],
