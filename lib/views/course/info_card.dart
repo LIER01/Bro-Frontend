@@ -2,13 +2,14 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:bro/models/course.dart';
 
 class InfoCard extends StatefulWidget {
   InfoCard({Key key, this.title, this.description, this.image})
       : super(key: key);
   final String title;
   final String description;
-  final LinkedHashMap<String, dynamic> image;
+  final SlideImage image;
   @override
   _InfoCardState createState() => _InfoCardState();
 }
@@ -70,7 +71,7 @@ class InfoCardContent extends StatefulWidget {
   final bool active;
   final String title;
   final String description;
-  final LinkedHashMap<String, dynamic> image;
+  final SlideImage image;
 
   @override
   _InfoCardContentState createState() => _InfoCardContentState();
@@ -99,8 +100,8 @@ class _InfoCardContentState extends State<InfoCardContent> {
                   // Adds the image in the background of the container
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                    image: NetworkImage('https://bro-strapi.herokuapp.com' +
-                        widget.image['url']),
+                    image: NetworkImage(
+                        'https://bro-strapi.herokuapp.com' + widget.image.url),
                     // This says that the image should be as small as possible while still covering the size of the box
                     fit: BoxFit.cover,
 

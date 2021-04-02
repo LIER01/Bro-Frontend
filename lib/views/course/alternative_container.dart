@@ -43,9 +43,9 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
                   child: alt.Alternative(
                       widget.course,
                       index,
-                      alts[index]['name'],
-                      alts[index]['correct'],
-                      alts[index]['image'],
+                      alts[index].name,
+                      alts[index].correct,
+                      alts[index].image,
                       widget.isAnswer)));
         }),
       ),

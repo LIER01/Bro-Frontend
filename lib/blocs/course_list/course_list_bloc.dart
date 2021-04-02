@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/models/course.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -24,14 +25,9 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
 
           final courses = result.data['courses'] as List<dynamic>;
 
-          final listOfCourses = courses
-              .map((dynamic e) => Course(
-                    title: e['title'],
-                    description: e['description'],
-                    questions: e['questions'],
-                    slides: e['slides'],
-                  ))
-              .toList();
+          debugPrint(courses.toString());
+          final listOfCourses =
+              courses.map((dynamic e) => Course.fromJson(e)).toList();
 
           yield Success(courses: listOfCourses, hasReachedMax: false);
           return;

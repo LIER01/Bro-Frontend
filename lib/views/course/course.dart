@@ -9,6 +9,7 @@ import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/models/course.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'quiz.dart';
+import 'package:bro/views/course/exit_verification.dart';
 
 class CourseDetailView extends StatefulWidget {
   final int courseId;
@@ -59,14 +60,14 @@ class _CourseDetailViewState extends State<CourseDetailView> {
             return Scaffold(
               appBar: AppBar(
                   title: Text(data.title),
-                  leading: _ExitVerification(context, data)),
+                  leading: ExitVerification(context, data)),
               body: _course_view_builder(context, data),
             );
           } else {
             return Scaffold(
               appBar: AppBar(
                   title: Text(data.title),
-                  leading: _ExitVerification(context, data)),
+                  leading: ExitVerification(context, data)),
               body: Center(
                   child: QuizView(
                       course: data,
@@ -81,50 +82,6 @@ class _CourseDetailViewState extends State<CourseDetailView> {
       },
     );
   }
-}
-
-Widget _ExitVerification(context, data) {
-  return IconButton(
-      icon: Icon(Icons.arrow_back, color: Colors.teal),
-      onPressed: () => {
-            showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                    titlePadding: EdgeInsets.all(2),
-                    contentPadding: EdgeInsets.fromLTRB(25, 0, 25, 25),
-                    title: Align(
-                      alignment: Alignment.topRight,
-                      child: GestureDetector(
-                        child: FaIcon(FontAwesomeIcons.solidWindowClose,
-                            color: Colors.red[900], size: 22),
-                        onTap: () => Navigator.of(context).pop(),
-                      ),
-                    ),
-                    content: Column(mainAxisSize: MainAxisSize.min, children: [
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        padding: EdgeInsets.only(bottom: 25),
-                        child: Text('Avbryt kurs',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.teal, fontSize: 22)),
-                      ),
-                      Text(
-                        'Er du sikker på at du vil avbryte kurset?\n\nVed å gjøre dette lagres ikke progresjonen din.',
-                        textAlign: TextAlign.center,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: ElevatedButton(
-                          child: Text(
-                            '        Avbryt Kurs        ',
-                          ),
-                          onPressed: () => {
-                            Navigator.of(context)..pop()..pop(),
-                          },
-                        ),
-                      ),
-                    ]))),
-          });
 }
 
 Widget _course_view_builder(context, data) {

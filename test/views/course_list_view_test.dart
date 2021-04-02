@@ -54,10 +54,10 @@ void mainTest() {
             title: 'Kurstittel',
             description: 'Kursbeskrivelse',
             slides: [
-              {},
+              null,
             ],
             questions: [
-              {},
+              null,
             ],
           )
         ], hasReachedMax: true),

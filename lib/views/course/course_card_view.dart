@@ -77,9 +77,9 @@ class _CardContainerViewState extends State<CardContainerView> {
                 itemCount: widget.list.length,
                 itemBuilder: (BuildContext context, int index) {
                   return InfoCard(
-                      title: widget.list[index]['title'],
-                      description: widget.list[index]['description'],
-                      image: widget.list[index]['image']);
+                      title: widget.list[index].title,
+                      description: widget.list[index].description,
+                      image: widget.list[index].image);
                 })),
         //Shows which page the user is on
         DotsIndicator(

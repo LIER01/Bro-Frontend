@@ -28,40 +28,7 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
       }
       try {
         if (!event.isQuiz) {
-          // ignore: omit_local_variable_types
-          QueryResult result;
-
-          // Try to contact the server.
-          try {
-            result = await repository.getCourse(event.courseId);
-          } on NetworkException catch (e, stackTrace) {
-            log(e.toString());
-            log(stackTrace.toString());
-            yield Failed(err: 'Error, failed to contact server');
-            return;
-          } catch (e, stackTrace) {
-            log(e.toString());
-            log(stackTrace.toString());
-
-            yield Failed(err: 'Error, bad request');
-            return;
-          }
-
-          final course_data = result.data['course'];
-
-          final returnCourse = Course(
-            title: course_data['title'],
-            description: course_data['description'],
-            questions: course_data['questions'],
-            slides: course_data['slides'],
-          );
-
-          yield CourseState(
-              course: returnCourse,
-              isAnswer: event.isAnswer,
-              isQuiz: event.isQuiz,
-              answerId: event.answerId);
-
+          yield await _retrieveCourse(event);
           return;
         } else if (event.isQuiz) {
           yield CourseState(
@@ -87,5 +54,28 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
     }
     yield Failed(err: 'Error, bad request');
     return;
+  }
+
+  Future<CourseDetailState> _retrieveCourse(CourseDetailRequested event) async {
+    try {
+      final result = await repository.getCourse(event.courseId).then((res) {
+        final returnCourse = Course.fromJson(res.data['course']);
+        return CourseState(
+            course: returnCourse,
+            isQuiz: event.isQuiz,
+            isAnswer: event.isAnswer,
+            answerId: event.answerId);
+      });
+      return result;
+    } on NetworkException catch (e, stackTrace) {
+      log(e.toString());
+      log(stackTrace.toString());
+      return Failed(err: 'Error, failed to contact server');
+    } catch (e, stackTrace) {
+      log(e.toString());
+      log(stackTrace.toString());
+
+      return Failed(err: 'Error, bad request');
+    }
   }
 }

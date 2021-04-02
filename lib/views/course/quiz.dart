@@ -32,21 +32,21 @@ class _QuizViewState extends State<QuizView> {
   @override
   Widget build(BuildContext context) {
     print(index.toString());
-    alts = widget.questions[index]['alternatives'];
+    alts = widget.questions[index].alternatives;
     return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
       Align(
         alignment: Alignment.topCenter,
         child: Container(
             padding: EdgeInsets.symmetric(
                 vertical: MediaQuery.of(context).size.height * 0.07),
-            child: Text(widget.questions[index]['question'],
+            child: Text(widget.questions[index].question,
                 style: TextStyle(color: Colors.teal, fontSize: 20))),
       ),
       Align(
           child: AlternativeContainer(
         course: widget.course,
-        clarification: widget.questions[index]['clarification'],
-        name: widget.questions[index]['question'],
+        clarification: widget.questions[index].clarification,
+        name: widget.questions[index].question,
         alternatives: widget.isAnswer
             ? alts.sublist(widget.answerId, widget.answerId + 1)
             : alts,
@@ -59,7 +59,7 @@ class _QuizViewState extends State<QuizView> {
           child: Text(
               widget.answerId == null
                   ? ''
-                  : alts[widget.answerId]['correct']
+                  : alts[widget.answerId].correct
                       ? 'Korrekt!'
                       : 'Feil!',
               style: TextStyle(
@@ -67,13 +67,13 @@ class _QuizViewState extends State<QuizView> {
                   fontWeight: FontWeight.w600,
                   color: widget.answerId == null
                       ? Colors.red
-                      : alts[widget.answerId]['correct']
+                      : alts[widget.answerId].correct
                           ? Colors.teal
                           : Colors.red))),
       Container(
           padding: EdgeInsets.fromLTRB(20, 30, 20, 50),
           child: Text(
-            widget.isAnswer ? widget.questions[index]['clarification'] : '',
+            widget.isAnswer ? widget.questions[index].clarification : '',
             style: TextStyle(color: Colors.teal),
             textAlign: TextAlign.center,
           )),

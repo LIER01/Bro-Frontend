@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
+
 class Course {
   Course({
     this.title,
@@ -8,8 +12,17 @@ class Course {
 
   final String title;
   final String description;
-  final List<dynamic> slides;
-  final List<dynamic> questions;
+  final List<Slide> slides;
+  final List<Question> questions;
+
+  Course.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        description = json['description'],
+        slides = List<Slide>.from(
+            json['slides'].map((model) => Slide.fromJson(model))),
+        questions = List<Question>.from(
+            json['questions'].map((model) => Question.fromJson(model)));
+  // slides = Slide.fromJson(json['slides']);
 }
 
 class Slide {
@@ -21,7 +34,20 @@ class Slide {
 
   final String title;
   final String description;
-  final String image;
+  final SlideImage image;
+
+  Slide.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        description = json['description'],
+        image = SlideImage.fromJson(json['image']);
+}
+
+class SlideImage {
+  SlideImage({this.url});
+
+  final String url;
+
+  SlideImage.fromJson(Map<String, dynamic> json) : url = null;
 }
 
 class Question {
@@ -34,6 +60,21 @@ class Question {
   final String question;
   final List<Alternative> alternatives;
   final String clarification;
+
+  Question.fromJson(Map<String, dynamic> json)
+      : question = json['question'],
+        alternatives = parseAlternatives(json),
+        // alternatives = List<Alternative>.from(json['alternatives']
+        //     .map((model) => Alternative.fromJson(model))).toList(),
+        clarification = json['clarification'];
+}
+
+List<Alternative> parseAlternatives(Map<String, dynamic> json) {
+  debugPrint(json.toString());
+  Iterable list = json['products'];
+  List<Alternative> alternatives =
+      List<Alternative>.from(list.map((model) => Alternative.fromJson(model)));
+  return alternatives;
 }
 
 class Alternative {
@@ -45,5 +86,11 @@ class Alternative {
 
   final String name;
   final bool correct;
-  final String image;
+  final SlideImage image;
+
+  Alternative.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        correct =
+            json['correct'].toString().toLowerCase() == "true" ? true : false,
+        image = SlideImage.fromJson(json['image']);
 }
