@@ -34,7 +34,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
           final listOfCourses =
               courses.map((dynamic e) => ReducedCourse.fromJson(e)).toList();
 
-          debugPrint("test6");
           yield Success(courses: listOfCourses, hasReachedMax: false);
           return;
         }
@@ -53,8 +52,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
-        debugPrint(e.toString());
-        debugPrint(event.toString());
+
         yield Failed();
       }
     }

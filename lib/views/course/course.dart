@@ -31,6 +31,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
       courseId: widget.courseId,
       isQuiz: false,
       isAnswer: false,
+      answerId: null,
     ));
   }
 
@@ -87,7 +88,6 @@ Widget _course_view_builder(context, data) {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.9,
       child: CardContainerView(
-        list: data.slides,
         course: data,
       ));
 }

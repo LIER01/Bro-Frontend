@@ -56,8 +56,8 @@ class _CourseListViewState extends State<CourseListView> {
             appBar: _buildAppBar(),
             body: ListView.builder(
               itemCount: state.hasReachedMax
-                  ? state.courses.length
-                  : state.courses.length + 1,
+                  ? state.courses.length + 1
+                  : state.courses.length,
               controller: _scrollController,
               itemBuilder: (BuildContext context, int index) {
                 return index >= state.courses.length

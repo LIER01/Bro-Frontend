@@ -11,20 +11,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CardContainerView extends StatefulWidget {
   CardContainerView({
     Key? key,
-    required this.list,
     required this.course,
   }) : super(key: key);
-  final List list;
   final Course course;
   @override
   _CardContainerViewState createState() => _CardContainerViewState();
 }
 
 class _CardContainerViewState extends State<CardContainerView> {
+  late final List<Slide> list;
+
   late ScrollController _controller;
   double indx = 0;
   @override
   void initState() {
+    list = widget.course.slides;
     _controller = ScrollController();
     _controller.addListener(() {
       if (indx != (_controller.offset / context.size!.width).round()) {
@@ -61,7 +62,7 @@ class _CardContainerViewState extends State<CardContainerView> {
       return Scaffold(body: Text('Context is null, yo'));
     }
 
-    if (widget.list.isNotEmpty) {
+    if (list.isNotEmpty) {
       return Column(
         children: [
           Expanded(
@@ -73,17 +74,17 @@ class _CardContainerViewState extends State<CardContainerView> {
                     controller: _controller,
                     scrollDirection: Axis.horizontal,
                     physics: PageScrollPhysics(),
-                    itemCount: widget.list.length,
+                    itemCount: list.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InfoCard(
-                          title: widget.list[index].title,
-                          description: widget.list[index].description,
-                          image: widget.list[index].image);
+                          title: list[index].title,
+                          description: list[index].description,
+                          image: list[index].image);
                     })),
           ),
           //Shows which page the user is on
           DotsIndicator(
-              dotsCount: widget.list.length,
+              dotsCount: list.length,
               position: indx.roundToDouble(),
               decorator: DotsDecorator(
                   color: Colors.grey[350]!, activeColor: Colors.teal)),
@@ -107,7 +108,7 @@ class _CardContainerViewState extends State<CardContainerView> {
                                 size: MediaQuery.of(context).size.width * 0.175,
                               ))),
                     )),
-                indx + 1 != widget.list.length
+                indx + 1 != list.length
                     ? GestureDetector(
                         onTap: () => {_moveRight()},
                         child: Align(

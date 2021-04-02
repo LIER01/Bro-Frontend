@@ -62,7 +62,9 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
 
   Future<CourseDetailState> _retrieveCourse(CourseDetailRequested event) async {
     try {
-      final result = await repository.getCourse(event.courseId).then((res) {
+      final result = await repository.getCourse(event.courseId!).then((res) {
+        debugPrint(res.data.toString());
+        debugPrint(event.courseId.toString());
         final returnCourse = Course.fromJson(res.data!['course']);
         return CourseState(
             course: returnCourse,

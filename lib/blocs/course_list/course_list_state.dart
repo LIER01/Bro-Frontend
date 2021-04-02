@@ -17,8 +17,7 @@ class Success extends CourseListState {
   final List<ReducedCourse> courses;
   final bool hasReachedMax;
 
-  Success({required this.courses, required this.hasReachedMax})
-      : assert(courses != null && hasReachedMax != null);
+  Success({required this.courses, required this.hasReachedMax});
 
   Success copyWith({
     List<ReducedCourse>? courses,
