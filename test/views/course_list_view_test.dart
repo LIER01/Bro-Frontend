@@ -73,7 +73,12 @@ void mainTest() {
           ),
         ),
       );
-      await tester.pumpAndSettle();
+      await tester.pump();
+
+      expect(find.byType(LinearProgressIndicator), findsNothing);
+
+      await tester.pump();
+
       expect(find.text('Kurstittel'), findsOneWidget);
       expect(find.text('Kursbeskrivelse'), findsOneWidget);
     });

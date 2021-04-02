@@ -28,12 +28,12 @@ class Slide {
   Slide({
     required this.title,
     required this.description,
-    this.image,
+    required this.image,
   });
 
   final String title;
   final String description;
-  final SlideImage? image;
+  final SlideImage image;
 
   Slide.fromJson(Map<String, dynamic> json)
       : title = json['title'],
@@ -42,11 +42,11 @@ class Slide {
 }
 
 class SlideImage {
-  SlideImage({this.url});
+  SlideImage({required this.url});
 
-  final String? url;
+  final String url;
 
-  SlideImage.fromJson(Map<String, dynamic>? json) : url = json?['url'];
+  SlideImage.fromJson(Map<String, dynamic> json) : url = json['url'];
 }
 
 class Question {
@@ -62,18 +62,9 @@ class Question {
 
   Question.fromJson(Map<String, dynamic> json)
       : question = json['question'],
-        alternatives = parseAlternatives(json),
-        // alternatives = List<Alternative>.from(json['alternatives']
-        //     .map((model) => Alternative.fromJson(model))).toList(),
+        alternatives = List<Alternative>.from(json['alternatives']
+            .map((model) => Alternative.fromJson(model))).toList(),
         clarification = json['clarification'];
-}
-
-List<Alternative> parseAlternatives(Map<String, dynamic> json) {
-  debugPrint(json.toString());
-  Iterable list = json['alternatives'];
-  List<Alternative> alternatives =
-      List<Alternative>.from(list.map((model) => Alternative.fromJson(model)));
-  return alternatives;
 }
 
 class Alternative {
@@ -92,4 +83,12 @@ class Alternative {
         correct =
             json['correct'].toString().toLowerCase() == "true" ? true : false,
         image = SlideImage.fromJson(json['image']);
+}
+
+class QuestionImage {
+  QuestionImage({required this.url});
+
+  final String url;
+
+  QuestionImage.fromJson(Map<String, dynamic> json) : url = json['url'];
 }

@@ -98,7 +98,7 @@ class _InfoCardContentState extends State<InfoCardContent> {
               child: widget.image == null || widget.image!.url == null
                   ? CachedNetworkImage(
                       imageUrl: 'https://bro-strapi.herokuapp.com' +
-                          widget.image!.url!,
+                          widget.image!.url,
                       imageBuilder: (context, imageProvider) =>
                           _generateInfoCard(
                               widget.active,

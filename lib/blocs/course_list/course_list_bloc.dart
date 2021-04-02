@@ -19,18 +19,12 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     // Not able to access state methods without this. Do not know why.
     final CourseListState currentState = state;
     if (event is CourseListRequested && !_hasReachedMax(currentState)) {
-      debugPrint("test");
       try {
-        debugPrint("test2");
         if (currentState is Loading) {
-          debugPrint("test3");
           final result = await repository.getCourses(0, 10);
 
-          debugPrint("tes4");
           final courses = result.data!['courses'] as List<dynamic>;
 
-          debugPrint(courses.toString());
-          debugPrint("test5");
           final listOfCourses =
               courses.map((dynamic e) => ReducedCourse.fromJson(e)).toList();
 
