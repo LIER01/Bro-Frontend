@@ -27,10 +27,14 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
         return;
       }
       try {
-        if (!event.isQuiz) {
+        if (event.isQuiz == false) {
           yield await _retrieveCourse(event);
           return;
-        } else if (event.isQuiz) {
+        } else if (event.isQuiz == true) {
+          if (event.course == null && event.courseId != null) {
+            yield await _retrieveCourse(event);
+            return;
+          } else if (event.course == null && event.courseId != null) {}
           yield CourseState(
               course: event.course!,
               isQuiz: event.isQuiz,

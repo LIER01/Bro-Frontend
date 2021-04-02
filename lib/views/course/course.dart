@@ -20,7 +20,7 @@ class CourseDetailView extends StatefulWidget {
 }
 
 class _CourseDetailViewState extends State<CourseDetailView> {
-  Course? data;
+  late Course data;
   late CourseDetailBloc _courseDetailBloc;
 
   @override
@@ -47,10 +47,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
         }
 
         if (state is Failed) {
-          return Scaffold(
-            appBar: AppBar(title: Text('     ')),
-            body: Center(child: Text(state.err)),
-          );
+          return _failureState(context, state.err);
         }
 
         if (state is CourseState) {
@@ -58,21 +55,21 @@ class _CourseDetailViewState extends State<CourseDetailView> {
           if (state.isQuiz == false) {
             return Scaffold(
               appBar: AppBar(
-                  title: Text(data!.title),
+                  title: Text(data.title),
                   leading: ExitVerification(context, data)),
               body: _course_view_builder(context, data),
             );
           } else {
             return Scaffold(
               appBar: AppBar(
-                  title: Text(data!.title),
+                  title: Text(data.title),
                   leading: ExitVerification(context, data)),
               body: Center(
                   child: QuizView(
                       course: data,
-                      questions: data!.questions,
+                      questions: data.questions,
                       isAnswer: state.isAnswer,
-                      title: data!.title,
+                      title: data.title,
                       answerId: state.answerId)),
             );
           }
@@ -93,4 +90,11 @@ Widget _course_view_builder(context, data) {
         list: data.slides,
         course: data,
       ));
+}
+
+Widget _failureState(context, errtext) {
+  return Scaffold(
+    appBar: AppBar(title: Text('     ')),
+    body: Center(child: Text(errtext)),
+  );
 }

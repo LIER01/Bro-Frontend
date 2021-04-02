@@ -20,8 +20,8 @@ class CourseListTile extends StatelessWidget {
             child: _CourseDescription(
               title: course.title,
               description: course.description,
-              length: course.slides!.length + course.questions!.length,
-              time: course.slides!.length + course.questions!.length * 2,
+              length: course.slides.length + course.questions.length,
+              time: course.slides.length + course.questions.length * 2,
               difficulty: 'Middels',
             ),
           ),
@@ -34,18 +34,18 @@ class CourseListTile extends StatelessWidget {
 // Private class for constructing single course tile content
 class _CourseDescription extends StatelessWidget {
   const _CourseDescription({
-    this.title,
-    this.description,
-    this.length,
-    this.time,
-    this.difficulty,
+    required this.title,
+    required this.description,
+    required this.length,
+    required this.time,
+    required this.difficulty,
   });
 
-  final String? title;
-  final String? description;
-  final int? length;
+  final String title;
+  final String description;
+  final int length;
   final int? time;
-  final String? difficulty;
+  final String difficulty;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +58,12 @@ class _CourseDescription extends StatelessWidget {
           children: <Widget>[
             Container(
               padding: EdgeInsets.fromLTRB(5, 5, 0, 0),
-              child: Text(title!, style: Theme.of(context).textTheme.headline6),
+              child: Text(title, style: Theme.of(context).textTheme.headline6),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(5, 5, 0, 5),
               child: Text(
-                description!,
+                description,
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
@@ -120,7 +120,7 @@ class _CourseDescription extends StatelessWidget {
                         ),
                         Padding(padding: EdgeInsets.fromLTRB(2, 0, 0, 0)),
                         Text(
-                          difficulty!,
+                          difficulty,
                           style: Theme.of(context)
                               .textTheme
                               .caption!

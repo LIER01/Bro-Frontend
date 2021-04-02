@@ -23,8 +23,6 @@ class CourseDetailRequested extends CourseDetailEvent {
     this.answerId,
     // Either you need to provide a course_id or you need to provide a course
   })  : assert(courseId != null || course != null),
-        // isQuiz cannot be null
-        assert(isQuiz != null),
         // If "isAnswer", you also need to provide an answerId
         assert(!isAnswer || (isAnswer && answerId != null));
 
