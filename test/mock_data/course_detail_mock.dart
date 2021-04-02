@@ -1,5 +1,6 @@
 import 'package:bro/models/course.dart';
 
+String url = '../../test/mock_data/statics/Capture.PNG';
 Map<String, dynamic> course_detail_mock = {
   'course': {
     'title': 'En meget fin testcourse',
@@ -19,13 +20,13 @@ Map<String, dynamic> course_detail_mock = {
       {
         'title': 'Testslide',
         'description': 'Dette er en meget kul testslide',
-        'image': {'url': '/uploads/New_Project_1_893ec542a7.png'}
+        'image': {'url': url}
       },
       {
         'title': 'DEN ANDRE MEGET FINE TESTSLIDEN',
         'description':
             'MEN DENNE GANGEN MED MER ROPING I BÅDE TITTEL OG DESCRIPTION',
-        'image': {'url': '/uploads/New_Project_1_893ec542a7.png'}
+        'image': {'url': url}
       },
     ]
   }
