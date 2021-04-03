@@ -76,13 +76,15 @@ class Alternative {
 
   final String name;
   final bool correct;
-  final SlideImage? image;
+  final QuestionImage? image;
 
   Alternative.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         correct =
             json['correct'].toString().toLowerCase() == "true" ? true : false,
-        image = SlideImage.fromJson(json['image']);
+        image = json['image'] == null
+            ? null
+            : QuestionImage.fromJson(json['image']);
 }
 
 class QuestionImage {

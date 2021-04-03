@@ -13,7 +13,7 @@ class Alternative extends StatefulWidget {
   final int id;
   final bool isPressed;
   final Course course;
-  final SlideImage? image;
+  final QuestionImage? image;
 
   Alternative(
       this.course, this.id, this.name, this.isTrue, this.image, this.isPressed);
