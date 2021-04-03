@@ -126,15 +126,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
   final List _widgetOptions = [
     '/',
-    ExtractCourseListScreen.routeName,
+    ExtractCategoryListScreen.routeName,
     ExtractCourseListScreen.routeName,
     ExtractCategoryListScreen.routeName,
   ];
 
   void _onItemTapped(int index) {
     setState(() {
-      widget.navKey.currentState.pushNamed(_widgetOptions[index]);
-      _selectedIndex = index;
+      if(index != _selectedIndex) {
+        widget.navKey.currentState.pushNamed(_widgetOptions[index]);
+        _selectedIndex = index;
+      }
     });
   }
 
