@@ -26,10 +26,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   void _onItemTapped(int index) {
     setState(() {
-      if(index != _selectedIndex) {
-        widget.navKey.currentState.pushNamed(_widgetOptions[index]);
-        _selectedIndex = index;
-      }
+      widget.navKey.currentState.pushNamed(_widgetOptions[index]);
+      _selectedIndex = index;
     });
   }
 
