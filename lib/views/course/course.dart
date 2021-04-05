@@ -12,8 +12,8 @@ import 'quiz.dart';
 import 'package:bro/views/course/exit_verification.dart';
 
 class CourseDetailView extends StatefulWidget {
-  final int? courseId;
-  CourseDetailView({this.courseId, Key? key}) : super(key: key);
+  final int courseId;
+  CourseDetailView({required this.courseId, Key? key}) : super(key: key);
 
   @override
   _CourseDetailViewState createState() => _CourseDetailViewState();

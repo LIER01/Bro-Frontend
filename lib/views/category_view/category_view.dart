@@ -98,7 +98,7 @@ class _CategoryViewState extends State<CategoryView> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(
-                              categories[currentIndex].cover_photo!),
+                              categories[currentIndex].cover_photo),
                           onError: (exception, stackTrace) {
                             log(exception.toString());
                           },
@@ -155,7 +155,7 @@ class _CategoryViewState extends State<CategoryView> {
                               Expanded(
                                 child: Center(
                                   child: Text(
-                                    categories[currentIndex].name!,
+                                    categories[currentIndex].name,
                                     style:
                                         Theme.of(context).textTheme.headline4,
                                   ),

@@ -1,7 +1,7 @@
 class Home {
-  Home({this.header, this.introduction});
-  final String? header;
-  final String? introduction;
+  Home({required this.header, required this.introduction});
+  final String header;
+  final String introduction;
 
   factory Home.fromJson(Map<String, dynamic> json) {
     return Home(
