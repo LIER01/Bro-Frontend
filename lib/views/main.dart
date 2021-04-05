@@ -100,8 +100,6 @@ class App extends StatelessWidget {
             ExtractCourseListScreen(client: _client()),
         ExtractCategoryListScreen.routeName: (context) =>
             ExtractCategoryListScreen(client: _client()),
-        ExtractRecommendedScreen.routeName: (context) =>
-            ExtractRecommendedScreen(client: _client()),
       },
       home: Home(),
     );
@@ -124,10 +122,6 @@ class Home extends StatelessWidget {
           ListTile(
             title: Text('CategoryView'),
             onTap: () => Navigator.of(context).pushNamed('/categoryList'),
-          ),
-          ListTile(
-            title: Text('HomeView'),
-            onTap: () => Navigator.of(context).pushNamed('/homeView'),
           ),
         ],
       ),

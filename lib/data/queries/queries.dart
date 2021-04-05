@@ -21,15 +21,8 @@ query getCourseQuery($start: Int!, $limit: Int!) {
 ''';
 
 final String getHomeViewQuery = r'''
-query getRecommendedCoursesQuery($start: Int!,$limit: Int!){
-  courses(where:{is_recommended:true},start:$start,limit: $limit) {
-    id,
-    title,
-    description,
-    questions {id},
-    slides {id},
-  }
-  home{
+query{
+  home {  
     introduction,
     header
     }
@@ -61,24 +54,3 @@ final String getCourseQuery = r'''
     }
 }
     ''';
-
-final String getRecommendedCoursesQuery = r'''
-query getRecommendedCoursesQuery($start: Int!,$limit: Int!){
-  courses(where:{is_recommended:true},start:$start,limit: $limit) {
-    id,
-    title,
-    description,
-    questions {id},
-    slides {id},
-  }
-}
-''';
-
-final String getHomeQuery = r'''
-query{
-  home {  
-    introduction,
-    header
-    }
-}
-''';
