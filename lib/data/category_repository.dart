@@ -8,7 +8,7 @@ import 'package:meta/meta.dart';
 class CategoryRepository {
   final GraphQLClient client;
 
-  CategoryRepository({@required this.client}) : assert(client != null);
+  CategoryRepository({required this.client}) : assert(client != null);
 
   // Course type should be made in a models/ directory
   Future<QueryResult> getCategories() async {

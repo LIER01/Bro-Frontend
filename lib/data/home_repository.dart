@@ -8,7 +8,7 @@ import 'package:meta/meta.dart';
 class HomeRepository {
   final GraphQLClient client;
 
-  HomeRepository({@required this.client}) : assert(client != null);
+  HomeRepository({required this.client}) : assert(client != null);
 
   // Course type should be made in a models/ directory
   Future<QueryResult> getRecommendedCourses(int start, int limit) async {

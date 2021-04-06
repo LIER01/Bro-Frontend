@@ -1,49 +1,96 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
+
 class Course {
   Course({
-    this.title,
-    this.description,
-    this.slides,
-    this.questions,
+    required this.title,
+    required this.description,
+    required this.slides,
+    required this.questions,
   });
 
   final String title;
   final String description;
-  final List<dynamic> slides;
-  final List<dynamic> questions;
+  final List<Slide> slides;
+  final List<Question> questions;
+
+  Course.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        description = json['description'],
+        slides = List<Slide>.from(
+            json['slides'].map((model) => Slide.fromJson(model))),
+        questions = List<Question>.from(
+            json['questions'].map((model) => Question.fromJson(model)));
 }
 
 class Slide {
   Slide({
-    this.title,
-    this.description,
-    this.image,
+    required this.title,
+    required this.description,
+    required this.image,
   });
 
   final String title;
   final String description;
-  final String image;
+  final SlideImage image;
+
+  Slide.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        description = json['description'],
+        image = SlideImage.fromJson(json['image']);
+}
+
+class SlideImage {
+  SlideImage({required this.url});
+
+  final String url;
+
+  SlideImage.fromJson(Map<String, dynamic> json) : url = json['url'];
 }
 
 class Question {
   Question({
-    this.question,
-    this.alternatives,
-    this.clarification,
+    required this.question,
+    required this.alternatives,
+    required this.clarification,
   });
 
   final String question;
   final List<Alternative> alternatives;
   final String clarification;
+
+  Question.fromJson(Map<String, dynamic> json)
+      : question = json['question'],
+        alternatives = List<Alternative>.from(json['alternatives']
+            .map((model) => Alternative.fromJson(model))).toList(),
+        clarification = json['clarification'];
 }
 
 class Alternative {
   Alternative({
-    this.name,
-    this.correct,
+    required this.name,
+    required this.correct,
     this.image,
   });
 
   final String name;
   final bool correct;
-  final String image;
+  final QuestionImage? image;
+
+  Alternative.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        correct =
+            json['correct'].toString().toLowerCase() == "true" ? true : false,
+        image = json['image'] == null
+            ? null
+            : QuestionImage.fromJson(json['image']);
+}
+
+class QuestionImage {
+  QuestionImage({required this.url});
+
+  final String url;
+
+  QuestionImage.fromJson(Map<String, dynamic> json) : url = json['url'];
 }

@@ -9,18 +9,19 @@ import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/models/course.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'quiz.dart';
+import 'package:bro/views/course/exit_verification.dart';
 
 class CourseDetailView extends StatefulWidget {
   final int courseId;
-  CourseDetailView({this.courseId, Key key}) : super(key: key);
+  CourseDetailView({required this.courseId, Key? key}) : super(key: key);
 
   @override
   _CourseDetailViewState createState() => _CourseDetailViewState();
 }
 
 class _CourseDetailViewState extends State<CourseDetailView> {
-  Course data;
-  CourseDetailBloc _courseDetailBloc;
+  late Course data;
+  late CourseDetailBloc _courseDetailBloc;
 
   @override
   void initState() {
@@ -30,13 +31,13 @@ class _CourseDetailViewState extends State<CourseDetailView> {
       courseId: widget.courseId,
       isQuiz: false,
       isAnswer: false,
+      answerId: null,
     ));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CourseDetailBloc, CourseDetailState>(
-      // ignore: missing_return
       builder: (context, state) {
         //log(state.toString());
         if (state is Loading) {
@@ -47,26 +48,23 @@ class _CourseDetailViewState extends State<CourseDetailView> {
         }
 
         if (state is Failed) {
-          return Scaffold(
-            appBar: AppBar(title: Text('     ')),
-            body: Center(child: Text(state.err)),
-          );
+          return _failureState(context, state.err);
         }
 
         if (state is CourseState) {
           data = state.course;
-          if (!state.isQuiz) {
+          if (state.isQuiz == false) {
             return Scaffold(
               appBar: AppBar(
                   title: Text(data.title),
-                  leading: _ExitVerification(context, data)),
+                  leading: ExitVerification(context, data)),
               body: _course_view_builder(context, data),
             );
           } else {
             return Scaffold(
               appBar: AppBar(
                   title: Text(data.title),
-                  leading: _ExitVerification(context, data)),
+                  leading: ExitVerification(context, data)),
               body: Center(
                   child: QuizView(
                       course: data,
@@ -134,7 +132,13 @@ Widget _course_view_builder(context, data) {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.9,
       child: CardContainerView(
-        list: data.slides,
         course: data,
       ));
+}
+
+Widget _failureState(context, errtext) {
+  return Scaffold(
+    appBar: AppBar(title: Text('     ')),
+    body: Center(child: Text(errtext)),
+  );
 }

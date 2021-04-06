@@ -1,6 +1,7 @@
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
-import 'package:bro/models/course.dart';
+import 'package:bro/models/reduced_course.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 void main() {
   group('CourseListState', () {
@@ -16,11 +17,12 @@ void main() {
       });
     });
     group('CourseListSuccess', () {
-      final course = Course(
+      final course = ReducedCourse(
+          id: 1,
           title: 'Tittel',
           description: 'Beskrivelse av kurs.',
-          questions: [],
-          slides: []);
+          questions: [Question(id: 1)],
+          slides: [Slide(id: 1)]);
       test('toString returns correct value', () {
         expect(Success(courses: [course], hasReachedMax: false).toString(),
             'Success { courses: [$course], hasReachedMax: false }');

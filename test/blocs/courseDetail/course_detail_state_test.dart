@@ -1,7 +1,8 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
-import 'package:bro/models/course.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+import '../../mock_data/course_detail_mock.dart';
 
 void main() {
   setUpAll(() {
@@ -14,13 +15,8 @@ void main() {
 
 void mainEvent() {
   group('CourseDetailRequested', () {
-    test('inserting no parameters throws assertionerror', () {
-      // ignore: missing_required_param
-      expect(() => CourseDetailRequested(), throwsAssertionError);
-    });
-
     test(
-        'inserting "isAnswer":true but not inserting answerId throws assertionerror',
+        'should throws assertionerror when inserting "isAnswer":true but not inserting answerId',
         () {
       expect(
           () =>
@@ -28,34 +24,42 @@ void mainEvent() {
           throwsAssertionError);
     });
 
-    test('inserting "isAnswer and answerId succeeds', () {
+    test('should succeed when inserting "isAnswer and answerId ', () {
       expect(
           CourseDetailRequested(
               courseId: 1, isQuiz: true, isAnswer: true, answerId: 1),
           isInstanceOf<CourseDetailRequested>());
     });
 
-    test('not inserting courseId or course throws assertionerror', () {
+    test(
+        'should return instance of CourseDetailRequested when inserting courseId or course',
+        () {
       expect(() => CourseDetailRequested(isQuiz: true, isAnswer: false),
           throwsAssertionError);
     });
 
-    test('passing courseId but not course succeeds', () {
+    test(
+        'should return instance of CourseDetailRequested when passing courseId but not course',
+        () {
       expect(CourseDetailRequested(courseId: 1, isQuiz: true, isAnswer: false),
           isInstanceOf<CourseDetailRequested>());
     });
 
-    test('passing course but not courseId succeeds', () {
+    test(
+        'should return instance of CourseDetailRequested when passing course but not courseId',
+        () {
       expect(
           CourseDetailRequested(
-              course: Course(), isQuiz: true, isAnswer: false),
+              course: referenceCourse, isQuiz: true, isAnswer: false),
           isInstanceOf<CourseDetailRequested>());
     });
 
-    test('inserting everything correctly succeeds', () {
+    test(
+        'should return instance of CourseDetailRequested should when inserting everything correctly',
+        () {
       expect(
           CourseDetailRequested(
-              course: Course(),
+              course: referenceCourse,
               courseId: 1,
               isQuiz: true,
               isAnswer: true,

@@ -8,7 +8,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'extract_route_args.dart';
 
 class BottomNavBar extends StatefulWidget {
-  BottomNavBar({this.navKey, Key key}) : super(key: key);
+  BottomNavBar({required this.navKey, Key? key}) : super(key: key);
   var navKey = GlobalKey<NavigatorState>();
 
   @override
@@ -26,13 +26,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   void _onItemTapped(int index) {
     setState(() {
-      widget.navKey.currentState.pushNamed(_widgetOptions[index]);
+      widget.navKey.currentState?.pushNamed(_widgetOptions[index]);
       _selectedIndex = index;
     });
   }
 
   GraphQLClient _client() {
-    final _link = HttpLink(env['API_URL'] + '/graphql');
+    final _link = HttpLink(env['API_URL']! + '/graphql');
 
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),

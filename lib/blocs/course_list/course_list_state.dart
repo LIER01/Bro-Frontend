@@ -1,4 +1,4 @@
-import 'package:bro/models/course.dart';
+import 'package:bro/models/reduced_course.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -14,15 +14,14 @@ class Initial extends CourseListState {}
 class Loading extends CourseListState {}
 
 class Success extends CourseListState {
-  final List<Course> courses;
+  final List<ReducedCourse> courses;
   final bool hasReachedMax;
 
-  Success({@required this.courses, @required this.hasReachedMax})
-      : assert(courses != null && hasReachedMax != null);
+  Success({required this.courses, required this.hasReachedMax});
 
   Success copyWith({
-    List<Course> courses,
-    bool hasReachedMax,
+    List<ReducedCourse>? courses,
+    bool? hasReachedMax,
   }) {
     return Success(
         courses: courses ?? this.courses,

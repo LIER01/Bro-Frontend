@@ -1,5 +1,5 @@
 class Home {
-  Home({this.header, this.introduction});
+  Home({required this.header, required this.introduction});
   final String header;
   final String introduction;
 
