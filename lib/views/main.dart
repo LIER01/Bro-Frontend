@@ -33,6 +33,10 @@ class Home extends StatelessWidget {
             title: Text('CategoryView'),
             onTap: () => Navigator.of(context).pushNamed('/categoryList'),
           ),
+          ListTile(
+            title: Text('HomeView'),
+            onTap: () => Navigator.of(context).pushNamed('/homeView'),
+          ),
         ],
       ),
     );
@@ -110,44 +114,7 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      routes: {
-        ExtractCourseDetailScreen.routeName: (context) =>
-            ExtractCourseDetailScreen(client: _client()),
-        ExtractCourseListScreen.routeName: (context) =>
-            ExtractCourseListScreen(client: _client()),
-        ExtractCategoryListScreen.routeName: (context) =>
-            ExtractCategoryListScreen(client: _client()),
-        ExtractRecommendedScreen.routeName: (context) =>
-            ExtractRecommendedScreen(client: _client()),
-      },
       home: BottomNavBar(navKey: navigatorKey),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Velkommen til Bro!'),
-      ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: Text('CourseListView'),
-            onTap: () => Navigator.of(context).pushNamed('/courseList'),
-          ),
-          ListTile(
-            title: Text('CategoryView'),
-            onTap: () => Navigator.of(context).pushNamed('/categoryList'),
-          ),
-          ListTile(
-            title: Text('HomeView'),
-            onTap: () => Navigator.of(context).pushNamed('/homeView'),
-          ),
-        ],
-      ),
     );
   }
 }
