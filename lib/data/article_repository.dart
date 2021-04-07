@@ -1,27 +1,27 @@
 import 'dart:async';
-import 'package:bro/data/queries/course_queries.dart';
+import 'package:bro/data/queries/article_queries.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class CourseRepository {
+class ArticleRepository {
   final GraphQLClient client;
 
-  CourseRepository({required this.client});
+  ArticleRepository({required this.client});
 
-  // Course type should be made in a models/ directory
-  Future<QueryResult> getCourses(int start, int limit) async {
+  Future<QueryResult> getArticles(int start, int limit) async {
     final _options = WatchQueryOptions(
-      document: parseString(getCoursesQuery),
+      document: parseString(getArticlesQuery),
       fetchResults: true,
       variables: <String, dynamic>{'start': start, 'limit': limit},
     );
+
     return await client.query(_options);
   }
 
-  Future<QueryResult> getCourse(int i) async {
+  Future<QueryResult> getArticle(int i) async {
     final _options = WatchQueryOptions(
-      document: parseString(getCourseQuery),
-      variables: {'course_id': i},
+      document: parseString(getArticleQuery),
+      variables: {'article_id': i},
       fetchResults: true,
     );
 

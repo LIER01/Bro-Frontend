@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bro/data/queries/queries.dart';
+import 'package:bro/data/queries/course_queries.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:meta/meta.dart';

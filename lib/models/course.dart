@@ -1,7 +1,3 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
-
 class Course {
   Course({
     required this.title,
@@ -80,8 +76,7 @@ class Alternative {
 
   Alternative.fromJson(Map<String, dynamic> json)
       : name = json['name'],
-        correct =
-            json['correct'].toString().toLowerCase() == "true" ? true : false,
+        correct = json['correct'] as bool,
         image = json['image'] == null
             ? null
             : QuestionImage.fromJson(json['image']);
