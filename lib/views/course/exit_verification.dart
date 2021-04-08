@@ -39,7 +39,7 @@ Widget ExitVerification(context, data) {
                             '        Avbryt Kurs        ',
                           ),
                           onPressed: () => {
-                            Navigator.of(context)..pop()..pop(),
+                            Navigator.of(context)..pop(),
                           },
                         ),
                       ),
