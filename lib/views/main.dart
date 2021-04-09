@@ -1,11 +1,13 @@
 import 'package:bro/blocs/simple_bloc_observer.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
+import 'package:bro/views/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-// ignore: library_efixes
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// ignore: library_prefixes
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 Future main() async {
@@ -14,9 +16,36 @@ Future main() async {
   runApp(App());
 }
 
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: Text('CourseListView'),
+            onTap: () => Navigator.of(context).pushNamed('/courseList'),
+          ),
+          ListTile(
+            title: Text('CategoryView'),
+            onTap: () => Navigator.of(context).pushNamed('/categoryList'),
+          ),
+          ListTile(
+            title: Text('HomeView'),
+            onTap: () => Navigator.of(context).pushNamed('/homeView'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // This widget is the root of your application.
 class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
+  var navigatorKey = GlobalKey<NavigatorState>();
 
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
@@ -93,44 +122,7 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      routes: {
-        ExtractCourseDetailScreen.routeName: (context) =>
-            ExtractCourseDetailScreen(client: _client()),
-        ExtractCourseListScreen.routeName: (context) =>
-            ExtractCourseListScreen(client: _client()),
-        ExtractCategoryListScreen.routeName: (context) =>
-            ExtractCategoryListScreen(client: _client()),
-        ExtractRecommendedScreen.routeName: (context) =>
-            ExtractRecommendedScreen(client: _client()),
-      },
-      home: Home(),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Velkommen til Bro!'),
-      ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: Text('CourseListView'),
-            onTap: () => Navigator.of(context).pushNamed('/courseList'),
-          ),
-          ListTile(
-            title: Text('CategoryView'),
-            onTap: () => Navigator.of(context).pushNamed('/categoryList'),
-          ),
-          ListTile(
-            title: Text('HomeView'),
-            onTap: () => Navigator.of(context).pushNamed('/homeView'),
-          ),
-        ],
-      ),
+      home: BottomNavBar(),
     );
   }
 }
