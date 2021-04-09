@@ -1,7 +1,3 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
-
 class Course {
   Course({
     required this.title,

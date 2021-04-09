@@ -1,17 +1,11 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/models/course.dart';
-import 'package:meta/meta.dart';
 
 class WrongEvent extends CourseDetailEvent {
-  @override
   final int? courseId;
-  @override
   final Course? course;
-  @override
   final bool isQuiz;
-  @override
   final bool isAnswer;
-  @override
   final int? answerId;
   WrongEvent({
     this.course,

@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -89,36 +88,26 @@ class _InfoCardContentState extends State<InfoCardContent> {
     return Scaffold(
         body: Center(
       //Allows for animated color transition when card is clicked
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-              flex: 1,
-              child: widget.image == null || widget.image!.url == null
-                  ? CachedNetworkImage(
-                      imageUrl: 'https://bro-strapi.herokuapp.com' +
-                          widget.image!.url,
-                      imageBuilder: (context, imageProvider) =>
-                          _generateInfoCard(
-                              widget.active,
-                              widget.title,
-                              widget.description,
-                              widget.image,
-                              context,
-                              imageProvider),
-                      errorWidget: (context, url, error) =>
-                          Image.asset('assets/images/placeholder.png'),
-                    )
-                  : _generateInfoCard(
-                      widget.active,
-                      widget.title,
-                      widget.description,
-                      widget.image,
-                      context,
-                      AssetImage('assets/images/placeholder.png')))
-        ],
-      ),
+      child: widget.image == null || widget.image!.url == null
+          ? CachedNetworkImage(
+              imageUrl: 'https://bro-strapi.herokuapp.com' + widget.image!.url,
+              imageBuilder: (context, imageProvider) => _generateInfoCard(
+                  widget.active,
+                  widget.title,
+                  widget.description,
+                  widget.image,
+                  context,
+                  imageProvider),
+              errorWidget: (context, url, error) =>
+                  Image.asset('assets/images/placeholder.png'),
+            )
+          : _generateInfoCard(
+              widget.active,
+              widget.title,
+              widget.description,
+              widget.image,
+              context,
+              AssetImage('assets/images/placeholder.png')),
     ));
   }
 
@@ -154,55 +143,38 @@ class _InfoCardContentState extends State<InfoCardContent> {
           child: active == false
               ?
               // This is the bottom bar on top of the image
-              Column(
-                  // Sets the bar to the bottom of the image
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Spacer(flex: 5),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  // This is the background color of the bar
-                                  decoration: BoxDecoration(
-                                    color: Colors.teal,
-                                  ),
+              Column(children: [
+                  Spacer(flex: 5),
+                  Container(
+                    // This is the background color of the bar
+                    decoration: BoxDecoration(
+                      color: Colors.teal,
+                    ),
 
-                                  // This is the tile in the middle of the bar
-                                  child: ListTile(
-                                    title:
-                                        // this centers the text of the bar
-                                        Center(
-                                            child: Text(
-                                      // Retrieves the title of the widget
-                                      title,
-                                      style: TextStyle(color: Colors.white),
-                                    )),
-                                  ),
-                                ),
-                              )
-                            ]))
-                  ],
-                )
+                    // This is the tile in the middle of the bar
+                    child: ListTile(
+                      title:
+                          // this centers the text of the bar
+                          Center(
+                              child: Text(
+                        // Retrieves the title of the widget
+                        title,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ),
+                  ),
+                ])
               : Column(
                   // Sets the alignment of the column to the center
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Padding to make create some whitespace with the text
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.loose,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          // Displays the description
-                          description,
-                          style: TextStyle(color: Colors.white),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        // Displays the description
+                        description,
+                        style: TextStyle(color: Colors.white),
                       ),
                     )
                   ],

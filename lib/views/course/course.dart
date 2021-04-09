@@ -2,7 +2,6 @@ import 'package:bro/views/course/quiz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'course_card_view.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';

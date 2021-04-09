@@ -1,7 +1,6 @@
 import 'package:bro/models/reduced_course.dart';
 import 'package:bro/models/home.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 abstract class HomeState extends Equatable {
   HomeState();
