@@ -23,10 +23,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   void _onItemTapped(int index) {
     setState(() {
-      if(index !=_selectedIndex){
-        _selectedIndex = index;
-      }else{
-      }
+      _selectedIndex = index;
     });
   }
 
@@ -51,36 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             HomeTab(),
             ArticleTab(),
             CourseTab(),
-
           ],
-      /*Navigator(
-        key: widget.navKey,
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings settings) {
-          WidgetBuilder builder;
-          switch (settings.name) {
-            case '/':
-              builder = (BuildContext context) => Home();
-              break;
-            case ExtractCourseDetailScreen.routeName:
-              builder =
-                  (context) => ExtractCourseDetailScreen(client: _client());
-              break;
-            case ExtractCourseListScreen.routeName:
-              builder = (context) => ExtractCourseListScreen(client: _client());
-              break;
-            case ExtractCategoryListScreen.routeName:
-              builder =
-                  (context) => ExtractCategoryListScreen(client: _client());
-              break;
-            default:
-              throw Exception('Invalid route: ${settings.name}');
-          }
-          return MaterialPageRoute(
-            builder: builder,
-            settings: settings,
-          );
-        },*/
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
