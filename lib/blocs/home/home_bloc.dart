@@ -9,9 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeRepository repository;
 
-  HomeBloc({required this.repository})
-      : assert(repository != null),
-        super(Loading());
+  HomeBloc({required this.repository}) : super(Loading());
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {

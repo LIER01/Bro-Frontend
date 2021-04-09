@@ -77,7 +77,7 @@ class Alternative {
   Alternative.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         correct =
-            json['correct'].toString().toLowerCase() == "true" ? true : false,
+            json['correct'].toString().toLowerCase() == 'true' ? true : false,
         image = json['image'] == null
             ? null
             : QuestionImage.fromJson(json['image']);

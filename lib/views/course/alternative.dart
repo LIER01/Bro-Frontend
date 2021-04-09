@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:bro/blocs/course_detail/course_detail_bloc.dart';
 import 'package:bro/blocs/course_detail/course_detail_event.dart';
 import 'package:bro/models/course.dart';

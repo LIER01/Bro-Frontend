@@ -58,12 +58,6 @@ class _CardContainerViewState extends State<CardContainerView> {
 
   @override
   Widget build(BuildContext context) {
-    if (context == null) {
-      return Scaffold(
-          body: Text('Context is null, yo',
-              style: Theme.of(context).textTheme.bodyText1));
-    }
-
     if (list.isNotEmpty) {
       return Column(
         children: [
