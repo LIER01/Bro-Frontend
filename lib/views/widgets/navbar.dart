@@ -1,5 +1,6 @@
 import 'package:bro/views/flutter-demo/demoscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bro/views/main.dart';
@@ -22,21 +23,36 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      if(index !=_selectedIndex){
+        _selectedIndex = index;
+      }else{
+      }
     });
+  }
+
+  Future<bool> _androidBackButtonPressed() {
+    if(_NavKeys[_selectedIndex].currentState!.canPop()){
+      _NavKeys[_selectedIndex].currentState?.pop(_NavKeys[_selectedIndex].currentContext);
+    }else{
+      SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+      debugPrint('something is sus');
+    }
+    throw Exception('ligma');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: <Widget>[
-          HomeTab(),
-          ArticleTab(),
-          CourseTab(),
+    return WillPopScope(
+      onWillPop:_androidBackButtonPressed,
+      child: Scaffold(
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: <Widget>[
+            HomeTab(),
+            ArticleTab(),
+            CourseTab(),
 
-        ],
+          ],
       /*Navigator(
         key: widget.navKey,
         initialRoute: '/',
@@ -94,7 +110,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         unselectedItemColor: Colors.tealAccent,
         onTap: _onItemTapped,
       ),
-    );
+    ));
   }
 }
 
@@ -162,7 +178,7 @@ class _CourseTabState extends State<CourseTab> {
                 case ExtractCourseDetailScreen.routeName:
                   return ExtractCourseDetailScreen(client: _client());
                 default:
-                  throw Exception('Invalid route: ${settings.name}');
+                  return ExtractCourseListScreen(client: _client());
               }
             });
       });
@@ -197,7 +213,7 @@ class _ArticleTabState extends State<ArticleTab> {
               case ExtractCategoryListScreen.routeName:
                 return ExtractCategoryListScreen(client: _client());
               default:
-                throw Exception('Invalid route: ${ExtractCategoryListScreen.routeName}');
+                return ExtractCategoryListScreen(client: _client());
             }
           });
       });
