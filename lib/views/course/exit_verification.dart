@@ -17,7 +17,11 @@ Widget ExitVerification(context, data) {
                       child: GestureDetector(
                         child: FaIcon(FontAwesomeIcons.solidWindowClose,
                             color: Colors.red[900], size: 22),
-                        onTap: () => Navigator.of(context).pop(),
+                        onTap: () => {
+                          // We pop twice, once to remove the alertbox. Once more to pop the context
+                          Navigator.of(context, rootNavigator: true).pop(),
+                          Navigator.of(context).pop(),
+                        },
                       ),
                     ),
                     content: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -39,7 +43,9 @@ Widget ExitVerification(context, data) {
                             '        Avbryt Kurs        ',
                           ),
                           onPressed: () => {
-                            Navigator.of(context)..pop(),
+                            // We pop twice, once to remove the alertbox. Once more to pop the context
+                            Navigator.of(context, rootNavigator: true).pop(),
+                            Navigator.of(context).pop(),
                           },
                         ),
                       ),
