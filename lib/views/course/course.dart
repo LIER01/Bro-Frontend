@@ -56,6 +56,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
             return Scaffold(
               appBar: AppBar(
                   title: Text(data.title),
+                  //Exitverification will not trigger when using phone built in back button ot navbar
                   leading: ExitVerification(context, data)),
               body: _course_view_builder(context, data),
             );

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:bro/blocs/home/home_bucket.dart';
+import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/data/home_repository.dart';
 import 'package:bro/models/reduced_course.dart';
 import 'package:bro/models/home.dart';
