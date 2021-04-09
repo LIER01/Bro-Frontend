@@ -24,7 +24,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
           final result = await repository.getCourses(0, 10);
 
           final courses = result.data!['courses'] as List<dynamic>;
-
+          debugPrint(courses.toString());
           final listOfCourses =
               courses.map((dynamic e) => ReducedCourse.fromJson(e)).toList();
 

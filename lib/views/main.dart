@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter/services.dart';
 // ignore: library_efixes
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
@@ -29,6 +30,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Bro',
@@ -90,6 +95,13 @@ class App extends StatelessWidget {
             fontSize: 14.0,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.125,
+            color: Colors.white,
+          ),
+          bodyText1: GoogleFonts.notoSans(
+            fontSize: 16.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.5,
+            color: Colors.white,
           ),
         ),
       ),

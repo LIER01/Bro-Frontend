@@ -59,29 +59,29 @@ class _CardContainerViewState extends State<CardContainerView> {
   @override
   Widget build(BuildContext context) {
     if (context == null) {
-      return Scaffold(body: Text('Context is null, yo'));
+      return Scaffold(
+          body: Text('Context is null, yo',
+              style: Theme.of(context).textTheme.bodyText1));
     }
 
     if (list.isNotEmpty) {
       return Column(
         children: [
-          Expanded(
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: _controller,
-                    scrollDirection: Axis.horizontal,
-                    physics: PageScrollPhysics(),
-                    itemCount: list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InfoCard(
-                          title: list[index].title,
-                          description: list[index].description,
-                          image: list[index].image);
-                    })),
-          ),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: _controller,
+                  scrollDirection: Axis.horizontal,
+                  physics: PageScrollPhysics(),
+                  itemCount: list.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InfoCard(
+                        title: list[index].title,
+                        description: list[index].description,
+                        image: list[index].image);
+                  })),
           //Shows which page the user is on
           DotsIndicator(
               dotsCount: list.length,
@@ -92,6 +92,7 @@ class _CardContainerViewState extends State<CardContainerView> {
           Center(
             child: Container(
               width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.075,
               child: Stack(children: <Widget>[
                 GestureDetector(
                     onTap: () => {_moveLeft()},
@@ -139,7 +140,7 @@ class _CardContainerViewState extends State<CardContainerView> {
                                         MediaQuery.of(context).size.width *
                                             0.04),
                                 child: Text('Start Quiz',
-                                    style: TextStyle(fontSize: 16))),
+                                    style: Theme.of(context).textTheme.button)),
                             onPressed: () {
                               BlocProvider.of<CourseDetailBloc>(context).add(
                                   CourseDetailRequested(
@@ -154,7 +155,8 @@ class _CardContainerViewState extends State<CardContainerView> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20),
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height / 30),
             child: Text(
               'Trykk på bildet for å lese mer',
               style: TextStyle(
