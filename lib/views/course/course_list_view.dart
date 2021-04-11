@@ -66,7 +66,8 @@ class _CourseListViewState extends State<CourseListView> {
                     : GestureDetector(
                         onTap: () => Navigator.of(context).pushNamed(
                             ExtractCourseDetailScreen.routeName,
-                            arguments: CourseDetailArguments(courseId: 1)),
+                            arguments: CourseDetailArguments(
+                                courseId: state.courses[index].id)),
                         child: CourseListTile(
                           course: state.courses[index],
                         ),

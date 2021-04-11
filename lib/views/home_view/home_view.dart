@@ -2,6 +2,7 @@ import 'package:bro/blocs/home/home_bloc.dart';
 import 'package:bro/blocs/home/home_event.dart';
 import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/views/course/course_list_tile.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bro/utils/navigator_arguments.dart';
@@ -87,9 +88,11 @@ class _HomeViewState extends State<HomeView> {
                                 .toList()
                                 .map((index) => GestureDetector(
                                     onTap: () => Navigator.of(context)
-                                        .pushNamed('/courseDetail',
+                                        .pushNamed(
+                                            ExtractCourseDetailScreen.routeName,
                                             arguments: CourseDetailArguments(
-                                                courseId: index + 1)),
+                                                courseId:
+                                                    state.courses[index].id)),
                                     child: CourseListTile(
                                       course: state.courses[index],
                                     )))
