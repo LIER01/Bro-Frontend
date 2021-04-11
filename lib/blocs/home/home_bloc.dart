@@ -41,8 +41,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
 
         if (currentState is Success) {
-          final result =
-              await repository.getRecommendedCourses(currentState.courses.length, 4);
+          final result = await repository.getRecommendedCourses(
+              currentState.courses.length, 4);
           final courses = result.data['courses'];
           yield courses.length == 0
               ? currentState.copyWith(hasReachedMax: true)

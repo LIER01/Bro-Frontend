@@ -8,8 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockHomeView extends MockBloc<HomeEvent, HomeState>
-    implements HomeBloc {}
+class MockHomeView extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
 
 void main() {
   setUpAll(() {
@@ -33,34 +32,43 @@ void mainTest() {
     });
 
     testWidgets('renders properly without courses and home',
-            (WidgetTester tester) async {
-          when(() => homeViewBloc.state)
-              .thenReturn(Success(courses: [], hasReachedMax: true, home:Home(header:'',introduction: '')));
-          await tester.pumpWidget(
-            BlocProvider.value(
-              value: homeViewBloc,
-              child: MaterialApp(
-                home: Scaffold(
-                  body: HomeView(),
-                ),
-              ),
+        (WidgetTester tester) async {
+      when(() => homeViewBloc.state).thenReturn(Success(
+          courses: [],
+          hasReachedMax: true,
+          home: Home(header: '', introduction: '')));
+      await tester.pumpWidget(
+        BlocProvider.value(
+          value: homeViewBloc,
+          child: MaterialApp(
+            home: Scaffold(
+              body: HomeView(),
             ),
-          );
-        });
-    testWidgets('renders properly with courses and Home', (WidgetTester tester) async {
+          ),
+        ),
+      );
+    });
+    testWidgets('renders properly with courses and Home',
+        (WidgetTester tester) async {
       when(() => homeViewBloc.state).thenReturn(
-        Success(courses: [
-          Course(
-            title: 'Kurstittel',
-            description: 'Kursbeskrivelse',
-            slides: [
-              {},
+        Success(
+            courses: [
+              Course(
+                title: 'Kurstittel',
+                description: 'Kursbeskrivelse',
+                slides: [
+                  {},
+                ],
+                questions: [
+                  {},
+                ],
+              )
             ],
-            questions: [
-              {},
-            ],
-          )
-        ], hasReachedMax: true,home: Home(header:'Velkommen til Bro',introduction: 'Dette er en introduksjons tekst som skal være passe lang.')),
+            hasReachedMax: true,
+            home: Home(
+                header: 'Velkommen til Bro',
+                introduction:
+                    'Dette er en introduksjons tekst som skal være passe lang.')),
       );
       await tester.pumpWidget(
         BlocProvider.value(
@@ -78,7 +86,10 @@ void mainTest() {
       expect(find.text('Kurstittel'), findsOneWidget);
       expect(find.text('Kursbeskrivelse'), findsOneWidget);
       await tester.tap(find.text('Hva er Bro?'));
-      expect(find.text('Dette er en introduksjons tekst som skal være passe lang.'), findsOneWidget);
+      expect(
+          find.text(
+              'Dette er en introduksjons tekst som skal være passe lang.'),
+          findsOneWidget);
     });
   });
 }

@@ -20,7 +20,9 @@ void main() {
       final course = mockedCourse;
       final home = mockedHome;
       test('toString returns correct value', () {
-        expect(Success(courses: [mockedCourse], hasReachedMax: false, home: home).toString(),
+        expect(
+            Success(courses: [mockedCourse], hasReachedMax: false, home: home)
+                .toString(),
             'Success { courses: [$course], hasReachedMax: false, home: $home }');
       });
     });

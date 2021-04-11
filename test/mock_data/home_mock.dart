@@ -7,6 +7,8 @@ String introduction =
 
 Home mockedHome = Home(header: header, introduction: introduction);
 
-
-
-Course mockedCourse = Course(title:'Kurstittel',description: 'Kursbeskrivelse',slides:[],questions: []);
+Course mockedCourse = Course(
+    title: 'Kurstittel',
+    description: 'Kursbeskrivelse',
+    slides: [],
+    questions: []);

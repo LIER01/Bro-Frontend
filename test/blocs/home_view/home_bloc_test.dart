@@ -7,7 +7,6 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../mock_data/course_mock.dart';
 
-
 class MockHomeRepository extends Mock implements HomeRepository {}
 
 void main() {
@@ -18,7 +17,7 @@ void main() {
     setUp(() {
       homeRepository = MockHomeRepository();
       when(() => homeRepository.getRecommendedCourses(0, 10)).thenAnswer(
-              (_) => Future.value(QueryResult(source: null, data: mockedResult)));
+          (_) => Future.value(QueryResult(source: null, data: mockedResult)));
       homeBloc = HomeBloc(repository: homeRepository);
     });
 
@@ -33,7 +32,6 @@ void main() {
       act: (HomeBloc bloc) async => bloc.add(HomeRequested()),
       expect: () => <HomeState>[Failed()],
     );
-
 
     blocTest(
       'initial state is correct',
