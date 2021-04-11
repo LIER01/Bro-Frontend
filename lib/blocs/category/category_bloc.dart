@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/data/category_repository.dart';
-import 'package:bro/models/category.dart';
+import 'package:bro/models/category.dart' as Cat;
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:meta/meta.dart';
@@ -19,18 +20,18 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     if (event is CategoriesRequested) {
       try {
         final result = await repository.getCategories();
-        final categories = result.data!['categories'] as List<dynamic>;
 
-        final listOfCategories = categories
-            .map(
-              (dynamic e) => Category(
-                name: e['name'],
-                cover_photo: env['API_URL']! + e['cover_photo']['url'],
-              ),
-            )
-            .toList();
+        final categories =
+            result.data!['categories'] is List ? <Cat.Category>[] : null;
+        if (categories != null) {
+          for (final dynamic item in result.data!['categories']) {
+            if (item != null) {
+              categories.add(Cat.Category.fromJson(item));
+            }
+          }
+        }
 
-        yield Success(categories: listOfCategories);
+        yield Success(categories: categories!);
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());

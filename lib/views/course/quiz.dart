@@ -1,6 +1,7 @@
 import 'package:bro/blocs/course_detail/course_detail_bloc.dart';
 import 'package:bro/blocs/course_detail/course_detail_event.dart';
 import 'package:bro/models/course.dart';
+import 'package:bro/models/new_course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -16,9 +17,9 @@ class QuizView extends StatefulWidget {
     this.answerId,
     Key? key,
   }) : super(key: key);
-  final Course course;
+  final Courses course;
   final String title;
-  final List<Question> questions;
+  final List<Questions> questions;
   final bool isAnswer;
   final int? answerId;
   @override
@@ -27,7 +28,7 @@ class QuizView extends StatefulWidget {
 
 class _QuizViewState extends State<QuizView> {
   int index = 0;
-  late List<Alternative> alts;
+  late List<Alternatives> alts;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,7 @@ class _QuizViewState extends State<QuizView> {
           child: Text(
               widget.answerId == null
                   ? ''
-                  : alts[widget.answerId!].correct
+                  : alts[widget.answerId!].isCorrect
                       ? 'Korrekt!'
                       : 'Feil!',
               style: TextStyle(
@@ -67,7 +68,7 @@ class _QuizViewState extends State<QuizView> {
                   fontWeight: FontWeight.w600,
                   color: widget.answerId == null
                       ? Colors.red
-                      : alts[widget.answerId!].correct
+                      : alts[widget.answerId!].isCorrect
                           ? Colors.teal
                           : Colors.red))),
       Container(

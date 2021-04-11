@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../mock_data/course_detail_mock.dart';
+import '../../mock_data/new_course_mock.dart';
 
 void main() {
   setUpAll(() {
@@ -19,14 +20,14 @@ void mainState() {
     test('should succeed when inserting course and isAnswer:false', () {
       expect(
           // ignore: missing_required_param
-          CourseState(course: referenceCourse, isQuiz: true, isAnswer: false),
+          CourseState(course: referenceCourses, isQuiz: true, isAnswer: false),
           isInstanceOf<CourseState>());
     });
 
     test('should succeed when inserting everything correctly', () {
       expect(
           CourseState(
-              course: referenceCourse,
+              course: referenceCourses,
               isQuiz: true,
               isAnswer: true,
               answerId: 1),
@@ -38,7 +39,7 @@ void mainState() {
         () {
       expect(
           () => CourseState(
-              course: referenceCourse, isQuiz: true, isAnswer: true),
+              course: referenceCourses, isQuiz: true, isAnswer: true),
           throwsAssertionError);
     });
   });

@@ -10,6 +10,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../mock_data/course_detail_mock.dart';
 
+import '../mock_data/new_course_mock.dart';
+
 class MockCourseDetailBloc
     extends MockBloc<CourseDetailEvent, CourseDetailState>
     implements CourseDetailBloc {}
@@ -46,8 +48,8 @@ void mainTest() {
 
     testWidgets('renders properly with inserted data',
         (WidgetTester tester) async {
-      when(() => courseDetailBloc.state).thenAnswer((_) =>
-          CourseState(course: refCourse, isQuiz: false, isAnswer: false));
+      when(() => courseDetailBloc.state).thenAnswer((_) => CourseState(
+          course: referenceCourses, isQuiz: false, isAnswer: false));
       await tester.pumpWidget(
         BlocProvider.value(
           value: courseDetailBloc,

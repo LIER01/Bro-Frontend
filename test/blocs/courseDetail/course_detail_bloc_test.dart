@@ -8,6 +8,8 @@ import '../../mock_data/course_detail_mock.dart';
 import 'package:bro/data/course_repository.dart';
 import 'test_helpers.dart';
 
+import '../../mock_data/new_course_mock.dart';
+
 class MockCourseRepository extends Mock implements CourseRepository {}
 
 void main() {
@@ -70,7 +72,7 @@ void mainBloc() {
       build: () => courseDetailBloc,
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
-              course: referenceCourse,
+              course: referenceCourses,
               courseId: 1,
               isQuiz: false,
               isAnswer: false,
@@ -88,7 +90,7 @@ void mainBloc() {
       },
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
-              course: referenceCourse,
+              course: referenceCourses,
               courseId: 1,
               isQuiz: true,
               isAnswer: false,

@@ -6,6 +6,7 @@ import 'package:bro/models/reduced_course.dart';
 import 'package:bro/models/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:meta/meta.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -18,34 +19,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     // Not able to access state methods without this. Do not know why.
-    final HomeState currentState = state;
-    if (event is HomeEvent && !_hasReachedMax(currentState)) {
+    final currentState = state;
+    if (event is HomeRequested && !_hasReachedMax(currentState)) {
       try {
         if (currentState is Loading) {
-          final result = await repository.getRecommendedCourses(0, 4);
-
-          final courses = result.data!['courses'] as List<dynamic>;
-          final homeResult = await repository.getHome();
-          final homeData = homeResult.data!;
-          final listOfCourses =
-              courses.map((dynamic e) => LangCourse.fromJson(e)).toList();
-          final home = Home.fromJson(homeData);
-          yield Success(
-              home: home, courses: listOfCourses, hasReachedMax: false);
+          var res = await _retrieveCourses(event, 0);
+          yield res;
           return;
         }
 
         if (currentState is Success) {
-          final result = await repository.getRecommendedCourses(
-              currentState.courses.length, 4);
-          final courses = result.data!['courses'];
-          yield courses.length == 0
-              ? currentState.copyWith(hasReachedMax: true)
-              : Success(
-                  home: currentState.home,
-                  courses: currentState.courses + courses,
-                  hasReachedMax: false,
-                );
+          final result =
+              await _retrieveCourses(event, currentState.courses.length);
+
+          if (result is Success && currentState.courses.isNotEmpty) {
+            yield result.courses.isEmpty
+                ? currentState.copyWith(
+                    hasReachedMax: true, courses: currentState.courses)
+                : result.copyWith(
+                    courses: currentState.courses + result.courses,
+                    hasReachedMax: false);
+          } else if (result is Failed) {
+            yield result;
+          } else {
+            yield Failed();
+          }
         }
       } catch (e, stackTrace) {
         log(e.toString());
@@ -53,6 +51,34 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         yield Failed();
       }
+    }
+  }
+
+  Future<HomeState> _retrieveCourses(HomeRequested event, int curr_len) async {
+    try {
+      var home = await repository.getHome();
+      var ret_home = Home.fromJson(home.data!);
+      return await repository
+          .getRecommendedCourses(event.preferredLanguageSlug, curr_len, 4)
+          .then((res) {
+        var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse'])
+          ..addAll(List.from(res.data!['nonLangCourse']));
+
+        final returnCourse = LangCourseList.takeList(res_list).langCourses;
+
+        return Success(
+            courses: returnCourse, hasReachedMax: false, home: ret_home);
+      });
+      // return result;
+    } on NetworkException catch (e, stackTrace) {
+      log(e.toString());
+      log(stackTrace.toString());
+      return Failed();
+    } catch (e, stackTrace) {
+      log(e.toString());
+      log(stackTrace.toString());
+
+      return Failed();
     }
   }
 }

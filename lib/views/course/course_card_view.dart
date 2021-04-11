@@ -1,3 +1,4 @@
+import 'package:bro/models/new_course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,13 +14,13 @@ class CardContainerView extends StatefulWidget {
     Key? key,
     required this.course,
   }) : super(key: key);
-  final Course course;
+  final Courses course;
   @override
   _CardContainerViewState createState() => _CardContainerViewState();
 }
 
 class _CardContainerViewState extends State<CardContainerView> {
-  late final List<Slide> list;
+  late final List<Slides> list;
 
   late ScrollController _controller;
   double indx = 0;
@@ -79,7 +80,7 @@ class _CardContainerViewState extends State<CardContainerView> {
                       return InfoCard(
                           title: list[index].title,
                           description: list[index].description,
-                          image: list[index].image);
+                          image: list[index].media);
                     })),
           ),
           //Shows which page the user is on

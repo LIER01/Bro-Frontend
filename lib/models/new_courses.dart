@@ -39,8 +39,7 @@ class LangCourse {
   });
 
   factory LangCourse.fromJson(Map<String, dynamic> jsonRes) {
-    final List<Questions>? questions =
-        jsonRes['questions'] is List ? <Questions>[] : null;
+    final questions = jsonRes['questions'] is List ? <Questions>[] : null;
     if (questions != null) {
       for (final dynamic item in jsonRes['questions']!) {
         if (item != null) {
@@ -49,7 +48,7 @@ class LangCourse {
       }
     }
 
-    final List<Slides>? slides = jsonRes['slides'] is List ? <Slides>[] : null;
+    final slides = jsonRes['slides'] is List ? <Slides>[] : null;
     if (slides != null) {
       for (final dynamic item in jsonRes['slides']!) {
         if (item != null) {
@@ -58,7 +57,7 @@ class LangCourse {
       }
     }
     return LangCourse(
-      id: asT<String>(jsonRes['id'])!,
+      id: int.parse(jsonRes['id']),
       questions: questions!,
       slides: slides!,
       title: asT<String>(jsonRes['title'])!,
@@ -78,7 +77,7 @@ class LangCourse {
     );
   }
 
-  final String id;
+  final int id;
   final List<Questions> questions;
   final List<Slides> slides;
   final String title;

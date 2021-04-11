@@ -1,3 +1,4 @@
+import 'package:bro/models/new_course.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bro/models/course.dart';
 import 'package:meta/meta.dart';
@@ -11,7 +12,7 @@ abstract class CourseDetailEvent extends Equatable {
 
 class CourseDetailRequested extends CourseDetailEvent {
   final int? courseId;
-  final Course? course;
+  final Courses? course;
   final bool isQuiz;
   final bool isAnswer;
   final int? answerId;

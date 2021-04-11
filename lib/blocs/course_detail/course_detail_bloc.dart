@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/models/course.dart';
+import 'package:bro/models/new_course.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:meta/meta.dart';
@@ -76,15 +77,17 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
 
   Future<CourseDetailState> _retrieveCourse(CourseDetailRequested event) async {
     try {
-      final result = await repository.getCourse(event.courseId!).then((res) {
-        final returnCourse = Course.fromJson(res.data!['course']);
+      return await repository.getNewCourseQuery(event.courseId!).then((res) {
+        debugPrint('Test2');
+        debugPrint(res.data!.toString());
+        final returnCourse = Courses.fromJson(res.data!['course']);
+        debugPrint(returnCourse.toString());
         return CourseState(
             course: returnCourse,
             isQuiz: event.isQuiz,
             isAnswer: event.isAnswer,
             answerId: event.answerId);
       });
-      return result;
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
@@ -93,7 +96,7 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
       log(e.toString());
       log(stackTrace.toString());
 
-      return Failed(err: 'Error, bad request');
+      return Failed(err: 'Error, bad request 56');
     }
   }
 }

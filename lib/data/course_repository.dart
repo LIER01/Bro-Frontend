@@ -53,4 +53,14 @@ class CourseRepository {
 
     return await client.query(_options);
   }
+
+  Future<QueryResult> getNewCourseQuery(int i) async {
+    final _options = WatchQueryOptions(
+      document: parseString(getNewCourse),
+      fetchResults: true,
+      variables: <String, dynamic>{'course_id': i},
+    );
+
+    return await client.query(_options);
+  }
 }

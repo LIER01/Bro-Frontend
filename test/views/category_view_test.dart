@@ -58,7 +58,10 @@ void mainTest() {
       when(() => categoryBloc.state).thenReturn(
         Success(
           categories: [
-            Category(name: 'Testkategori', cover_photo: '/image.url.png')
+            Category(
+                cover_photo: CoverPhoto(url: '/image.url.png'),
+                category_name: 'Testkategori',
+                description: 'testdescription')
           ],
         ),
       );

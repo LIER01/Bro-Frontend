@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../mock_data/course_detail_mock.dart';
+import '../../mock_data/new_course_mock.dart';
 
 void main() {
   setUpAll(() {
@@ -50,7 +51,7 @@ void mainEvent() {
         () {
       expect(
           CourseDetailRequested(
-              course: referenceCourse, isQuiz: true, isAnswer: false),
+              course: referenceCourses, isQuiz: true, isAnswer: false),
           isInstanceOf<CourseDetailRequested>());
     });
 
@@ -59,7 +60,7 @@ void mainEvent() {
         () {
       expect(
           CourseDetailRequested(
-              course: referenceCourse,
+              course: referenceCourses,
               courseId: 1,
               isQuiz: true,
               isAnswer: true,

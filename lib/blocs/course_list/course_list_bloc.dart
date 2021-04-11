@@ -26,7 +26,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       try {
         if (currentState is Loading) {
           var res = await _retrieveCourses(event, 0);
-          debugPrint("Test31323231q");
           yield res;
           return;
         }
@@ -40,7 +39,8 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
                 ? currentState.copyWith(
                     hasReachedMax: true, courses: currentState.courses)
                 : result.copyWith(
-                    courses: result.courses, hasReachedMax: false);
+                    courses: currentState.courses + result.courses,
+                    hasReachedMax: false);
           } else if (result is Failed) {
             yield result;
           } else {
@@ -50,7 +50,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
-
         yield Failed();
       }
     }
@@ -60,7 +59,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       CourseListRequested event, int curr_len) async {
     try {
       if (event.preferredLanguageSlug != 'NO') {
-        final result = await repository
+        return await repository
             .getLangCourses(event.preferredLanguageSlug, curr_len, 10)
             .then((res) {
           var res_list =
@@ -71,19 +70,14 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
           return Success(courses: returnCourse, hasReachedMax: false);
         });
       } else if (event.preferredLanguageSlug == 'NO') {
-        final result =
-            await repository.getNonLangCourses(curr_len, 10).then((res) {
+        return await repository.getNonLangCourses(curr_len, 10).then((res) {
           var res_list =
               List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-          debugPrint(res_list.toString());
-          debugPrint("Test");
-          debugPrint(LangCourseList.takeList(res_list).toString());
           final returnCourse = LangCourseList.takeList(res_list).langCourses;
-          debugPrint("test");
-          debugPrint(returnCourse.toString());
           return Success(courses: returnCourse, hasReachedMax: false);
         });
       }
+      return Failed();
       // return result;
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
@@ -95,7 +89,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
 
       return Failed();
     }
-    return Failed();
   }
 }
 

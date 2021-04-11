@@ -4,6 +4,7 @@ import 'package:bro/views/widgets/bottom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bro/utils/navigator_arguments.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 
 class CourseListView extends StatefulWidget {
   CourseListView({Key? key}) : super(key: key);
@@ -64,9 +65,8 @@ class _CourseListViewState extends State<CourseListView> {
                     ? BottomLoader()
                     : GestureDetector(
                         onTap: () => Navigator.of(context).pushNamed(
-                            '/courseDetail',
-                            arguments:
-                                CourseDetailArguments(courseId: index + 1)),
+                            ExtractCourseDetailScreen.routeName,
+                            arguments: CourseDetailArguments(courseId: 1)),
                         child: CourseListTile(
                           course: state.courses[index],
                         ),

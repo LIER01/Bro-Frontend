@@ -49,7 +49,6 @@ class _HomeViewState extends State<HomeView> {
         );
       }
       if (state is Success) {
-        debugPrint(state.home.header);
         return Scaffold(
             appBar: AppBar(
               title: Text(state.home.header),

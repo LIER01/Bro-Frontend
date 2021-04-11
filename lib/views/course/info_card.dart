@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:bro/models/new_course.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class InfoCard extends StatefulWidget {
       : super(key: key);
   final String title;
   final String description;
-  final SlideImage? image;
+  final Media? image;
   @override
   _InfoCardState createState() => _InfoCardState();
 }
@@ -77,7 +78,7 @@ class InfoCardContent extends StatefulWidget {
   final bool active;
   final String title;
   final String description;
-  final SlideImage? image;
+  final Media? image;
 
   @override
   _InfoCardContentState createState() => _InfoCardContentState();
@@ -123,7 +124,7 @@ class _InfoCardContentState extends State<InfoCardContent> {
   }
 
   Widget _generateInfoCard(bool active, String title, String description,
-      SlideImage? image, BuildContext context, ImageProvider imageProvider) {
+      Media? image, BuildContext context, ImageProvider imageProvider) {
     return Card(
         semanticContainer: false,
         // Uses antialias to avoid artifacts when overlaying the information textbox onto the image
