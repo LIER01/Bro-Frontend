@@ -43,10 +43,7 @@ Widget ExitVerification(context, data) {
                             '        Avbryt Kurs        ',
                           ),
                           onPressed: () => {
-<<<<<<< HEAD
                             // We pop twice, once to remove the alertbox. Once more to pop the context
-=======
->>>>>>> cd4e940ae29a1e022c350e4c92149e6cad054e16
                             Navigator.of(context, rootNavigator: true).pop(),
                             Navigator.of(context).pop(),
                           },

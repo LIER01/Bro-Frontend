@@ -1,5 +1,6 @@
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/models/reduced_course.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../mock_data/home_mock.dart';
@@ -21,14 +22,12 @@ void main() {
     group('HomeViewSuccess', () {
       final course = mockedCourse;
       final home = mockedHome;
+      final successCourse = ReducedCourse.fromJson(mockedResult['courses'][0]);
       test('toString returns correct value', () {
         expect(
-            Success(
-                    courses: [mockedResult as ReducedCourse],
-                    hasReachedMax: false,
-                    home: home)
+            Success(courses: [successCourse], hasReachedMax: false, home: home)
                 .toString(),
-            'Success { courses: [$course], hasReachedMax: false, home: $home }');
+            'Success { courses: [$successCourse], hasReachedMax: false, home: $home }');
       });
     });
     group('HomeFailed', () {

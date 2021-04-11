@@ -55,7 +55,7 @@ void mainTest() {
         (WidgetTester tester) async {
       when(() => homeViewBloc.state).thenReturn(
         Success(
-            courses: [mockedResult as ReducedCourse],
+            courses: [ReducedCourse.fromJson(mockedResult['courses'][0])],
             hasReachedMax: true,
             home: Home(
                 header: 'Velkommen til Bro',
@@ -75,8 +75,8 @@ void mainTest() {
       await tester.pumpAndSettle();
       expect(find.text('Velkommen til Bro'), findsOneWidget);
       await tester.tap(find.text('Anbefalte Kurs'));
-      expect(find.text('Kurstittel'), findsOneWidget);
-      expect(find.text('Kursbeskrivelse'), findsOneWidget);
+      expect(find.text('Et kult kurs!'), findsOneWidget);
+      expect(find.text('Dette kurset er veldig kult.'), findsOneWidget);
       await tester.tap(find.text('Hva er Bro?'));
       expect(
           find.text(
