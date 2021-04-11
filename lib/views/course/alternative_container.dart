@@ -6,19 +6,19 @@ import 'package:bro/views/course/alternative.dart' as alt;
 
 class AlternativeContainer extends StatefulWidget {
   AlternativeContainer({
-    Key key,
-    this.course,
-    this.alternatives,
-    this.name,
-    this.isAnswer,
+    Key? key,
+    required this.course,
+    required this.alternatives,
+    required this.name,
+    required this.isAnswer,
     this.answerId,
-    this.clarification,
+    required this.clarification,
   }) : super(key: key);
   final Course course;
-  final List alternatives;
+  final List<Alternative> alternatives;
   final String name;
   final bool isAnswer;
-  final int answerId;
+  final int? answerId;
   final String clarification;
   @override
   _AlternativeContainerState createState() => _AlternativeContainerState();
@@ -26,8 +26,8 @@ class AlternativeContainer extends StatefulWidget {
 
 class _AlternativeContainerState extends State<AlternativeContainer> {
   bool clicked = false;
-  List alts;
-  String validation;
+  late List<Alternative> alts;
+  String? validation;
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +43,9 @@ class _AlternativeContainerState extends State<AlternativeContainer> {
                   child: alt.Alternative(
                       widget.course,
                       index,
-                      alts[index]['name'],
-                      alts[index]['correct'],
-                      alts[index]['image'],
+                      alts[index].name,
+                      alts[index].correct,
+                      alts[index].image,
                       widget.isAnswer)));
         }),
       ),

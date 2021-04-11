@@ -14,7 +14,7 @@ class Loading extends CategoryState {}
 class Success extends CategoryState {
   final List<Category> categories;
 
-  Success({@required this.categories}) : assert(categories != null);
+  Success({required this.categories}) : assert(categories != null);
 
   @override
   List<Object> get props => [categories];

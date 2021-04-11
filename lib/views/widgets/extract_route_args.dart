@@ -17,12 +17,12 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class ExtractCourseDetailScreen extends StatelessWidget {
   static const routeName = '/courseDetail';
   final GraphQLClient client;
-  ExtractCourseDetailScreen({@required this.client});
+  ExtractCourseDetailScreen({required this.client});
 
   @override
   Widget build(BuildContext context) {
     final CourseDetailArguments args =
-        ModalRoute.of(context).settings.arguments;
+        ModalRoute.of(context)!.settings.arguments as CourseDetailArguments;
 
     return BlocProvider(
       create: (context) => CourseDetailBloc(
@@ -38,7 +38,7 @@ class ExtractCourseDetailScreen extends StatelessWidget {
 class ExtractCourseListScreen extends StatelessWidget {
   static const routeName = '/courseList';
   final GraphQLClient client;
-  ExtractCourseListScreen({@required this.client});
+  ExtractCourseListScreen({required this.client});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class ExtractCourseListScreen extends StatelessWidget {
 class ExtractCategoryListScreen extends StatelessWidget {
   static const routeName = '/categoryList';
   final GraphQLClient client;
-  ExtractCategoryListScreen({@required this.client});
+  ExtractCategoryListScreen({required this.client});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class ExtractCategoryListScreen extends StatelessWidget {
 class ExtractRecommendedScreen extends StatelessWidget {
   static const routeName = '/homeView';
   final GraphQLClient client;
-  ExtractRecommendedScreen({@required this.client});
+  ExtractRecommendedScreen({required this.client});
 
   @override
   Widget build(BuildContext context) {

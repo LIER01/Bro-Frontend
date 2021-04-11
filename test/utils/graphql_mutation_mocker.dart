@@ -11,7 +11,7 @@ class MockClient extends Mock implements Client {
     this.mockedStatus = 200,
   });
 
-  final Map<String, dynamic> mockedResult;
+  final Map<String, dynamic>? mockedResult;
   final int mockedStatus;
 
   @override
@@ -28,7 +28,7 @@ class MockClient extends Mock implements Client {
 /// GraphqlMutationMocker should be passed your mockedResult and the widget to be rendered
 class GraphQLMutationMocker extends StatelessWidget {
   const GraphQLMutationMocker({
-    @required this.child,
+    required this.child,
     this.mockedResult = const {},
     this.mockedStatus = 200,
     this.url = 'http://url',

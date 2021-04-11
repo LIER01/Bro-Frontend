@@ -1,7 +1,7 @@
 class Category {
   Category({
-    this.name,
-    this.cover_photo,
+    required this.name,
+    required this.cover_photo,
   });
 
   final String name;

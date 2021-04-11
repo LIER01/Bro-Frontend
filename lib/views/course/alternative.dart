@@ -13,7 +13,7 @@ class Alternative extends StatefulWidget {
   final int id;
   final bool isPressed;
   final Course course;
-  final LinkedHashMap<String, dynamic> image;
+  final QuestionImage? image;
 
   Alternative(
       this.course, this.id, this.name, this.isTrue, this.image, this.isPressed);
@@ -23,7 +23,7 @@ class Alternative extends StatefulWidget {
 }
 
 class _AlternativeState extends State<Alternative> {
-  Color validColor;
+  late Color validColor;
   @override
   Widget build(BuildContext context) {
     validColor = widget.isTrue ? Colors.teal : Colors.red;

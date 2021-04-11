@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bro/utils/navigator_arguments.dart';
 
 class CourseListView extends StatefulWidget {
-  CourseListView({Key key}) : super(key: key);
+  CourseListView({Key? key}) : super(key: key);
 
   @override
   _CourseListViewState createState() => _CourseListViewState();
@@ -15,7 +15,7 @@ class CourseListView extends StatefulWidget {
 class _CourseListViewState extends State<CourseListView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  CourseListBloc _courseListBloc;
+  late CourseListBloc _courseListBloc;
 
   @override
   void initState() {
@@ -56,8 +56,8 @@ class _CourseListViewState extends State<CourseListView> {
             appBar: _buildAppBar(),
             body: ListView.builder(
               itemCount: state.hasReachedMax
-                  ? state.courses.length
-                  : state.courses.length + 1,
+                  ? state.courses.length + 1
+                  : state.courses.length,
               controller: _scrollController,
               itemBuilder: (BuildContext context, int index) {
                 return index >= state.courses.length
@@ -75,6 +75,10 @@ class _CourseListViewState extends State<CourseListView> {
             ),
           );
         }
+        return Scaffold(
+          appBar: _buildAppBar(),
+          body: Center(child: Text('Det har skjedd en feil')),
+        );
       },
     );
   }

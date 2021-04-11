@@ -20,27 +20,31 @@ void main() {
 
 void mainBloc() {
   group('CourseDetailBloc', () {
-    CourseRepository courseRepository;
-    CourseDetailBloc courseDetailBloc;
+    late CourseRepository courseRepository;
+    late CourseDetailBloc courseDetailBloc;
 
     setUp(() {
       courseRepository = MockCourseRepository();
-      when(() => courseRepository.getCourse(1)).thenAnswer((_) =>
+      when(() => courseRepository.getCourse(any())).thenAnswer((_) =>
           Future.value(QueryResult(source: null, data: course_detail_mock)));
       courseDetailBloc = CourseDetailBloc(repository: courseRepository);
+    });
+
+    tearDown(() {
+      courseDetailBloc.close();
     });
 
     blocTest(
       'should emit failed if a WrongEvent is added',
       build: () => courseDetailBloc,
-      act: (CourseDetailBloc bloc) async => bloc.add(WrongEvent(
-          course: Course(),
-          courseId: 1,
-          isQuiz: false,
-          isAnswer: true,
-          answerId: 1)),
+      act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
+          WrongEvent(
+              course: referenceCourse,
+              courseId: 1,
+              isQuiz: false,
+              isAnswer: true,
+              answerId: 1)),
       expect: () => [
-        Loading(),
         isInstanceOf<Failed>(),
       ],
     );
@@ -48,19 +52,50 @@ void mainBloc() {
     blocTest(
       'should emit failed if server does not respond',
       build: () {
-        when(() => courseRepository.getCourse(1)).thenThrow(
+        when(() => courseRepository.getCourse(any())).thenThrow(
             NetworkException(message: 'Error,connection failed', uri: Uri()));
         return courseDetailBloc;
       },
-      act: (CourseDetailBloc bloc) async => bloc.add(CourseDetailRequested(
-          course: Course(),
-          courseId: 1,
-          isQuiz: false,
-          isAnswer: false,
-          answerId: 1)),
+      act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
+          CourseDetailRequested(
+              courseId: 1, isQuiz: false, isAnswer: false, answerId: 1)),
       expect: () => [
         Loading(),
-        Failed(err: 'Error, failed to contact server'),
+        isInstanceOf<Failed>(),
+      ],
+    );
+
+    blocTest(
+      'should emit CourseState when correct values are inserted',
+      build: () => courseDetailBloc,
+      act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
+          CourseDetailRequested(
+              course: referenceCourse,
+              courseId: 1,
+              isQuiz: false,
+              isAnswer: false,
+              answerId: 1)),
+      expect: () => [
+        Loading(),
+        isA<CourseState>(),
+      ],
+    );
+
+    blocTest(
+      'should emit Quiz when correct values are inserted',
+      build: () {
+        return courseDetailBloc;
+      },
+      act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
+          CourseDetailRequested(
+              course: referenceCourse,
+              courseId: 1,
+              isQuiz: true,
+              isAnswer: false,
+              answerId: 1)),
+      expect: () => [
+        Loading(),
+        isA<CourseState>(),
       ],
     );
   });

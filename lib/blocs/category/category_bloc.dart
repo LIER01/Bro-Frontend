@@ -10,7 +10,7 @@ import 'package:meta/meta.dart';
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   CategoryRepository repository;
 
-  CategoryBloc({@required this.repository})
+  CategoryBloc({required this.repository})
       : assert(repository != null),
         super(Loading());
 
@@ -19,13 +19,13 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     if (event is CategoriesRequested) {
       try {
         final result = await repository.getCategories();
-        final categories = result.data['categories'] as List<dynamic>;
+        final categories = result.data!['categories'] as List<dynamic>;
 
         final listOfCategories = categories
             .map(
               (dynamic e) => Category(
                 name: e['name'],
-                cover_photo: env['API_URL'] + e['cover_photo']['url'],
+                cover_photo: env['API_URL']! + e['cover_photo']['url'],
               ),
             )
             .toList();

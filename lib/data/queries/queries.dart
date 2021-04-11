@@ -40,6 +40,7 @@ final String getCourseQuery = r'''
     query getCourseQuery ($course_id: ID!){
     course (id:$course_id){
         title
+        description
         questions{
             question
             alternatives{

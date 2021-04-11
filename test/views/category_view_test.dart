@@ -22,7 +22,7 @@ void main() {
 
 void mainTest() {
   group('CategoryView', () {
-    CategoryBloc categoryBloc;
+    late CategoryBloc categoryBloc;
 
     setUp(() {
       categoryBloc = MockCategoryView();

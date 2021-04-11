@@ -26,8 +26,8 @@ void mainTest() async {
   await DotEnv.load();
 
   group('CategoryBloc', () {
-    CategoryRepository categoryRepository;
-    CategoryBloc categoryBloc;
+    late CategoryRepository categoryRepository;
+    late CategoryBloc categoryBloc;
 
     setUp(() {
       categoryRepository = MockCategoryRepository();

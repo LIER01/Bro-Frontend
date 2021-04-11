@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bro/utils/navigator_arguments.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({Key key}) : super(key: key);
+  HomeView({Key? key}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -16,7 +16,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  HomeBloc _homeBloc;
+  late HomeBloc _homeBloc;
   @override
   void initState() {
     super.initState();
@@ -105,6 +105,10 @@ class _HomeViewState extends State<HomeView> {
             ]));
       }
       ;
+      return Scaffold(
+        appBar: _buildAppBar(),
+        body: Center(child: Text('Det har skjedd en feil')),
+      );
     });
   }
 

@@ -1,12 +1,12 @@
-import 'package:bro/models/course.dart';
+import 'package:bro/models/reduced_course.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Public class for building tile
 class CourseListTile extends StatelessWidget {
-  CourseListTile({Key key, @required this.course}) : super(key: key);
+  CourseListTile({Key? key, required this.course}) : super(key: key);
 
-  final Course course;
+  final ReducedCourse course;
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +34,17 @@ class CourseListTile extends StatelessWidget {
 // Private class for constructing single course tile content
 class _CourseDescription extends StatelessWidget {
   const _CourseDescription({
-    this.title,
-    this.description,
-    this.length,
-    this.time,
-    this.difficulty,
+    required this.title,
+    required this.description,
+    required this.length,
+    required this.time,
+    required this.difficulty,
   });
 
   final String title;
   final String description;
   final int length;
-  final int time;
+  final int? time;
   final String difficulty;
 
   @override
@@ -85,7 +85,7 @@ class _CourseDescription extends StatelessWidget {
                           length.toString(),
                           style: Theme.of(context)
                               .textTheme
-                              .caption
+                              .caption!
                               .copyWith(color: Colors.white),
                         ),
                       ],
@@ -104,7 +104,7 @@ class _CourseDescription extends StatelessWidget {
                           time.toString() + ' min',
                           style: Theme.of(context)
                               .textTheme
-                              .caption
+                              .caption!
                               .copyWith(color: Colors.white),
                         ),
                       ],
@@ -123,7 +123,7 @@ class _CourseDescription extends StatelessWidget {
                           difficulty,
                           style: Theme.of(context)
                               .textTheme
-                              .caption
+                              .caption!
                               .copyWith(color: Colors.white),
                         ),
                       ],
