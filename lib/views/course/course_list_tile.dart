@@ -1,4 +1,5 @@
 import 'package:bro/models/reduced_course.dart';
+import 'package:bro/models/new_courses.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -6,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class CourseListTile extends StatelessWidget {
   CourseListTile({Key? key, required this.course}) : super(key: key);
 
-  final ReducedCourse course;
+  final List<LangCourse> course;
 
   @override
   Widget build(BuildContext context) {
