@@ -5,14 +5,11 @@ import 'package:bro/data/category_repository.dart';
 import 'package:bro/models/category.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:meta/meta.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   CategoryRepository repository;
 
-  CategoryBloc({required this.repository})
-      : assert(repository != null),
-        super(Loading());
+  CategoryBloc({required this.repository}) : super(Loading());
 
   @override
   Stream<CategoryState> mapEventToState(CategoryEvent event) async* {

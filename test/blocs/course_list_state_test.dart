@@ -1,7 +1,6 @@
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/models/reduced_course.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
 void main() {
   group('CourseListState', () {

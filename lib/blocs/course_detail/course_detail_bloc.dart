@@ -5,15 +5,11 @@ import 'package:bro/data/course_repository.dart';
 import 'package:bro/models/course.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:meta/meta.dart';
-import 'package:flutter/foundation.dart';
 
 class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
   CourseRepository repository;
 
-  CourseDetailBloc({required this.repository})
-      : assert(repository != null),
-        super(Loading());
+  CourseDetailBloc({required this.repository}) : super(Loading());
 
   @override
   Stream<CourseDetailState> mapEventToState(CourseDetailEvent event) async* {

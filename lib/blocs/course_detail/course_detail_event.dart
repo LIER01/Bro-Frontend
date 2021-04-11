@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:bro/models/course.dart';
-import 'package:meta/meta.dart';
 
 abstract class CourseDetailEvent extends Equatable {
   CourseDetailEvent();
