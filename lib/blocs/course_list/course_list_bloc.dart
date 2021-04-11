@@ -25,7 +25,9 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     if (event is CourseListRequested && !_hasReachedMax(currentState)) {
       try {
         if (currentState is Loading) {
-          yield await _retrieveCourses(event, 0);
+          var res = await _retrieveCourses(event, 0);
+          debugPrint("Test31323231q");
+          yield res;
           return;
         }
 
@@ -73,8 +75,12 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
             await repository.getNonLangCourses(curr_len, 10).then((res) {
           var res_list =
               List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-
+          debugPrint(res_list.toString());
+          debugPrint("Test");
+          debugPrint(LangCourseList.takeList(res_list).toString());
           final returnCourse = LangCourseList.takeList(res_list).langCourses;
+          debugPrint("test");
+          debugPrint(returnCourse.toString());
           return Success(courses: returnCourse, hasReachedMax: false);
         });
       }

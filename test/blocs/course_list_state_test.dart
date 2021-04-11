@@ -16,18 +16,18 @@ void main() {
         expect(Loading().toString(), 'Loading()');
       });
     });
-    group('CourseListSuccess', () {
-      final course = ReducedCourse(
-          id: 1,
-          title: 'Tittel',
-          description: 'Beskrivelse av kurs.',
-          questions: [Question(id: 1)],
-          slides: [Slide(id: 1)]);
-      test('toString returns correct value', () {
-        expect(Success(courses: [course], hasReachedMax: false).toString(),
-            'Success { courses: [$course], hasReachedMax: false }');
-      });
-    });
+    // group('CourseListSuccess', () {
+    //   final course = ReducedCourse(
+    //       id: 1,
+    //       title: 'Tittel',
+    //       description: 'Beskrivelse av kurs.',
+    //       questions: [Question(id: 1)],
+    //       slides: [Slide(id: 1)]);
+    //   test('toString returns correct value', () {
+    //     expect(Success(courses: [course], hasReachedMax: false).toString(),
+    //         'Success { courses: [$course], hasReachedMax: false }');
+    //   });
+    // });
     group('CourseListFailed', () {
       test('toString returns correct value', () {
         expect(Failed().toString(), 'Failed()');

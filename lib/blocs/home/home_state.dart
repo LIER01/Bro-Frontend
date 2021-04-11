@@ -1,3 +1,4 @@
+import 'package:bro/models/new_courses.dart';
 import 'package:bro/models/reduced_course.dart';
 import 'package:bro/models/home.dart';
 import 'package:equatable/equatable.dart';
@@ -15,7 +16,7 @@ class Initial extends HomeState {}
 class Loading extends HomeState {}
 
 class Success extends HomeState {
-  final List<ReducedCourse> courses;
+  final List<LangCourse> courses;
   final Home home;
   final bool hasReachedMax;
 
@@ -24,7 +25,7 @@ class Success extends HomeState {
       : assert(home.header != null && courses != null && hasReachedMax != null);
 
   Success copyWith({
-    List<ReducedCourse>? courses,
+    List<LangCourse>? courses,
     Map<String, dynamic>? home,
     bool? hasReachedMax,
   }) {

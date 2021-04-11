@@ -24,8 +24,7 @@ class Success extends CourseListState {
     required List<LangCourse> courses,
     bool? hasReachedMax,
   }) {
-    return Success(
-        courses: courses, hasReachedMax: hasReachedMax ?? this.hasReachedMax);
+    return Success(courses: courses, hasReachedMax: hasReachedMax ?? false);
   }
 
   @override

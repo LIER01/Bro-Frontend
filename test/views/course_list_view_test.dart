@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
+import 'package:bro/models/new_courses.dart';
 import 'package:bro/models/reduced_course.dart';
 import 'package:bro/views/course/course_list_view.dart';
 import 'package:flutter/material.dart';
@@ -50,16 +51,17 @@ void mainTest() {
     testWidgets('renders properly with courses', (WidgetTester tester) async {
       when(() => courseListBloc.state).thenReturn(
         Success(courses: [
-          ReducedCourse(
-            id: 1,
+          LangCourse(
+            id: '1',
             title: 'Kurstittel',
             description: 'Kursbeskrivelse',
             slides: [
-              Slide(id: 1),
+              Slides(id: '1'),
             ],
             questions: [
-              Question(id: 1),
+              Questions(id: '1'),
             ],
+            isRecommended: true,
           )
         ], hasReachedMax: true),
       );

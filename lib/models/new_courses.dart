@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 T? asT<T>(dynamic value) {
   if (value is T) {
     return value;
@@ -37,7 +39,8 @@ class LangCourse {
   });
 
   factory LangCourse.fromJson(Map<String, dynamic> jsonRes) {
-    final questions = jsonRes['questions'] is List ? <Questions>[] : null;
+    final List<Questions>? questions =
+        jsonRes['questions'] is List ? <Questions>[] : null;
     if (questions != null) {
       for (final dynamic item in jsonRes['questions']!) {
         if (item != null) {
@@ -46,7 +49,7 @@ class LangCourse {
       }
     }
 
-    final slides = jsonRes['slides'] is List ? <Slides>[] : null;
+    final List<Slides>? slides = jsonRes['slides'] is List ? <Slides>[] : null;
     if (slides != null) {
       for (final dynamic item in jsonRes['slides']!) {
         if (item != null) {
@@ -95,6 +98,7 @@ class LangCourse {
         'questions': questions,
         'slides': slides,
         'title': title,
+        'description': description,
         'publisher': publisher,
         'category': category,
         'is_recommended': isRecommended,

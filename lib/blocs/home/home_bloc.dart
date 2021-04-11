@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/data/home_repository.dart';
+import 'package:bro/models/new_courses.dart';
 import 'package:bro/models/reduced_course.dart';
 import 'package:bro/models/home.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +28,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           final homeResult = await repository.getHome();
           final homeData = homeResult.data!;
           final listOfCourses =
-              courses.map((dynamic e) => ReducedCourse.fromJson(e)).toList();
+              courses.map((dynamic e) => LangCourse.fromJson(e)).toList();
           final home = Home.fromJson(homeData);
           yield Success(
               home: home, courses: listOfCourses, hasReachedMax: false);
