@@ -1,5 +1,4 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
-import 'package:bro/models/course.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:bloc_test/bloc_test.dart';

@@ -1,8 +1,14 @@
+import 'package:bro/models/course.dart';
+import 'package:bro/models/home.dart';
+
 String header = 'Velkommen til Bro';
 String introduction =
-    'Flyktningtjenesten har ansvar for å bosette og etablere flyktninger som har fått avtale om bosetting i Lier kommune, samt koordinere innsatsen rundt voksne flyktninger i introduksjonsprgrammet.';
-Map<String, dynamic> mockedResult = {
-  'data': {
-    'home': {'header': header, 'introduction': introduction}
-  }
-};
+    'Dette er en introduksjons tekst som skal være passe lang.';
+
+Home mockedHome = Home(header: header, introduction: introduction);
+
+Course mockedCourse = Course(
+    title: 'Kurstittel',
+    description: 'Kursbeskrivelse',
+    slides: [],
+    questions: []);

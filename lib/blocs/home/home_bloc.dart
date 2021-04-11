@@ -1,23 +1,20 @@
 import 'dart:developer';
 import 'package:bro/blocs/home/home_bucket.dart';
+import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/data/home_repository.dart';
 import 'package:bro/models/reduced_course.dart';
 import 'package:bro/models/home.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeRepository repository;
 
-  HomeBloc({required this.repository})
-      : assert(repository != null),
-        super(Loading());
+  HomeBloc({required this.repository}) : super(Loading());
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     // Not able to access state methods without this. Do not know why.
-    final HomeState currentState = state;
+    final currentState = state;
     if (event is HomeEvent && !_hasReachedMax(currentState)) {
       try {
         if (currentState is Loading) {
@@ -37,6 +34,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (currentState is Success) {
           final result = await repository.getRecommendedCourses(
               currentState.courses.length, 4);
+
           final courses = result.data!['courses'];
           yield courses.length == 0
               ? currentState.copyWith(hasReachedMax: true)

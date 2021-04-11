@@ -1,7 +1,6 @@
 import 'package:bro/models/reduced_course.dart';
 import 'package:bro/models/home.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 abstract class HomeState extends Equatable {
   HomeState();
@@ -20,8 +19,15 @@ class Success extends HomeState {
   final bool hasReachedMax;
 
   Success(
-      {required this.courses, required this.hasReachedMax, required this.home})
-      : assert(home.header != null && courses != null && hasReachedMax != null);
+<<<<<<< HEAD
+      {required this.courses, required this.hasReachedMax, required this.home});
+=======
+      {@required this.courses,
+      @required this.hasReachedMax,
+      @required this.home})
+      : assert(home != null && courses != null && hasReachedMax != null);
+
+>>>>>>> 47949703b16a35503390214e8313928c7cb75293
 
   Success copyWith({
     List<ReducedCourse>? courses,
@@ -39,7 +45,7 @@ class Success extends HomeState {
 
   @override
   String toString() =>
-      'Success { home: $home, courses: $courses, hasReachedMax: $hasReachedMax }';
+      'Success { courses: $courses, hasReachedMax: $hasReachedMax, home: $home }';
 }
 
 class Failed extends HomeState {}

@@ -1,18 +1,17 @@
 import 'package:bro/blocs/simple_bloc_observer.dart';
-import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:bro/views/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// ignore: library_prefixes
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:flutter/services.dart';
+// ignore: library_efixes
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
-  await DotEnv.load();
+  await dot_env.load();
   runApp(App());
 }
 
@@ -58,6 +57,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Bro',
@@ -119,6 +122,13 @@ class App extends StatelessWidget {
             fontSize: 14.0,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.125,
+            color: Colors.white,
+          ),
+          bodyText1: GoogleFonts.notoSans(
+            fontSize: 16.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.5,
+            color: Colors.white,
           ),
         ),
       ),
