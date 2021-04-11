@@ -20,8 +20,11 @@ class Success extends HomeState {
   final bool hasReachedMax;
 
   Success(
-      {required this.courses, required this.hasReachedMax, required this.home})
-      : assert(home.header != null && courses != null && hasReachedMax != null);
+      {@required this.courses,
+      @required this.hasReachedMax,
+      @required this.home})
+      : assert(home != null && courses != null && hasReachedMax != null);
+
 
   Success copyWith({
     List<ReducedCourse>? courses,
@@ -39,7 +42,7 @@ class Success extends HomeState {
 
   @override
   String toString() =>
-      'Success { home: $home, courses: $courses, hasReachedMax: $hasReachedMax }';
+      'Success { courses: $courses, hasReachedMax: $hasReachedMax, home: $home }';
 }
 
 class Failed extends HomeState {}
