@@ -3,13 +3,9 @@ import 'dart:developer';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/models/reduced_course.dart';
-
-import 'package:bro/models/new_courses.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:meta/meta.dart';
-import 'dart:developer';
 
 class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   CourseRepository repository;
@@ -21,29 +17,31 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   @override
   Stream<CourseListState> mapEventToState(CourseListEvent event) async* {
     // Not able to access state methods without this. Do not know why.
-    final currentState = state;
+    final CourseListState currentState = state;
     if (event is CourseListRequested && !_hasReachedMax(currentState)) {
       try {
         if (currentState is Loading) {
-          yield await _retrieveCourses(event, 0);
+          final result = await repository.getCourses(0, 10);
+
+          final courses = result.data!['courses'] as List<dynamic>;
+
+          final listOfCourses =
+              courses.map((dynamic e) => ReducedCourse.fromJson(e)).toList();
+
+          yield Success(courses: listOfCourses, hasReachedMax: false);
           return;
         }
 
         if (currentState is Success) {
           final result =
-              await _retrieveCourses(event, currentState.courses.length);
-
-          if (result is Success && currentState.courses.isNotEmpty) {
-            yield result.courses.isEmpty
-                ? currentState.copyWith(
-                    hasReachedMax: true, courses: currentState.courses)
-                : result.copyWith(
-                    courses: result.courses, hasReachedMax: false);
-          } else if (result is Failed) {
-            yield result;
-          } else {
-            yield Failed();
-          }
+              await repository.getCourses(currentState.courses.length, 10);
+          final courses = result.data!['courses'];
+          yield courses.length == 0
+              ? currentState.copyWith(hasReachedMax: true)
+              : Success(
+                  courses: currentState.courses + courses,
+                  hasReachedMax: false,
+                );
         }
       } catch (e, stackTrace) {
         log(e.toString());
@@ -52,45 +50,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
         yield Failed();
       }
     }
-  }
-
-  Future<CourseListState> _retrieveCourses(
-      CourseListRequested event, int curr_len) async {
-    try {
-      if (event.preferredLanguageSlug != 'NO') {
-        final result = await repository
-            .getLangCourses(event.preferredLanguageSlug, curr_len, 10)
-            .then((res) {
-          var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse'])
-                ..addAll(List.from(res.data!['nonLangCourse']));
-
-          final returnCourse = LangCourseList.takeList(res_list).langCourses;
-          return Success(courses: returnCourse, hasReachedMax: false);
-        });
-      } else if (event.preferredLanguageSlug == 'NO') {
-        final result =
-            await repository.getNonLangCourses(curr_len, 10).then((res) {
-          var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse'])
-                ..addAll(List.from(res.data!['nonLangCourse']));
-
-          final returnCourse = LangCourseList.takeList(res_list).langCourses;
-          return Success(courses: returnCourse, hasReachedMax: false);
-        });
-      }
-      // return result;
-    } on NetworkException catch (e, stackTrace) {
-      log(e.toString());
-      log(stackTrace.toString());
-      return Failed();
-    } catch (e, stackTrace) {
-      log(e.toString());
-      log(stackTrace.toString());
-
-      return Failed();
-    }
-    return Failed();
   }
 }
 
