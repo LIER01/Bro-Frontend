@@ -98,6 +98,7 @@ query langCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
           id
         }
     title
+    description
     publisher{
       name
       avatar{
@@ -128,6 +129,7 @@ query langCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
           id
         }
     title
+    description
     publisher{
       name
       avatar{
@@ -162,6 +164,7 @@ query nonLangCoursesQuery ($start: Int!, $limit: Int!){
           id
         }
     title
+    description
     publisher{
       name
       avatar{

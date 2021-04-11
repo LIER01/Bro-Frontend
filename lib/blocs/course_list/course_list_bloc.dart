@@ -72,8 +72,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
         final result =
             await repository.getNonLangCourses(curr_len, 10).then((res) {
           var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse'])
-                ..addAll(List.from(res.data!['nonLangCourse']));
+              List<Map<String, dynamic>>.from(res.data!['LangCourse']);
 
           final returnCourse = LangCourseList.takeList(res_list).langCourses;
           return Success(courses: returnCourse, hasReachedMax: false);

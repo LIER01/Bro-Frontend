@@ -29,6 +29,7 @@ class LangCourse {
     required this.questions,
     required this.slides,
     required this.title,
+    required this.description,
     this.publisher,
     this.category,
     required this.isRecommended,
@@ -58,6 +59,7 @@ class LangCourse {
       questions: questions!,
       slides: slides!,
       title: asT<String>(jsonRes['title'])!,
+      description: asT<String>(jsonRes['description'])!,
       publisher: jsonRes['publisher'] == null
           ? null
           : Publisher.fromJson(
@@ -77,6 +79,7 @@ class LangCourse {
   final List<Questions> questions;
   final List<Slides> slides;
   final String title;
+  final String description;
   final Publisher? publisher;
   final Category? category;
   final bool isRecommended;
