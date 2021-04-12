@@ -1,46 +1,43 @@
 import 'package:bro/data/queries/resource_queries.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:meta/meta.dart';
 
 class ResourceRepository {
   final GraphQLClient client;
 
-  ResourceRepository({@required this.client}) : assert(client != null);
+  ResourceRepository({required this.client});
 
-  Future<QueryResult> getResources(int start, int limit) async {
+  Future<QueryResult> getResource(String lang) async {
     final _options = WatchQueryOptions(
-      document: parseString(getResourcesQuery),
+      document: parseString(getResourceQuery),
       fetchResults: true,
-      variables: <String, dynamic>{'start': start, 'limit': limit},
+      variables: <String, dynamic>{'lang': lang},
     );
 
     return await client.query(_options);
   }
 
-  Future<QueryResult> getResource(String lang, String group) async {
+  Future<QueryResult> getLangResources(
+      String lang_slug, int start, int limit) async {
     final _options = WatchQueryOptions(
-      document: parseString(getResourceQuery),
+      document: parseString(getLangResourcesQuery),
       fetchResults: true,
-      variables: <String, dynamic>{'lang': lang, 'group': group},
+      variables: <String, dynamic>{
+        'lang_slug': lang_slug,
+        'start': start,
+        'limit': limit
+      },
     );
 
-    // TEMP
-    final result = {
-      'title': 'yoo',
-      'description': 'Beskrivelse',
-      'publisher': 'Lier',
-      'category': 'Helse',
-      'is_recommended': true,
-      'references': [
-        {
-          'title': 'Referanse',
-          'description': 'Referansebeskrivelse',
-          'url': 'https://nhi.no',
-          'button_text': 'NHI Referanse',
-        }
-      ]
-    };
+    return await client.query(_options);
+  }
+
+  Future<QueryResult> getNonLangCourses(int start, int limit) async {
+    final _options = WatchQueryOptions(
+      document: parseString(getNonLangResourcesQuery),
+      fetchResults: true,
+      variables: <String, dynamic>{'start': start, 'limit': limit},
+    );
 
     return await client.query(_options);
   }

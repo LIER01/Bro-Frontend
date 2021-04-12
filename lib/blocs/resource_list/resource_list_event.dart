@@ -7,4 +7,11 @@ abstract class ResourceListEvent extends Equatable {
   List get props => [];
 }
 
-class ResourceListRequested extends ResourceListEvent {}
+class ResourceListRequested extends ResourceListEvent {
+  final String lang;
+
+  ResourceListRequested({required this.lang});
+
+  @override
+  List get props => [lang];
+}

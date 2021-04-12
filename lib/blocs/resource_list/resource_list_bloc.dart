@@ -1,66 +1,63 @@
 import 'dart:developer';
-
 import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/data/resource_repository.dart';
 import 'package:bro/models/resource.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
   ResourceRepository repository;
 
-  ResourceListBloc({@required this.repository})
-      : assert(repository != null),
-        super(Loading());
+  ResourceListBloc({required this.repository}) : super(Loading());
 
   @override
   Stream<ResourceListState> mapEventToState(ResourceListEvent event) async* {
-    // Not able to access state methods without this. Do not know why.
-    final currentState = state;
-    if (event is ResourceListRequested && !_hasReachedMax(currentState)) {
+    if (event is ResourceListRequested) {
       try {
-        if (currentState is Loading) {
-          final result = await repository.getResources(0, 10);
-
-          final resources = result.data['resources'] as List<dynamic>;
-
-          final listOfResources = resources
-              .map((dynamic e) => Resource(
-                    title: e['title'],
-                    description: e['description'],
-                    lang: e['lang'],
-                    group: e['group'],
-                    publisher: e['publisher'],
-                    category: e['category'],
-                    isRecommended: e['isRecommended'],
-                    references: e['references'],
-                  ))
-              .toList();
-
-          yield Success(resources: listOfResources, hasReachedMax: false);
-          return;
-        }
-
-        if (currentState is Success) {
-          final result =
-              await repository.getResources(currentState.resources.length, 10);
-          final resources = result.data['resources'];
-          yield resources.length == 0
-              ? currentState.copyWith(hasReachedMax: true)
-              : Success(
-                  resources: currentState.resources + resources,
-                  hasReachedMax: false,
-                );
-        }
+        yield await _retrieveResources(event, 'NO');
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
 
-        yield Failed();
+        yield Failed(err: 'Error, bad request.');
       }
     }
   }
-}
 
-bool _hasReachedMax(ResourceListState state) =>
-    state is Success && state.hasReachedMax;
+  Future<ResourceListState> _retrieveResources(
+      ResourceListRequested event, String pref_lang_slug) async {
+    try {
+      return await repository.getResource(pref_lang_slug).then((res) async {
+        if (res.data!.isEmpty) {
+          final fallbackCourseResult = await repository.getResource('NO');
+
+          final fallbackResource =
+              Data.fromJson(fallbackCourseResult.data!['resources']);
+
+          return Success(resources: fallbackResource);
+        } else if (res.data!.isNotEmpty) {
+          try {
+            final returnResource = Data.fromJson(res.data!['resources']);
+
+            return Success(resources: returnResource);
+          } catch (e, stackTrace) {
+            log(e.toString());
+            log(stackTrace.toString());
+            return Failed(err: 'Error, bad request');
+          }
+        } else {
+          return Failed(err: 'Error, bad request');
+        }
+      });
+    } on NetworkException catch (e, stackTrace) {
+      log(e.toString());
+      log(stackTrace.toString());
+      return Failed(err: 'Error, failed to contact server');
+    } catch (e, stackTrace) {
+      log(e.toString());
+      log(stackTrace.toString());
+
+      return Failed(err: 'Error, bad request');
+    }
+  }
+}

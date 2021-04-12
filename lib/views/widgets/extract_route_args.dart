@@ -2,10 +2,13 @@ import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/blocs/home/home_bucket.dart';
+import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/data/category_repository.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/home_repository.dart';
+import 'package:bro/data/resource_repository.dart';
 import 'package:bro/views/category_view/category_view.dart';
+import 'package:bro/views/category_view/resource_list_view.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:bro/views/course/course_list_view.dart';
 import 'package:bro/views/home_view/home_view.dart';
@@ -70,6 +73,29 @@ class ExtractCategoryListScreen extends StatelessWidget {
     );
   }
 }
+
+class ExtractResourceListScreen extends StatelessWidget {
+  static const routeName = '/resourceList';
+  final GraphQLClient client;
+
+  ExtractResourceListScreen({required this.client});
+
+  @override
+  Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as ResourceListArguments;
+    return BlocProvider(
+      create: (context) => ResourceListBloc(
+        repository: ResourceRepository(
+          client: client,
+        ),
+      ),
+      child: ResourceListView(category: args.category),
+    );
+  }
+}
+
+class ResourceBloc {}
 
 class ExtractRecommendedScreen extends StatelessWidget {
   static const routeName = '/homeView';

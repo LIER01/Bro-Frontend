@@ -61,23 +61,21 @@ class _CardContainerViewState extends State<CardContainerView> {
     if (list.isNotEmpty) {
       return Column(
         children: [
-          Expanded(
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: _controller,
-                    scrollDirection: Axis.horizontal,
-                    physics: PageScrollPhysics(),
-                    itemCount: list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InfoCard(
-                          title: list[index].title,
-                          description: list[index].description,
-                          image: list[index].media);
-                    })),
-          ),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: _controller,
+                  scrollDirection: Axis.horizontal,
+                  physics: PageScrollPhysics(),
+                  itemCount: list.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InfoCard(
+                        title: list[index].title,
+                        description: list[index].description,
+                        image: list[index].media);
+                  })),
           //Shows which page the user is on
           DotsIndicator(
               dotsCount: list.length,
@@ -101,7 +99,11 @@ class _CardContainerViewState extends State<CardContainerView> {
                               quarterTurns: 1,
                               child: Icon(
                                 Icons.arrow_circle_down,
-                                color: Colors.teal,
+                                color: indx != 0
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.3),
                                 size: MediaQuery.of(context).size.width * 0.175,
                               ))),
                     )),
