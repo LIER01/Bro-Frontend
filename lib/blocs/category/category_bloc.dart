@@ -25,7 +25,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             .map(
               (dynamic e) => Category(
                 name: e['name'],
-                cover_photo: env['API_URL'] + e['cover_photo']['url'],
+                cover_photo: e['cover_photo']['url'],
               ),
             )
             .toList();

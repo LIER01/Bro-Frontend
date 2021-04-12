@@ -1,4 +1,5 @@
 import 'package:bro/blocs/simple_bloc_observer.dart';
+import 'package:bro/utils/navigator_arguments.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -102,6 +103,8 @@ class App extends StatelessWidget {
             ExtractCategoryListScreen(client: _client()),
         ExtractRecommendedScreen.routeName: (context) =>
             ExtractRecommendedScreen(client: _client()),
+        ExtractResourceDetailScreen.routeName: (context) =>
+            ExtractResourceDetailScreen(client: _client()),
       },
       home: Home(),
     );
@@ -129,6 +132,11 @@ class Home extends StatelessWidget {
             title: Text('HomeView'),
             onTap: () => Navigator.of(context).pushNamed('/homeView'),
           ),
+          ListTile(
+              title: Text('ResourceDetailView'),
+              onTap: () => Navigator.of(context).pushNamed('/resourceDetail',
+                  arguments:
+                      ResourceDetailArguments(lang: 'no', group: 'resepter'))),
         ],
       ),
     );

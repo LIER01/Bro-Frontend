@@ -1,11 +1,14 @@
+import 'package:bro/blocs/resource_detail/resource_detail_bucket.dart';
 import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/blocs/course_list/course_list_bloc.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/blocs/home/home_bloc.dart';
+import 'package:bro/data/resource_repository.dart';
 import 'package:bro/data/category_repository.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/home_repository.dart';
-import 'package:bro/views/category_view/category_view.dart';
+import 'package:bro/views/resource_detail/resource_detail_view.dart';
+import 'package:bro/views/category/category_view.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:bro/views/course/course_list_view.dart';
 import 'package:bro/views/home_view/home_view.dart';
@@ -13,6 +16,27 @@ import 'package:flutter/material.dart';
 import 'package:bro/utils/navigator_arguments.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+
+class ExtractResourceDetailScreen extends StatelessWidget {
+  static const routeName = '/resourceDetail';
+  final GraphQLClient client;
+  ExtractResourceDetailScreen({@required this.client});
+
+  @override
+  Widget build(BuildContext context) {
+    final ResourceDetailArguments args =
+        ModalRoute.of(context).settings.arguments;
+
+    return BlocProvider(
+      create: (context) => ResourceDetailBloc(
+        repository: ResourceRepository(
+          client: client,
+        ),
+      ),
+      child: ResourceDetailView(lang: args.lang, group: args.group),
+    );
+  }
+}
 
 class ExtractCourseDetailScreen extends StatelessWidget {
   static const routeName = '/courseDetail';
