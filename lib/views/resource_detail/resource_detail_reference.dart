@@ -11,37 +11,34 @@ class ResourceDetailReference extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
           Container(
-            width: double.infinity,
             alignment: Alignment.topLeft,
             child: Text(reference.referenceTitle),
           ),
           Container(
-            width: double.infinity,
             alignment: Alignment.topLeft,
             child: Text(reference.referenceDescription),
           ),
-          Expanded(
-            child: Align(
-              child: GestureDetector(
-                onTap: () {
-                  debugPrint('Heisann');
-                },
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    reference.referenceButtonText,
-                    style: Theme.of(context).textTheme.button!.copyWith(
-                        color: Theme.of(context).scaffoldBackgroundColor),
-                  ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: GestureDetector(
+              onTap: () {
+                debugPrint('Heisann');
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  reference.referenceButtonText,
+                  style: Theme.of(context).textTheme.button!.copyWith(
+                      color: Theme.of(context).scaffoldBackgroundColor),
                 ),
               ),
             ),

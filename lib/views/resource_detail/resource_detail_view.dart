@@ -111,8 +111,9 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.40,
                   child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                     itemCount: resource.references.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ResourceDetailReference(
