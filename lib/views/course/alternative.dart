@@ -58,7 +58,7 @@ class _AlternativeState extends State<Alternative> {
               Align(
                   alignment: Alignment.topRight,
                   child: Icon(
-                    widget.isTrue ? Icons.check_box : Icons.clear,
+                    widget.isPressed ? Icons.check_box : Icons.clear,
                     color: validColor,
                     size: widget.isPressed ? 35 : 0,
                   ))
