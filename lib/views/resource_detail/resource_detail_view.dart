@@ -111,6 +111,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                   ),
                 ),
                 Container(
+                  height: MediaQuery.of(context).size.height * 0.40,
                   child: ListView.builder(
                     itemCount: resource.references.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -118,7 +119,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                           reference: resource.references[index]);
                     },
                   ),
-                )
+                ),
               ],
             ),
           );

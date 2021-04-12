@@ -11,12 +11,18 @@ class ResourceDetailReference extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
           Container(
+            width: double.infinity,
+            alignment: Alignment.topLeft,
             child: Text(reference.referenceTitle),
           ),
           Container(
+            width: double.infinity,
+            alignment: Alignment.topLeft,
             child: Text(reference.referenceDescription),
           ),
           Expanded(
