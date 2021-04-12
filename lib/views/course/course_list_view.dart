@@ -4,9 +4,10 @@ import 'package:bro/views/widgets/bottom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bro/utils/navigator_arguments.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 
 class CourseListView extends StatefulWidget {
-  CourseListView({Key key}) : super(key: key);
+  CourseListView({Key? key}) : super(key: key);
 
   @override
   _CourseListViewState createState() => _CourseListViewState();
@@ -15,7 +16,7 @@ class CourseListView extends StatefulWidget {
 class _CourseListViewState extends State<CourseListView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  CourseListBloc _courseListBloc;
+  late CourseListBloc _courseListBloc;
 
   @override
   void initState() {
@@ -56,17 +57,18 @@ class _CourseListViewState extends State<CourseListView> {
             appBar: _buildAppBar(),
             body: ListView.builder(
               itemCount: state.hasReachedMax
-                  ? state.courses.length
-                  : state.courses.length + 1,
+                  ? state.courses.length + 1
+                  : state.courses.length,
               controller: _scrollController,
               itemBuilder: (BuildContext context, int index) {
                 return index >= state.courses.length
                     ? BottomLoader()
                     : GestureDetector(
                         onTap: () => Navigator.of(context).pushNamed(
-                            '/courseDetail',
-                            arguments:
-                                CourseDetailArguments(courseId: index + 1)),
+                            ExtractCourseDetailScreen.routeName,
+                            arguments: CourseDetailArguments(
+                                courseGroup:
+                                    state.courses[index].courseGroup!.slug)),
                         child: CourseListTile(
                           course: state.courses[index],
                         ),
@@ -75,6 +77,10 @@ class _CourseListViewState extends State<CourseListView> {
             ),
           );
         }
+        return Scaffold(
+          appBar: _buildAppBar(),
+          body: Center(child: Text('Det har skjedd en feil')),
+        );
       },
     );
   }

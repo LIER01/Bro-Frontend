@@ -22,7 +22,7 @@ void main() {
 
 void mainTest() {
   group('CategoryView', () {
-    CategoryBloc categoryBloc;
+    late CategoryBloc categoryBloc;
 
     setUp(() {
       categoryBloc = MockCategoryView();
@@ -58,7 +58,10 @@ void mainTest() {
       when(() => categoryBloc.state).thenReturn(
         Success(
           categories: [
-            Category(name: 'Testkategori', cover_photo: '/image.url.png')
+            Category(
+                cover_photo: CoverPhoto(url: '/image.url.png'),
+                category_name: 'Testkategori',
+                description: 'testdescription')
           ],
         ),
       );

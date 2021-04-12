@@ -5,7 +5,7 @@ void main() {
   group('CourseListEvents', () {
     group('CourseListRequested', () {
       test('toString returns correct value', () {
-        expect(CourseListRequested().toString(), 'CourseListRequested()');
+        expect(CourseListRequested().toString(), 'CourseListRequested(NO)');
       });
     });
   });

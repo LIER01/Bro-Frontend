@@ -1,8 +1,9 @@
 final String getCategoryQuery = r'''
 query {
   categories {
-    name,
-    cover_photo {url}
+    category_name,
+    cover_photo {url},
+    description
   }
 }
 ''';

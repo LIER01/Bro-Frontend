@@ -1,6 +1,5 @@
-import 'package:bro/models/course.dart';
+import 'package:bro/models/new_course.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 abstract class CourseDetailState extends Equatable {
   CourseDetailState();
@@ -12,19 +11,17 @@ abstract class CourseDetailState extends Equatable {
 class Loading extends CourseDetailState {}
 
 class CourseState extends CourseDetailState {
-  final Course course;
+  final Courses course;
   final bool isQuiz;
   final bool isAnswer;
-  final int answerId;
+  final int? answerId;
 
   CourseState(
-      {@required this.course,
-      @required this.isQuiz,
-      this.isAnswer,
+      {required this.course,
+      required this.isQuiz,
+      required this.isAnswer,
       this.answerId})
-      : assert(course != null),
-        assert(isQuiz != null),
-        assert(!isAnswer || (isAnswer && answerId != null));
+      : assert(!isAnswer || (isAnswer && answerId != null));
 
   @override
   List<Object> get props => [course, isQuiz, isAnswer];
@@ -32,7 +29,7 @@ class CourseState extends CourseDetailState {
 
 class Failed extends CourseDetailState {
   final String err;
-  Failed({@required this.err}) : assert(err != null);
+  Failed({required this.err});
 
   @override
   List<Object> get props => [err];
