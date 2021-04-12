@@ -9,7 +9,6 @@ T? asT<T>(dynamic value) {
 
 class Courses {
   Courses({
-    required this.id,
     required this.questions,
     required this.slides,
     required this.title,
@@ -40,7 +39,6 @@ class Courses {
       }
     }
     return Courses(
-      id: asT<String>(jsonRes['id'])!,
       questions: questions!,
       slides: slides!,
       title: asT<String>(jsonRes['title'])!,
@@ -63,7 +61,6 @@ class Courses {
     );
   }
 
-  final String id;
   final List<Questions> questions;
   final List<Slides> slides;
   final String title;
@@ -80,7 +77,6 @@ class Courses {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
         'questions': questions,
         'slides': slides,
         'title': title,

@@ -54,11 +54,11 @@ class CourseRepository {
     return await client.query(_options);
   }
 
-  Future<QueryResult> getNewCourseQuery(int i) async {
+  Future<QueryResult> getNewCourseQuery(String group, String lang) async {
     final _options = WatchQueryOptions(
       document: parseString(getNewCourse),
       fetchResults: true,
-      variables: <String, dynamic>{'course_id': i},
+      variables: <String, dynamic>{'group_slug': group, 'lang_slug': lang},
     );
 
     return await client.query(_options);

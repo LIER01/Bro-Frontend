@@ -63,8 +63,21 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
             .getLangCourses(event.preferredLanguageSlug, curr_len, 10)
             .then((res) {
           var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse'])
-                ..addAll(List.from(res.data!['nonLangCourse']));
+              List<Map<String, dynamic>>.from(res.data!['LangCourse']);
+          // ..addAll(List.from(res.data!['nonLangCourse']));
+          for (final Map<String, dynamic> item
+              in List.from(res.data!['nonLangCourse'])) {
+            var slug = item['course_group']['slug'];
+            var has_copy = false;
+            for (final Map<String, dynamic> target in res_list) {
+              if (slug == target['course_group']['slug']) {
+                has_copy = true;
+              }
+            }
+            if (!has_copy) {
+              res_list.add(item);
+            }
+          }
 
           final returnCourse = LangCourseList.takeList(res_list).langCourses;
           return Success(courses: returnCourse, hasReachedMax: false);

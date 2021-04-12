@@ -67,7 +67,8 @@ class _CourseListViewState extends State<CourseListView> {
                         onTap: () => Navigator.of(context).pushNamed(
                             ExtractCourseDetailScreen.routeName,
                             arguments: CourseDetailArguments(
-                                courseId: state.courses[index].id)),
+                                courseGroup:
+                                    state.courses[index].courseGroup!.slug)),
                         child: CourseListTile(
                           course: state.courses[index],
                         ),

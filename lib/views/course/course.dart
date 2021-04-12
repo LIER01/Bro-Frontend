@@ -13,8 +13,8 @@ import 'quiz.dart';
 import 'package:bro/views/course/exit_verification.dart';
 
 class CourseDetailView extends StatefulWidget {
-  final int courseId;
-  CourseDetailView({required this.courseId, Key? key}) : super(key: key);
+  final String courseGroup;
+  CourseDetailView({required this.courseGroup, Key? key}) : super(key: key);
 
   @override
   _CourseDetailViewState createState() => _CourseDetailViewState();
@@ -29,7 +29,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
     super.initState();
     _courseDetailBloc = BlocProvider.of<CourseDetailBloc>(context);
     _courseDetailBloc.add(CourseDetailRequested(
-      courseId: widget.courseId,
+      courseGroupSlug: widget.courseGroup,
       isQuiz: false,
       isAnswer: false,
       answerId: null,

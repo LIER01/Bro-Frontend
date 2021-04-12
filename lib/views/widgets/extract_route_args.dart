@@ -30,7 +30,7 @@ class ExtractCourseDetailScreen extends StatelessWidget {
           client: client,
         ),
       ),
-      child: CourseDetailView(courseId: args.courseId),
+      child: CourseDetailView(courseGroup: args.courseGroup),
     );
   }
 }

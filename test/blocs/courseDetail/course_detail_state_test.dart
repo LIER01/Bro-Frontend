@@ -7,8 +7,8 @@ import '../../mock_data/new_course_mock.dart';
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<CourseDetailEvent>(
-        CourseDetailRequested(courseId: 1, isQuiz: false, isAnswer: false));
+    registerFallbackValue<CourseDetailEvent>(CourseDetailRequested(
+        courseGroupSlug: 'k1', isQuiz: false, isAnswer: false));
   });
 
   mainEvent();
@@ -20,15 +20,15 @@ void mainEvent() {
         'should throws assertionerror when inserting "isAnswer":true but not inserting answerId',
         () {
       expect(
-          () =>
-              CourseDetailRequested(courseId: 1, isQuiz: true, isAnswer: true),
+          () => CourseDetailRequested(
+              courseGroupSlug: 'k1', isQuiz: true, isAnswer: true),
           throwsAssertionError);
     });
 
     test('should succeed when inserting "isAnswer and answerId ', () {
       expect(
           CourseDetailRequested(
-              courseId: 1, isQuiz: true, isAnswer: true, answerId: 1),
+              courseGroupSlug: 'k1', isQuiz: true, isAnswer: true, answerId: 1),
           isInstanceOf<CourseDetailRequested>());
     });
 
@@ -42,7 +42,9 @@ void mainEvent() {
     test(
         'should return instance of CourseDetailRequested when passing courseId but not course',
         () {
-      expect(CourseDetailRequested(courseId: 1, isQuiz: true, isAnswer: false),
+      expect(
+          CourseDetailRequested(
+              courseGroupSlug: 'k1', isQuiz: true, isAnswer: false),
           isInstanceOf<CourseDetailRequested>());
     });
 
@@ -61,7 +63,7 @@ void mainEvent() {
       expect(
           CourseDetailRequested(
               course: referenceCourses,
-              courseId: 1,
+              courseGroupSlug: 'k1',
               isQuiz: true,
               isAnswer: true,
               answerId: 1),

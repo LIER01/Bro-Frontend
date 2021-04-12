@@ -21,15 +21,15 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
     // Not able to access state methods without this. Do not know why.
     if (event is CourseDetailRequested) {
       yield Loading();
-      if ((event.course == null && event.courseId == null) ||
+      if ((event.course == null && event.courseGroupSlug == null) ||
           (event.isAnswer == true && event.answerId == null)) {
         yield Failed(err: 'Error, bad request');
         return;
       }
       try {
         if (event.isQuiz == false) {
-          if (event.course == null && event.courseId != null) {
-            yield await _retrieveCourse(event);
+          if (event.course == null && event.courseGroupSlug != null) {
+            yield await _retrieveCourse(event, 'NO');
             return;
           } else if ((event.course != null)) {
             yield CourseState(
@@ -46,10 +46,10 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
             return;
           }
         } else if (event.isQuiz == true) {
-          if (event.course == null && event.courseId != null) {
-            yield await _retrieveCourse(event);
+          if (event.course == null && event.courseGroupSlug != null) {
+            yield await _retrieveCourse(event, 'NO');
             return;
-          } else if (event.course == null && event.courseId != null) {}
+          } else if (event.course == null && event.courseGroupSlug != null) {}
           yield CourseState(
               course: event.course!,
               isQuiz: event.isQuiz,
@@ -75,18 +75,39 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
     return;
   }
 
-  Future<CourseDetailState> _retrieveCourse(CourseDetailRequested event) async {
+  Future<CourseDetailState> _retrieveCourse(
+      CourseDetailRequested event, String pref_lang_slug) async {
     try {
-      return await repository.getNewCourseQuery(event.courseId!).then((res) {
-        debugPrint('Test2');
-        debugPrint(res.data!.toString());
-        final returnCourse = Courses.fromJson(res.data!['course']);
-        debugPrint(returnCourse.toString());
-        return CourseState(
-            course: returnCourse,
-            isQuiz: event.isQuiz,
-            isAnswer: event.isAnswer,
-            answerId: event.answerId);
+      return await repository
+          .getNewCourseQuery(event.courseGroupSlug!, pref_lang_slug)
+          .then((res) async {
+        if (res.data!.isEmpty) {
+          final fallbackCourseResult =
+              await repository.getNewCourseQuery(event.courseGroupSlug!, 'NO');
+          final fallbackCourse =
+              Courses.fromJson(fallbackCourseResult.data!['courses'][0]);
+          return CourseState(
+              course: fallbackCourse,
+              isQuiz: event.isQuiz,
+              isAnswer: event.isAnswer,
+              answerId: event.answerId);
+        } else if (res.data!.isNotEmpty) {
+          try {
+            final returnCourse = Courses.fromJson(res.data!['courses'][0]);
+
+            return CourseState(
+                course: returnCourse,
+                isQuiz: event.isQuiz,
+                isAnswer: event.isAnswer,
+                answerId: event.answerId);
+          } catch (e, stackTrace) {
+            log(e.toString());
+            log(stackTrace.toString());
+            return Failed(err: 'Error, bad request 2222');
+          }
+        } else {
+          return Failed(err: 'Error, bad request');
+        }
       });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
@@ -96,7 +117,7 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
       log(e.toString());
       log(stackTrace.toString());
 
-      return Failed(err: 'Error, bad request 56');
+      return Failed(err: 'Error, bad request');
     }
   }
 }

@@ -60,7 +60,10 @@ void mainBloc() {
       },
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
-              courseId: 1, isQuiz: false, isAnswer: false, answerId: 1)),
+              courseGroupSlug: 'k1',
+              isQuiz: false,
+              isAnswer: false,
+              answerId: 1)),
       expect: () => [
         Loading(),
         isInstanceOf<Failed>(),
@@ -73,7 +76,7 @@ void mainBloc() {
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
               course: referenceCourses,
-              courseId: 1,
+              courseGroupSlug: 'k1',
               isQuiz: false,
               isAnswer: false,
               answerId: 1)),
@@ -91,7 +94,7 @@ void mainBloc() {
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
               course: referenceCourses,
-              courseId: 1,
+              courseGroupSlug: 'k1',
               isQuiz: true,
               isAnswer: false,
               answerId: 1)),

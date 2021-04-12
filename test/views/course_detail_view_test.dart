@@ -21,8 +21,8 @@ class MockCourseRepository extends Mock implements CourseRepository {}
 void main() {
   setUpAll(() {
     registerFallbackValue<CourseDetailState>(Failed(err: 'Failed'));
-    registerFallbackValue<CourseDetailEvent>(
-        CourseDetailRequested(courseId: 1, isAnswer: false, isQuiz: false));
+    registerFallbackValue<CourseDetailEvent>(CourseDetailRequested(
+        courseGroupSlug: 'k1', isAnswer: false, isQuiz: false));
   });
 
   mainTest();
@@ -56,7 +56,7 @@ void mainTest() {
           child: MaterialApp(
             home: Scaffold(
               body: CourseDetailView(
-                courseId: 1,
+                courseGroup: 'k1',
               ),
             ),
           ),

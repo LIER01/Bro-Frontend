@@ -91,8 +91,10 @@ class _HomeViewState extends State<HomeView> {
                                         .pushNamed(
                                             ExtractCourseDetailScreen.routeName,
                                             arguments: CourseDetailArguments(
-                                                courseId:
-                                                    state.courses[index].id)),
+                                                courseGroup: state
+                                                    .courses[index]
+                                                    .courseGroup!
+                                                    .slug)),
                                     child: CourseListTile(
                                       course: state.courses[index],
                                     )))

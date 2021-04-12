@@ -242,9 +242,15 @@ query nonLangCoursesQuery ($start: Int!, $limit: Int!){
 ''';
 
 final String getNewCourse = r'''
-    query getCourseQuery ($course_id: ID!){
-    course (id:$course_id){
-         id
+query getNewCourseQuery ($group_slug: String!, $lang_slug: String!){
+    courses (where:{
+      _where:[{
+        language:{slug:$lang_slug}
+      }
+        {
+          course_group:{slug:$group_slug}
+        }]
+    }){
         questions{
             question
             alternatives{
