@@ -1,7 +1,7 @@
 import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
-import 'package:bro/blocs/home/home_bloc.dart';
+import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/data/category_repository.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/home_repository.dart';

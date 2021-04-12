@@ -55,7 +55,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<HomeState> _retrieveCourses(HomeRequested event, int curr_len) async {
     try {
       var home = await repository.getHome();
-      var ret_home = Home.fromJson(home.data!);
+      var ret_home = Home.fromJson(home.data!['home']);
       return await repository
           .getRecommendedCourses(event.preferredLanguageSlug, curr_len, 4)
           .then((res) {
