@@ -1,6 +1,5 @@
-import 'package:bro/models/course.dart';
+import 'package:bro/models/new_courses.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 abstract class CourseListState extends Equatable {
   CourseListState();
@@ -14,19 +13,16 @@ class Initial extends CourseListState {}
 class Loading extends CourseListState {}
 
 class Success extends CourseListState {
-  final List<Course> courses;
+  final List<LangCourse> courses;
   final bool hasReachedMax;
 
-  Success({@required this.courses, @required this.hasReachedMax})
-      : assert(courses != null && hasReachedMax != null);
+  Success({required this.courses, required this.hasReachedMax});
 
   Success copyWith({
-    List<Course> courses,
-    bool hasReachedMax,
+    required List<LangCourse> courses,
+    bool? hasReachedMax,
   }) {
-    return Success(
-        courses: courses ?? this.courses,
-        hasReachedMax: hasReachedMax ?? this.hasReachedMax);
+    return Success(courses: courses, hasReachedMax: hasReachedMax ?? false);
   }
 
   @override

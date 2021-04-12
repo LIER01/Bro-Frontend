@@ -12,7 +12,7 @@ class CategoryView extends StatefulWidget {
 }
 
 class _CategoryViewState extends State<CategoryView> {
-  CategoryBloc _categoryBloc;
+  late CategoryBloc _categoryBloc;
   List<Category> categories = [];
   int currentIndex = 0;
 
@@ -98,9 +98,9 @@ class _CategoryViewState extends State<CategoryView> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(
-                              categories[currentIndex].cover_photo),
+                              categories[currentIndex].cover_photo.url),
                           onError: (exception, stackTrace) {
-                            return Text('Could not load image');
+                            log(exception.toString());
                           },
                           fit: BoxFit.cover,
                         ),
@@ -155,7 +155,7 @@ class _CategoryViewState extends State<CategoryView> {
                               Expanded(
                                 child: Center(
                                   child: Text(
-                                    categories[currentIndex].name,
+                                    categories[currentIndex].category_name,
                                     style:
                                         Theme.of(context).textTheme.headline4,
                                   ),
@@ -176,7 +176,7 @@ class _CategoryViewState extends State<CategoryView> {
                           Expanded(
                             child: Align(
                               child: Text(
-                                'Her kommer beskrivelsen',
+                                categories[currentIndex].description,
                               ),
                             ),
                           ),
@@ -197,7 +197,7 @@ class _CategoryViewState extends State<CategoryView> {
                                       'SE OVERSIKT',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .button
+                                          .button!
                                           .copyWith(
                                               color: Theme.of(context)
                                                   .scaffoldBackgroundColor),
@@ -216,6 +216,11 @@ class _CategoryViewState extends State<CategoryView> {
             ),
           );
         }
+        return Scaffold(
+          body: Center(
+            child: Text('ERROR'),
+          ),
+        );
       },
     );
   }
