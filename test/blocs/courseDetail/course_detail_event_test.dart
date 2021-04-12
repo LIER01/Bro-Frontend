@@ -1,8 +1,6 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-
-import '../../mock_data/course_detail_mock.dart';
 import '../../mock_data/new_course_mock.dart';
 
 void main() {

@@ -121,7 +121,6 @@ class _HomeTabState extends State<HomeTab> {
                   default:
                     throw Exception('Invalid route: ${settings.name}');
                 }
-                ;
               });
         });
   }

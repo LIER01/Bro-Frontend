@@ -1,6 +1,5 @@
 import 'package:bro/blocs/course_detail/course_detail_bloc.dart';
 import 'package:bro/blocs/course_detail/course_detail_event.dart';
-import 'package:bro/models/course.dart';
 import 'package:bro/models/new_course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

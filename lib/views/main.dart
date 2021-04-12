@@ -2,9 +2,7 @@ import 'package:bro/blocs/simple_bloc_observer.dart';
 import 'package:bro/views/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart';
 // ignore: library_efixes
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
@@ -44,16 +42,7 @@ class Home extends StatelessWidget {
 
 // This widget is the root of your application.
 class App extends StatelessWidget {
-  var navigatorKey = GlobalKey<NavigatorState>();
-
-  GraphQLClient _client() {
-    final _link = HttpLink(env['API_URL']! + '/graphql');
-
-    return GraphQLClient(
-      cache: GraphQLCache(store: InMemoryStore()),
-      link: _link,
-    );
-  }
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {

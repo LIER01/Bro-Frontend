@@ -1,4 +1,3 @@
-import 'package:bro/models/course.dart';
 import 'package:bro/models/new_course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

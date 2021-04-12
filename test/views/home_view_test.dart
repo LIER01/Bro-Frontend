@@ -1,9 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/home/home_bucket.dart';
-import 'package:bro/models/course.dart';
 import 'package:bro/models/home.dart';
 import 'package:bro/models/new_courses.dart';
-import 'package:bro/models/reduced_course.dart';
 import 'package:bro/views/home_view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +9,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../mock_data/Non_Lang_courses_list_mock.dart';
-import '../mock_data/course_mock.dart';
 
 class MockHomeView extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
 

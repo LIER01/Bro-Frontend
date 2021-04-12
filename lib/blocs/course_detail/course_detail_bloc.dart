@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/data/course_repository.dart';
-import 'package:bro/models/course.dart';
 import 'package:bro/models/new_course.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';

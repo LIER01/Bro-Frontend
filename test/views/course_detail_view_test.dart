@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/data/course_repository.dart';
-import 'package:bro/models/course.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,14 +31,12 @@ void mainTest() {
   group('CourseDetailView', () {
     CourseRepository courseRepository;
     late CourseDetailBloc courseDetailBloc;
-    late Course refCourse;
 
     setUp(() {
       courseRepository = MockCourseRepository();
       when(() => courseRepository.getCourse(any())).thenAnswer((_) =>
           Future.value(QueryResult(source: null, data: course_detail_mock)));
       courseDetailBloc = MockCourseDetailBloc();
-      refCourse = referenceCourse;
     });
 
     tearDown(() {

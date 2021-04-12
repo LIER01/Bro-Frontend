@@ -14,7 +14,7 @@ void main() {
       final category = Category(
         category_name: 'Kategori',
         description: 'Testbeskrivelse',
-        cover_photo: CoverPhoto(url: "Test"),
+        cover_photo: CoverPhoto(url: 'Test'),
       );
 
       test('toString returns correct value', () {

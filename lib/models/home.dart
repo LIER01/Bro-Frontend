@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class Home {
   Home({required this.header, required this.introduction});
   final String header;
