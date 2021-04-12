@@ -6,7 +6,6 @@ class Home {
   final String introduction;
 
   factory Home.fromJson(Map<String, dynamic> json) {
-    debugPrint(json.toString());
     return Home(
       header: json['header'],
       introduction: json['introduction'],

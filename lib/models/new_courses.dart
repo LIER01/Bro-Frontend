@@ -17,10 +17,7 @@ class LangCourseList {
   final List<LangCourse> langCourses;
 
   factory LangCourseList.takeList(List<Map<String, dynamic>> list) {
-    debugPrint("Test144");
     List<LangCourse> returnList = [];
-
-    debugPrint("Test421312");
     for (final Map<String, dynamic> item in list) {
       if (item['course_group'] != null) {
         returnList.add(LangCourse.fromJson(item));
