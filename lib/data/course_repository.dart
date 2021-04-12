@@ -1,14 +1,12 @@
 import 'dart:async';
-
 import 'package:bro/data/queries/queries.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:meta/meta.dart';
 
 class CourseRepository {
   final GraphQLClient client;
 
-  CourseRepository({@required this.client}) : assert(client != null);
+  CourseRepository({required this.client});
 
   // Course type should be made in a models/ directory
   Future<QueryResult> getCourses(int start, int limit) async {
@@ -26,6 +24,41 @@ class CourseRepository {
       document: parseString(getCourseQuery),
       variables: {'course_id': i},
       fetchResults: true,
+    );
+
+    return await client.query(_options);
+  }
+
+  Future<QueryResult> getLangCourses(
+      String lang_slug, int start, int limit) async {
+    final _options = WatchQueryOptions(
+      document: parseString(langCoursesQuery),
+      fetchResults: true,
+      variables: <String, dynamic>{
+        'lang_slug': lang_slug,
+        'start': start,
+        'limit': limit
+      },
+    );
+
+    return await client.query(_options);
+  }
+
+  Future<QueryResult> getNonLangCourses(int start, int limit) async {
+    final _options = WatchQueryOptions(
+      document: parseString(nonLangCoursesQuery),
+      fetchResults: true,
+      variables: <String, dynamic>{'start': start, 'limit': limit},
+    );
+
+    return await client.query(_options);
+  }
+
+  Future<QueryResult> getNewCourseQuery(String group, String lang) async {
+    final _options = WatchQueryOptions(
+      document: parseString(getNewCourse),
+      fetchResults: true,
+      variables: <String, dynamic>{'group_slug': group, 'lang_slug': lang},
     );
 
     return await client.query(_options);

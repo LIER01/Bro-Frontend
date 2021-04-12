@@ -8,15 +8,16 @@ class ResourceDetailView extends StatefulWidget {
   final String lang;
   final String group;
 
-  ResourceDetailView({Key key, this.lang, this.group}) : super(key: key);
+  ResourceDetailView({Key? key, required this.lang, required this.group})
+      : super(key: key);
 
   @override
   _ResourceDetailViewState createState() => _ResourceDetailViewState();
 }
 
 class _ResourceDetailViewState extends State<ResourceDetailView> {
-  ResourceDetailBloc _resourceDetailBloc;
-  Resource resource;
+  late ResourceDetailBloc _resourceDetailBloc;
+  late Resources resource;
 
   @override
   void initState() {
@@ -75,6 +76,11 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
             ),
           );
         }
+
+        return Scaffold(
+          appBar: _buildAppBar(),
+          body: Center(child: Text('Det har skjedd en feil')),
+        );
       },
     );
   }

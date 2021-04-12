@@ -1,23 +1,17 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/models/course.dart';
-import 'package:meta/meta.dart';
 
-class WrongEvent extends CourseDetailEvent implements CourseDetailRequested {
-  @override
-  final int courseId;
-  @override
-  final Course course;
-  @override
+class WrongEvent extends CourseDetailEvent {
+  final int? courseId;
+  final Course? course;
   final bool isQuiz;
-  @override
   final bool isAnswer;
-  @override
-  final int answerId;
+  final int? answerId;
   WrongEvent({
     this.course,
     this.courseId,
-    @required this.isQuiz,
-    @required this.isAnswer,
+    required this.isQuiz,
+    required this.isAnswer,
     this.answerId,
     // Either you need to provide a course_id or you need to provide a course
   })  : assert(courseId != null || course != null),

@@ -1,8 +1,6 @@
-import 'dart:collection';
-
 import 'package:bro/blocs/course_detail/course_detail_bloc.dart';
 import 'package:bro/blocs/course_detail/course_detail_event.dart';
-import 'package:bro/models/course.dart';
+import 'package:bro/models/new_course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,8 +10,8 @@ class Alternative extends StatefulWidget {
   final bool isTrue;
   final int id;
   final bool isPressed;
-  final Course course;
-  final LinkedHashMap<String, dynamic> image;
+  final Courses course;
+  final Object? image;
 
   Alternative(
       this.course, this.id, this.name, this.isTrue, this.image, this.isPressed);
@@ -23,7 +21,7 @@ class Alternative extends StatefulWidget {
 }
 
 class _AlternativeState extends State<Alternative> {
-  Color validColor;
+  late Color validColor;
   @override
   Widget build(BuildContext context) {
     validColor = widget.isTrue ? Colors.teal : Colors.red;
@@ -59,7 +57,7 @@ class _AlternativeState extends State<Alternative> {
               Align(
                   alignment: Alignment.topRight,
                   child: Icon(
-                    widget.isTrue ? Icons.check_box : Icons.clear,
+                    widget.isPressed ? Icons.check_box : Icons.clear,
                     color: validColor,
                     size: widget.isPressed ? 35 : 0,
                   ))

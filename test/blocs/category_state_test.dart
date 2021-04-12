@@ -12,8 +12,9 @@ void main() {
 
     group('CategorySuccess', () {
       final category = Category(
-        name: 'Kategori',
-        cover_photo: 'Dette er en kategoribeskrivelse!',
+        category_name: 'Kategori',
+        description: 'Testbeskrivelse',
+        cover_photo: CoverPhoto(url: 'Test'),
       );
 
       test('toString returns correct value', () {

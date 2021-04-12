@@ -1,35 +1,55 @@
 import 'package:bro/blocs/simple_bloc_observer.dart';
-import 'package:bro/utils/navigator_arguments.dart';
-import 'package:bro/views/widgets/extract_route_args.dart';
+import 'package:bro/views/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-// ignore: library_prefixes
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:flutter/services.dart';
+// ignore: library_efixes
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
-  await DotEnv.load();
+  await dot_env.load();
   runApp(App());
+}
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+      ),
+      body: ListView(
+        children: [
+          ListTile(
+            title: Text('CourseListView'),
+            onTap: () => Navigator.of(context).pushNamed('/courseList'),
+          ),
+          ListTile(
+            title: Text('CategoryView'),
+            onTap: () => Navigator.of(context).pushNamed('/categoryList'),
+          ),
+          ListTile(
+            title: Text('HomeView'),
+            onTap: () => Navigator.of(context).pushNamed('/homeView'),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 // This widget is the root of your application.
 class App extends StatelessWidget {
-  App({Key key}) : super(key: key);
-
-  GraphQLClient _client() {
-    final _link = HttpLink(env['API_URL'] + '/graphql');
-
-    return GraphQLClient(
-      cache: GraphQLCache(store: InMemoryStore()),
-      link: _link,
-    );
-  }
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Bro',
@@ -91,54 +111,17 @@ class App extends StatelessWidget {
             fontSize: 14.0,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.125,
+            color: Colors.white,
+          ),
+          bodyText1: GoogleFonts.notoSans(
+            fontSize: 16.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.5,
+            color: Colors.white,
           ),
         ),
       ),
-      routes: {
-        ExtractCourseDetailScreen.routeName: (context) =>
-            ExtractCourseDetailScreen(client: _client()),
-        ExtractCourseListScreen.routeName: (context) =>
-            ExtractCourseListScreen(client: _client()),
-        ExtractCategoryListScreen.routeName: (context) =>
-            ExtractCategoryListScreen(client: _client()),
-        ExtractRecommendedScreen.routeName: (context) =>
-            ExtractRecommendedScreen(client: _client()),
-        ExtractResourceDetailScreen.routeName: (context) =>
-            ExtractResourceDetailScreen(client: _client()),
-      },
-      home: Home(),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Velkommen til Bro!'),
-      ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: Text('CourseListView'),
-            onTap: () => Navigator.of(context).pushNamed('/courseList'),
-          ),
-          ListTile(
-            title: Text('CategoryView'),
-            onTap: () => Navigator.of(context).pushNamed('/categoryList'),
-          ),
-          ListTile(
-            title: Text('HomeView'),
-            onTap: () => Navigator.of(context).pushNamed('/homeView'),
-          ),
-          ListTile(
-              title: Text('ResourceDetailView'),
-              onTap: () => Navigator.of(context).pushNamed('/resourceDetail',
-                  arguments:
-                      ResourceDetailArguments(lang: 'no', group: 'resepter'))),
-        ],
-      ),
+      home: BottomNavBar(),
     );
   }
 }

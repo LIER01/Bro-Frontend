@@ -2,12 +2,13 @@ import 'package:bro/blocs/home/home_bloc.dart';
 import 'package:bro/blocs/home/home_event.dart';
 import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/views/course/course_list_tile.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bro/utils/navigator_arguments.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({Key key}) : super(key: key);
+  HomeView({Key? key}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -16,7 +17,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
-  HomeBloc _homeBloc;
+  late HomeBloc _homeBloc;
   @override
   void initState() {
     super.initState();
@@ -49,7 +50,6 @@ class _HomeViewState extends State<HomeView> {
         );
       }
       if (state is Success) {
-        debugPrint(state.home.header);
         return Scaffold(
             appBar: AppBar(
               title: Text(state.home.header),
@@ -88,9 +88,13 @@ class _HomeViewState extends State<HomeView> {
                                 .toList()
                                 .map((index) => GestureDetector(
                                     onTap: () => Navigator.of(context)
-                                        .pushNamed('/courseDetail',
+                                        .pushNamed(
+                                            ExtractCourseDetailScreen.routeName,
                                             arguments: CourseDetailArguments(
-                                                courseId: index + 1)),
+                                                courseGroup: state
+                                                    .courses[index]
+                                                    .courseGroup!
+                                                    .slug)),
                                     child: CourseListTile(
                                       course: state.courses[index],
                                     )))
@@ -105,6 +109,10 @@ class _HomeViewState extends State<HomeView> {
             ]));
       }
       ;
+      return Scaffold(
+        appBar: _buildAppBar(),
+        body: Center(child: Text('Det har skjedd en feil')),
+      );
     });
   }
 
