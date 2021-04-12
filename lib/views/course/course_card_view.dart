@@ -1,3 +1,4 @@
+import 'package:bro/views/course/pdf_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -61,6 +62,9 @@ class _CardContainerViewState extends State<CardContainerView> {
     if (list.isNotEmpty) {
       return Column(
         children: [
+          PDFList(
+            pdfPaths: ['bucco', 'nucco', 'cucco', '2', '2', '2'],
+          ),
           Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.5,

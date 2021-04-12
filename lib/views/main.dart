@@ -130,6 +130,12 @@ class App extends StatelessWidget {
             letterSpacing: 0.5,
             color: Colors.white,
           ),
+          bodyText2: GoogleFonts.notoSans(
+            fontSize: 14.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.5,
+            color: Colors.teal,
+          ),
         ),
       ),
       home: BottomNavBar(),
