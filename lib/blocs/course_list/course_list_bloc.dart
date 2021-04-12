@@ -2,21 +2,16 @@ import 'dart:developer';
 
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/data/course_repository.dart';
-import 'package:bro/models/reduced_course.dart';
-
 import 'package:bro/models/new_courses.dart';
+import 'package:bro/models/reduced_course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:meta/meta.dart';
-import 'dart:developer';
 
 class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   CourseRepository repository;
 
-  CourseListBloc({required this.repository})
-      : assert(repository != null),
-        super(Loading());
+  CourseListBloc({required this.repository}) : super(Loading());
 
   @override
   Stream<CourseListState> mapEventToState(CourseListEvent event) async* {

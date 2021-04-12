@@ -8,6 +8,7 @@ abstract class HomeEvent extends Equatable {
 }
 
 class HomeRequested extends HomeEvent {
+<<<<<<< HEAD
   final String preferredLanguageSlug;
 
   // Sets "NO" to default if no preferredLanguageSlug is defined
@@ -18,4 +19,12 @@ class HomeRequested extends HomeEvent {
 
   // This defines the props you need to check to determine if the state has changed.
   List get props => [preferredLanguageSlug];
+=======
+  // final Home home;
+  // final List<Course> recommendedCourses;
+  // HomeRequested({this.home,this.recommendedCourses});
+  // @override
+  // // This defines the props you need to check to determine if the state has changed.
+  // List get props => [home, recommendedCourses];
+>>>>>>> dev
 }

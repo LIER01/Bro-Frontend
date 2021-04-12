@@ -7,6 +7,7 @@ abstract class CourseListEvent extends Equatable {
   List get props => [];
 }
 
+<<<<<<< HEAD
 class CourseListRequested extends CourseListEvent {
   final String preferredLanguageSlug;
 
@@ -19,3 +20,6 @@ class CourseListRequested extends CourseListEvent {
   // This defines the props you need to check to determine if the state has changed.
   List get props => [preferredLanguageSlug];
 }
+=======
+class CourseListRequested extends CourseListEvent {}
+>>>>>>> dev

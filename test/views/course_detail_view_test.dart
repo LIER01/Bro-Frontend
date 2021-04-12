@@ -50,6 +50,7 @@ void mainTest() {
         (WidgetTester tester) async {
       when(() => courseDetailBloc.state).thenAnswer((_) => CourseState(
           course: referenceCourses, isQuiz: false, isAnswer: false));
+      tester.binding.window.physicalSizeTestValue = Size(600, 1920);
       await tester.pumpWidget(
         BlocProvider.value(
           value: courseDetailBloc,
@@ -65,8 +66,34 @@ void mainTest() {
 
       await tester.pumpAndSettle();
 
-      // expect(find.byType(LinearProgressIndicator), findsNothing);
+      expect(find.byType(LinearProgressIndicator), findsNothing);
       expect(find.text('En meget fin testcourse'), findsOneWidget);
+      expect(find.text('Testslide'), findsOneWidget);
+    });
+    testWidgets('navigation arrows and start quiz appears on last slide',
+        (WidgetTester tester) async {
+      when(() => courseDetailBloc.state).thenAnswer((_) => CourseState(
+          course: referenceCourses, isQuiz: false, isAnswer: false));
+      await tester.pumpWidget(
+        BlocProvider.value(
+          value: courseDetailBloc,
+          child: MaterialApp(
+            home: Scaffold(
+                body: CourseDetailView(
+              courseGroup: 'k1',
+            )),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('DEN ANDRE MEGET FINE TESTSLIDEN'), findsNothing);
+      expect(find.text('Testslide'), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.arrow_circle_down).last);
+      await tester.pumpAndSettle();
+      expect(find.text('DEN ANDRE MEGET FINE TESTSLIDEN'), findsOneWidget);
+      expect(find.byType(ElevatedButton), findsOneWidget);
     });
   });
 }

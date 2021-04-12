@@ -1,5 +1,5 @@
 import 'package:bro/blocs/category/category_bucket.dart';
-import 'package:bro/blocs/course_list/course_list_bloc.dart';
+import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/blocs/home/home_bloc.dart';
 import 'package:bro/data/category_repository.dart';
@@ -21,7 +21,7 @@ class ExtractCourseDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CourseDetailArguments args =
+    final args =
         ModalRoute.of(context)!.settings.arguments as CourseDetailArguments;
 
     return BlocProvider(

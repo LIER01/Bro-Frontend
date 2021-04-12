@@ -23,7 +23,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      if (index != _selectedIndex) {
+        _selectedIndex = index;
+      } else {
+        while (_NavKeys[_selectedIndex].currentState!.canPop()) {
+          _NavKeys[_selectedIndex]
+              .currentState
+              ?.pop(_NavKeys[_selectedIndex].currentContext);
+        }
+      }
     });
   }
 
@@ -35,7 +43,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     } else {
       SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
     }
-    throw Exception('ligma');
+    throw Exception('Something went wrong');
   }
 
   @override
@@ -141,7 +149,6 @@ class _CourseTabState extends State<CourseTab> {
   Widget build(BuildContext context) {
     return Navigator(
         key: _courseNavKey,
-        initialRoute: '/courseList',
         onGenerateRoute: (RouteSettings settings) {
           return MaterialPageRoute(
               settings: settings,
@@ -180,7 +187,6 @@ class _ArticleTabState extends State<ArticleTab> {
   Widget build(BuildContext context) {
     return Navigator(
         key: _articleNavKey,
-        initialRoute: '/categoryList',
         onGenerateRoute: (RouteSettings settings) {
           return MaterialPageRoute(
               settings: settings,
