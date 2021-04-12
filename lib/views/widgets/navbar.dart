@@ -192,6 +192,8 @@ class _ArticleTabState extends State<ArticleTab> {
                 switch (settings.name) {
                   case ExtractCategoryListScreen.routeName:
                     return ExtractCategoryListScreen(client: _client());
+                  case ExtractResourceDetailScreen.routeName:
+                    return ExtractResourceDetailScreen(client: _client());
                   default:
                     return ExtractCategoryListScreen(client: _client());
                 }

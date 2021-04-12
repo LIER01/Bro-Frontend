@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/models/category.dart';
+import 'package:bro/utils/navigator_arguments.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -184,7 +186,11 @@ class _CategoryViewState extends State<CategoryView> {
                             child: Align(
                               child: GestureDetector(
                                 onTap: () {
-                                  log('ROUTING HER');
+                                  Navigator.of(context).pushNamed(
+                                    ExtractResourceDetailScreen.routeName,
+                                    arguments: ResourceDetailArguments(
+                                        lang: 'NO', group: 'resepter'),
+                                  );
                                 },
                                 child: Container(
                                   height: 50,

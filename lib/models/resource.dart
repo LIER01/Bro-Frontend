@@ -37,7 +37,6 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> jsonRes) {
-    // ignore: omit_local_variable_types
     final List<Resources>? resources =
         jsonRes['resources'] is List ? <Resources>[] : null;
     if (resources != null) {
@@ -70,6 +69,7 @@ class Data {
 class Resources {
   Resources({
     required this.title,
+    required this.coverPhoto,
     required this.description,
     this.language,
     this.resourceGroup,
@@ -81,7 +81,6 @@ class Resources {
   });
 
   factory Resources.fromJson(Map<String, dynamic> jsonRes) {
-    // ignore: omit_local_variable_types
     final List<References>? references =
         jsonRes['references'] is List ? <References>[] : null;
     if (references != null) {
@@ -92,7 +91,6 @@ class Resources {
       }
     }
 
-    // ignore: omit_local_variable_types
     final List<Documents>? documents =
         jsonRes['documents'] is List ? <Documents>[] : null;
     if (documents != null) {
@@ -104,6 +102,8 @@ class Resources {
     }
     return Resources(
       title: asT<String>(jsonRes['title'])!,
+      coverPhoto: Cover_photo.fromJson(
+          asT<Map<String, dynamic>>(jsonRes['cover_photo'])!),
       description: asT<String>(jsonRes['description'])!,
       language: jsonRes['language'] == null
           ? null
@@ -126,6 +126,7 @@ class Resources {
   }
 
   String title;
+  Cover_photo coverPhoto;
   String description;
   Language? language;
   Resource_group? resourceGroup;
@@ -142,6 +143,7 @@ class Resources {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
+        'cover_photo': coverPhoto,
         'description': description,
         'language': language,
         'resource_group': resourceGroup,
@@ -153,6 +155,30 @@ class Resources {
       };
 
   Resources clone() => Resources.fromJson(
+      asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+}
+
+class Cover_photo {
+  Cover_photo({
+    required this.url,
+  });
+
+  factory Cover_photo.fromJson(Map<String, dynamic> jsonRes) => Cover_photo(
+        url: asT<String>(jsonRes['url'])!,
+      );
+
+  String url;
+
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'url': url,
+      };
+
+  Cover_photo clone() => Cover_photo.fromJson(
       asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 

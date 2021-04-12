@@ -1,5 +1,6 @@
 import 'package:bro/blocs/resource_detail/resource_detail_bucket.dart';
 import 'package:bro/models/resource.dart';
+import 'package:bro/views/resource_detail/resource_detail_reference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,9 +33,9 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
     super.dispose();
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(String title) {
     return AppBar(
-      title: Text('Ressurser'),
+      title: Text(title),
     );
   }
 
@@ -45,7 +46,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
       builder: (context, state) {
         if (state is Loading) {
           return Scaffold(
-            appBar: _buildAppBar(),
+            appBar: _buildAppBar(''),
             body: Center(
               child: CircularProgressIndicator(),
             ),
@@ -54,7 +55,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
 
         if (state is Failed) {
           return Scaffold(
-            appBar: _buildAppBar(),
+            appBar: _buildAppBar('Error'),
             body: Center(
               child: Text('Error'),
             ),
@@ -65,12 +66,58 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
           resource = state.resource;
 
           return Scaffold(
-            appBar: _buildAppBar(),
+            appBar: _buildAppBar(resource.title),
             body: Column(
-              children: [
-                Text(
-                  resource.title,
-                  style: Theme.of(context).textTheme.headline4,
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        resource.coverPhoto.url,
+                      ),
+                      onError: (exception, stackTrace) {
+                        Text(exception.toString());
+                      },
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    resource.category!.categoryName + ' > ' + resource.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption!
+                        .copyWith(color: Theme.of(context).colorScheme.primary),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    resource.description,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(color: Colors.black),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Container(
+                  child: ListView.builder(
+                    itemCount: resource.references.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ResourceDetailReference(
+                          reference: resource.references[index]);
+                    },
+                  ),
                 )
               ],
             ),
@@ -78,7 +125,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
         }
 
         return Scaffold(
-          appBar: _buildAppBar(),
+          appBar: _buildAppBar('Error'),
           body: Center(child: Text('Det har skjedd en feil')),
         );
       },
