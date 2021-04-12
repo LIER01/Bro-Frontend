@@ -62,7 +62,6 @@ class _CardContainerViewState extends State<CardContainerView> {
     if (list.isNotEmpty) {
       return Column(
         children: [
-<<<<<<< HEAD
           Expanded(
             child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -80,23 +79,6 @@ class _CardContainerViewState extends State<CardContainerView> {
                           image: list[index].media);
                     })),
           ),
-=======
-          Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.5,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: _controller,
-                  scrollDirection: Axis.horizontal,
-                  physics: PageScrollPhysics(),
-                  itemCount: list.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return InfoCard(
-                        title: list[index].title,
-                        description: list[index].description,
-                        image: list[index].image);
-                  })),
->>>>>>> dev
           //Shows which page the user is on
           DotsIndicator(
               dotsCount: list.length,

@@ -97,24 +97,18 @@ class _InfoCardContentState extends State<InfoCardContent> {
                   widget.active,
                   widget.title,
                   widget.description,
-                  widget.image,
                   context,
                   imageProvider),
               errorWidget: (context, url, error) =>
                   Image.asset('assets/images/placeholder.png'),
             )
-          : _generateInfoCard(
-              widget.active,
-              widget.title,
-              widget.description,
-              widget.image,
-              context,
-              AssetImage('assets/images/placeholder.png')),
+          : _generateInfoCard(widget.active, widget.title, widget.description,
+              context, AssetImage('assets/images/placeholder.png')),
     ));
   }
 
   Widget _generateInfoCard(bool active, String title, String description,
-      Media? image, BuildContext context, ImageProvider imageProvider) {
+      BuildContext context, ImageProvider imageProvider) {
     return Card(
         semanticContainer: false,
         // Uses antialias to avoid artifacts when overlaying the information textbox onto the image
@@ -134,8 +128,10 @@ class _InfoCardContentState extends State<InfoCardContent> {
             alignment: Alignment.topCenter,
 
             // This is the imagefilter that is applied when the image is pressed
-            colorFilter: ColorFilter.mode(
-                Colors.teal.withOpacity(active ? 0.85 : 0), BlendMode.srcOver),
+            colorFilter: active
+                ? ColorFilter.mode(
+                    Colors.teal.withOpacity(0.85), BlendMode.srcOver)
+                : null,
           )),
 
           // this checks if the image is pressed, and applies an appropriate child based on if the image has been pressed or not

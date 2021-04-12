@@ -19,15 +19,14 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         final result = await repository.getCategories();
         final categories =
             result.data!['categories'] is List ? <Cat.Category>[] : null;
-
         if (categories != null) {
-          for (final dynamic item in result.data!['categories']) {
+          for (final item in result.data!['categories']) {
             if (item != null) {
               categories.add(Cat.Category.fromJson(item));
             }
-            yield Success(categories: categories);
-            return;
           }
+          yield Success(categories: categories);
+          return;
         }
 
         yield Failed();
