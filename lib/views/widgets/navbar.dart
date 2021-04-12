@@ -119,6 +119,8 @@ class _HomeTabState extends State<HomeTab> {
                 switch (settings.name) {
                   case '/':
                     return ExtractRecommendedScreen(client: _client());
+                  case ExtractCourseDetailScreen.routeName:
+                    return ExtractCourseDetailScreen(client: _client());
                   default:
                     throw Exception('Invalid route: ${settings.name}');
                 }
