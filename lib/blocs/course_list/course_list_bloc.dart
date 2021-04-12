@@ -55,7 +55,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     try {
       if (event.preferredLanguageSlug != 'NO') {
         return await repository
-            .getLangCourses(event.preferredLanguageSlug, curr_len, 10)
+            .getLangCourses(event.preferredLanguageSlug!, curr_len, 10)
             .then((res) {
           var res_list =
               List<Map<String, dynamic>>.from(res.data!['LangCourse']);

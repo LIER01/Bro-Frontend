@@ -17,7 +17,10 @@ class LangCourseList {
   final List<LangCourse> langCourses;
 
   factory LangCourseList.takeList(List<Map<String, dynamic>> list) {
+    debugPrint("Test144");
     List<LangCourse> returnList = [];
+
+    debugPrint("Test421312");
     for (final Map<String, dynamic> item in list) {
       if (item['course_group'] != null) {
         returnList.add(LangCourse.fromJson(item));
@@ -29,7 +32,6 @@ class LangCourseList {
 
 class LangCourse {
   LangCourse({
-    required this.id,
     required this.questions,
     required this.slides,
     required this.title,
@@ -41,6 +43,7 @@ class LangCourse {
   });
 
   factory LangCourse.fromJson(Map<String, dynamic> jsonRes) {
+    debugPrint(jsonRes['questions'].toString());
     final questions = jsonRes['questions'] is List ? <Questions>[] : null;
     if (questions != null) {
       for (final dynamic item in jsonRes['questions']!) {
@@ -59,7 +62,6 @@ class LangCourse {
       }
     }
     return LangCourse(
-      id: int.parse(jsonRes['id']),
       questions: questions!,
       slides: slides!,
       title: asT<String>(jsonRes['title'])!,
@@ -79,7 +81,6 @@ class LangCourse {
     );
   }
 
-  final int id;
   final List<Questions> questions;
   final List<Slides> slides;
   final String title;
@@ -95,7 +96,6 @@ class LangCourse {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
         'questions': questions,
         'slides': slides,
         'title': title,

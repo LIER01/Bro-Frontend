@@ -8,7 +8,7 @@ abstract class CourseListEvent extends Equatable {
 }
 
 class CourseListRequested extends CourseListEvent {
-  final String preferredLanguageSlug;
+  final String? preferredLanguageSlug;
 
   // Sets 'NO' to default if no preferredLanguageSlug is defined
   CourseListRequested({preferredLanguageSlug})

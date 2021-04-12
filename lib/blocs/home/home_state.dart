@@ -23,12 +23,12 @@ class Success extends HomeState {
       {required this.courses, required this.hasReachedMax, required this.home});
 
   Success copyWith({
-    List<LangCourse>? courses,
+    required List<LangCourse> courses,
     Map<String, dynamic>? home,
     bool? hasReachedMax,
   }) {
     return Success(
-        courses: courses ?? this.courses,
+        courses: courses,
         home: home as Home? ?? this.home,
         hasReachedMax: hasReachedMax ?? this.hasReachedMax);
   }

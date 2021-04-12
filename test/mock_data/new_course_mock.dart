@@ -17,6 +17,11 @@ var new_mock_course = {
       'title': 'Testslide',
       'description': 'Dsadsda',
       'media': {'url': '/uploads/brg_a305d8def4.jpeg'}
+    },
+    {
+      'title': 'Testslide 2',
+      'description': 'Dsadsda',
+      'media': {'url': '/uploads/brg_a305d8def4.jpeg'}
     }
   ],
   'title': 'En meget fin testcourse',

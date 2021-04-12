@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../mock_data/Non_Lang_courses_list_mock.dart';
 import '../mock_data/course_mock.dart';
 
 class MockHomeView extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
@@ -54,9 +55,11 @@ void mainTest() {
     });
     testWidgets('renders properly with courses and Home',
         (WidgetTester tester) async {
+      var successlist =
+          LangCourse.fromJson(non_lang_courses_mock['data']!['LangCourse']![0]);
       when(() => homeViewBloc.state).thenReturn(
         Success(
-            courses: [LangCourse.fromJson(mockedResult['courses'][0])],
+            courses: [successlist],
             hasReachedMax: true,
             home: Home(
                 header: 'Velkommen til Bro',
@@ -76,8 +79,8 @@ void mainTest() {
       await tester.pumpAndSettle();
       expect(find.text('Velkommen til Bro'), findsOneWidget);
       await tester.tap(find.text('Anbefalte Kurs'));
-      expect(find.text('Et kult kurs!'), findsOneWidget);
-      expect(find.text('Dette kurset er veldig kult.'), findsOneWidget);
+      expect(find.text('Title'), findsOneWidget);
+      expect(find.text('Desc'), findsOneWidget);
       await tester.tap(find.text('Hva er Bro?'));
       expect(
           find.text(

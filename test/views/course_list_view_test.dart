@@ -52,7 +52,6 @@ void mainTest() {
       when(() => courseListBloc.state).thenReturn(
         Success(courses: [
           LangCourse(
-            id: 1,
             title: 'Kurstittel',
             description: 'Kursbeskrivelse',
             slides: [

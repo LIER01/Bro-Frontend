@@ -88,11 +88,11 @@ void mainTest() {
 
       await tester.pumpAndSettle();
 
-      expect(find.text('DEN ANDRE MEGET FINE TESTSLIDEN'), findsNothing);
+      expect(find.text('Testslide 2'), findsNothing);
       expect(find.text('Testslide'), findsOneWidget);
       await tester.tap(find.byIcon(Icons.arrow_circle_down).last);
       await tester.pumpAndSettle();
-      expect(find.text('DEN ANDRE MEGET FINE TESTSLIDEN'), findsOneWidget);
+      expect(find.text('Testslide 2'), findsOneWidget);
       expect(find.byType(ElevatedButton), findsOneWidget);
     });
   });
