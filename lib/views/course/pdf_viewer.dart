@@ -14,35 +14,40 @@ class PDFList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return pdfPaths != null
-        ? Column(
-            children: [
-              Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                child: Text('Dokumenter',
-                    style: Theme.of(context).textTheme.headline6),
-              ),
-              Container(
-                  height: MediaQuery.of(context).size.height * 0.20,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      physics: PageScrollPhysics(),
-                      itemCount: pdfPaths!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return PDFCard(
-                            pdfPath:
-                                'https://bucketeer-b7c112c5-c5e6-4c9d-bcb3-19c69c078026.s3.eu-west-1.amazonaws.com/pdf_test_20bc92af66.pdf');
-                      })),
-            ],
-          )
+        ? pdfPaths!.isNotEmpty
+            ? Column(
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    child: Text('Dokumenter',
+                        style: Theme.of(context).textTheme.headline6),
+                  ),
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.20,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: PageScrollPhysics(),
+                          itemCount: pdfPaths!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return PDFCard(
+                              pdfPath:
+                                  'https://bucketeer-b7c112c5-c5e6-4c9d-bcb3-19c69c078026.s3.eu-west-1.amazonaws.com/pdf_test_20bc92af66.pdf',
+                              pdfName: pdfPaths![index],
+                            );
+                          })),
+                ],
+              )
+            : Container()
         : Container();
   }
 }
 
 class PDFCard extends StatelessWidget {
   final String pdfPath;
+  final String pdfName;
 
-  PDFCard({Key? key, required this.pdfPath});
+  PDFCard({Key? key, required this.pdfPath, required this.pdfName});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +68,7 @@ class PDFCard extends StatelessWidget {
                   children: [
                     Container(
                         decoration: BoxDecoration(
-                            color: Colors.teal,
+                            color: Theme.of(context).primaryColor,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(5)))),
                     Align(
@@ -77,8 +82,8 @@ class PDFCard extends StatelessWidget {
                 )),
             Container(
                 width: MediaQuery.of(context).size.height * 0.10,
-                child: Text('long ass pdf name',
-                    style: Theme.of(context).textTheme.bodyText2))
+                child:
+                    Text(pdfName, style: Theme.of(context).textTheme.bodyText2))
           ],
         ),
       ),

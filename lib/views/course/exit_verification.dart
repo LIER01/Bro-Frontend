@@ -30,7 +30,9 @@ Widget ExitVerification(context, data) {
                         padding: EdgeInsets.only(bottom: 25),
                         child: Text('Avbryt kurs',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.teal, fontSize: 22)),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 22)),
                       ),
                       Text(
                         'Er du sikker på at du vil avbryte kurset?\n\nVed å gjøre dette lagres ikke progresjonen din.',

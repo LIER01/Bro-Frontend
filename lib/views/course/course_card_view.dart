@@ -103,7 +103,11 @@ class _CardContainerViewState extends State<CardContainerView> {
                               quarterTurns: 1,
                               child: Icon(
                                 Icons.arrow_circle_down,
-                                color: Colors.teal,
+                                color: indx != 0
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.3),
                                 size: MediaQuery.of(context).size.width * 0.175,
                               ))),
                     )),
