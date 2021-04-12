@@ -1,10 +1,7 @@
-import 'package:bro/views/flutter-demo/demoscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:bro/views/main.dart';
-import 'package:bro/models/course.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'extract_route_args.dart';
 

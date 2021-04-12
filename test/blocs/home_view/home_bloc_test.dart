@@ -38,14 +38,5 @@ void main() {
       build: () => homeBloc,
       expect: () => <HomeState>[],
     );
-
-    // blocTest(
-    //   'should load more items in response to an CourseListRequested event',
-    //   build: () => homeBloc,
-    //   act: (CourseListBloc bloc) async => bloc.add(CourseListRequested()),
-    //   expect: () => [
-    //     isA<Success>(),
-    //   ],
-    // );
   });
 }

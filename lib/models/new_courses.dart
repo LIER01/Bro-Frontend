@@ -17,8 +17,8 @@ class LangCourseList {
   final List<LangCourse> langCourses;
 
   factory LangCourseList.takeList(List<Map<String, dynamic>> list) {
-    List<LangCourse> returnList = [];
-    for (final Map<String, dynamic> item in list) {
+    var returnList = <LangCourse>[];
+    for (final item in list) {
       if (item['course_group'] != null) {
         returnList.add(LangCourse.fromJson(item));
       }

@@ -1,14 +1,9 @@
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/models/new_courses.dart';
-import 'package:bro/models/reduced_course.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import '../../mock_data/Lang_courses_mock.dart';
+import '../../mock_data/Non_Lang_courses_list_mock.dart';
 import '../../mock_data/home_mock.dart';
-import '../../mock_data/course_mock.dart';
-
-import '../../mock_data/new_course_mock.dart';
 
 void main() {
   group('HomeState', () {
@@ -26,16 +21,15 @@ void main() {
     group('HomeViewSuccess', () {
       final course = mockedCourse;
       final home = mockedHome;
-      // final successCourse = LangCourse.takeList(new_mock_courses);
-      // test('toString returns correct value', () {
-      //   expect(
-      //       Success(
-      //               courses: [LangCourse.fromJson(new_mock_courses)],
-      //               hasReachedMax: false,
-      //               home: home)
-      //           .toString(),
-      //       'Success { courses: [$successCourse], hasReachedMax: false, home: $home }');
-      // });
+      final successCourse =
+          LangCourseList.takeList(non_lang_courses_mock['data']!['LangCourse']!)
+              .langCourses;
+      test('toString returns correct value', () {
+        expect(
+            Success(courses: successCourse, hasReachedMax: false, home: home)
+                .toString(),
+            'Success { courses: $successCourse, hasReachedMax: false, home: $home }');
+      });
     });
     group('HomeFailed', () {
       test('toString returns correct value', () {

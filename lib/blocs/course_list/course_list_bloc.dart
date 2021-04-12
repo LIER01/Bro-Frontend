@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/models/new_courses.dart';
-import 'package:bro/models/reduced_course.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -60,11 +58,10 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
           var res_list =
               List<Map<String, dynamic>>.from(res.data!['LangCourse']);
           // ..addAll(List.from(res.data!['nonLangCourse']));
-          for (final Map<String, dynamic> item
-              in List.from(res.data!['nonLangCourse'])) {
+          for (final item in List.from(res.data!['nonLangCourse'])) {
             var slug = item['course_group']['slug'];
             var has_copy = false;
-            for (final Map<String, dynamic> target in res_list) {
+            for (final target in res_list) {
               if (slug == target['course_group']['slug']) {
                 has_copy = true;
               }

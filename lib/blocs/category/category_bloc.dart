@@ -2,10 +2,8 @@ import 'dart:developer';
 
 import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/data/category_repository.dart';
-import 'package:bro/models/category.dart' as Cat;
-import 'package:flutter/foundation.dart';
+import 'package:bro/models/category.dart' as cat;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   CategoryRepository repository;
@@ -18,11 +16,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       try {
         final result = await repository.getCategories();
         final categories =
-            result.data!['categories'] is List ? <Cat.Category>[] : null;
+            result.data!['categories'] is List ? <cat.Category>[] : null;
         if (categories != null) {
           for (final item in result.data!['categories']) {
             if (item != null) {
-              categories.add(Cat.Category.fromJson(item));
+              categories.add(cat.Category.fromJson(item));
             }
           }
           yield Success(categories: categories);

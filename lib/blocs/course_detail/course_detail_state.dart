@@ -1,4 +1,3 @@
-import 'package:bro/models/course.dart';
 import 'package:bro/models/new_course.dart';
 import 'package:equatable/equatable.dart';
 
