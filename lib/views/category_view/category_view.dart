@@ -176,7 +176,7 @@ class _CategoryViewState extends State<CategoryView> {
                           Expanded(
                             child: Align(
                               child: Text(
-                                'Her kommer beskrivelsen',
+                                categories[currentIndex].description,
                               ),
                             ),
                           ),
