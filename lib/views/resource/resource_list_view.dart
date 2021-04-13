@@ -64,8 +64,7 @@ class _ResourceListViewState extends State<ResourceListView> {
           return Scaffold(
             appBar: _buildAppBar(widget.category),
             body: Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height * 0.04),
+              padding: EdgeInsets.symmetric(horizontal: 8),
               child: ListView.builder(
                 itemCount: state.resources.length,
                 controller: _scrollController,
@@ -73,7 +72,7 @@ class _ResourceListViewState extends State<ResourceListView> {
                   return index >= state.resources.length
                       ? BottomLoader()
                       : Container(
-                          padding: EdgeInsets.symmetric(vertical: 7),
+                          padding: EdgeInsets.symmetric(vertical: 4),
                           child: GestureDetector(
                             onTap: () => {
                               print('click'),
