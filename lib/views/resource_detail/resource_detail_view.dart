@@ -1,7 +1,6 @@
 import 'package:bro/blocs/resource_detail/resource_detail_bucket.dart';
 import 'package:bro/models/resource.dart';
 import 'package:bro/views/resource_detail/resource_detail_reference.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -89,15 +88,18 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   alignment: Alignment.topLeft,
                   child: Text(
-                    resource.category!.categoryName + ' > ' + resource.title,
+                    resource.category!.categoryName.toUpperCase() +
+                        ' > ' +
+                        resource.title.toUpperCase(),
                     style: Theme.of(context)
                         .textTheme
-                        .caption!
+                        .overline!
                         .copyWith(color: Theme.of(context).colorScheme.primary),
                     textAlign: TextAlign.left,
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.only(top: 16.0),
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   alignment: Alignment.topLeft,

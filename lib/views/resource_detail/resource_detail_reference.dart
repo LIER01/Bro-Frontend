@@ -1,6 +1,7 @@
 import 'package:bro/models/resource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ResourceDetailReference extends StatelessWidget {
   ResourceDetailReference({Key? key, required this.reference})
@@ -15,6 +16,7 @@ class ResourceDetailReference extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            margin: EdgeInsets.only(top: 16.0),
             alignment: Alignment.topLeft,
             child: Text(
               reference.referenceTitle,
@@ -25,6 +27,7 @@ class ResourceDetailReference extends StatelessWidget {
             ),
           ),
           Container(
+            margin: EdgeInsets.only(top: 8.0),
             alignment: Alignment.topLeft,
             child: Text(
               reference.referenceDescription,
@@ -41,18 +44,32 @@ class ResourceDetailReference extends StatelessWidget {
                 debugPrint('Heisann');
               },
               child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  reference.referenceButtonText,
-                  style: Theme.of(context).textTheme.button!.copyWith(
-                      color: Theme.of(context).scaffoldBackgroundColor),
-                ),
-              ),
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          reference.referenceButtonText,
+                          style: Theme.of(context).textTheme.button!.copyWith(
+                              color: Theme.of(context).scaffoldBackgroundColor),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                        child: FaIcon(
+                          FontAwesomeIcons.chevronRight,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                    ],
+                  )),
             ),
           ),
         ],

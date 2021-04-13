@@ -35,7 +35,7 @@ class _CategoryViewState extends State<CategoryView> {
       if (currentIndex < categories.length - 1) {
         currentIndex++;
       } else {
-        currentIndex = currentIndex;
+        currentIndex = 0;
       }
     });
   }
@@ -45,7 +45,7 @@ class _CategoryViewState extends State<CategoryView> {
       if (currentIndex > 0) {
         currentIndex--;
       } else {
-        currentIndex = 0;
+        currentIndex = categories.length - 1;
       }
     });
   }
@@ -179,6 +179,7 @@ class _CategoryViewState extends State<CategoryView> {
                             child: Align(
                               child: Text(
                                 categories[currentIndex].description,
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
