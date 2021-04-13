@@ -4,6 +4,7 @@ import 'package:bro/views/resource_detail/resource_detail_reference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bro/views/resource_detail/pdf_viewer.dart';
 
 class ResourceDetailView extends StatefulWidget {
   final String lang;
@@ -67,7 +68,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
 
           return Scaffold(
             appBar: _buildAppBar(resource.title!),
-            body: Column(
+            body: ListView(
               children: <Widget>[
                 Container(
                   width: double.infinity,
@@ -111,6 +112,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                   ),
                 ),
                 Container(
+                  padding: EdgeInsets.only(bottom: 20),
                   child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -121,6 +123,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                     },
                   ),
                 ),
+                Container(child: PDFList(pdfPaths: state.resource.documents))
               ],
             ),
           );

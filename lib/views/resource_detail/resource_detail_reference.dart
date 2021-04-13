@@ -15,12 +15,16 @@ class ResourceDetailReference extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
             alignment: Alignment.topLeft,
-            child: Text(reference.referenceTitle == null
-                ? ''
-                : reference.referenceTitle!),
+            child: Text(
+                reference.referenceTitle == null
+                    ? ''
+                    : reference.referenceTitle!,
+                style: Theme.of(context).textTheme.headline6),
           ),
           Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
             alignment: Alignment.topLeft,
             child: Text(reference.referenceDescription == null
                 ? ''

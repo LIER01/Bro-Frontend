@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'package:bro/models/resource.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class PDFList extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6),
                   ),
                   Container(
-                      height: MediaQuery.of(context).size.height * 0.20,
+                      height: MediaQuery.of(context).size.height * 0.25,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           physics: PageScrollPhysics(),
@@ -91,6 +90,3 @@ class PDFCard extends StatelessWidget {
     );
   }
 }
-=======
-
->>>>>>> b98327517a399e0c38135f3785f0b4a52ac47250
