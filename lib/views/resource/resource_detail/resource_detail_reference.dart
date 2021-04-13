@@ -1,4 +1,6 @@
 import 'package:bro/models/resource.dart';
+import 'package:bro/utils/navigator_arguments.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -42,7 +44,11 @@ class ResourceDetailReference extends StatelessWidget {
             margin: EdgeInsets.only(top: 8.0),
             child: GestureDetector(
               onTap: () {
-                debugPrint('Heisann');
+                Navigator.of(context).pushNamed(
+                  ExtractResourseDetailWebViewScreen.routeName,
+                  arguments: ResourceDetailWebViewArguments(
+                      url: reference.referenceUrl),
+                );
               },
               child: Container(
                   alignment: Alignment.topLeft,
