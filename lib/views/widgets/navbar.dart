@@ -14,7 +14,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
   final List<GlobalKey<NavigatorState>> _NavKeys = [
     _homeNavKey,
-    _articleNavKey,
+    _resourceNavKey,
     _courseNavKey,
   ];
   void _onItemTapped(int index) {
@@ -53,7 +53,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             index: _selectedIndex,
             children: <Widget>[
               HomeTab(),
-              ArticleTab(),
+              ResourceTab(),
               CourseTab(),
             ],
           ),
@@ -66,7 +66,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               BottomNavigationBarItem(
                 icon: FaIcon(FontAwesomeIcons.book),
-                label: 'Artikler',
+                label: 'Ressurser',
                 backgroundColor: Colors.teal,
               ),
               BottomNavigationBarItem(
@@ -163,14 +163,14 @@ class _CourseTabState extends State<CourseTab> {
   }
 }
 
-class ArticleTab extends StatefulWidget {
+class ResourceTab extends StatefulWidget {
   @override
-  _ArticleTabState createState() => _ArticleTabState();
+  _ResourceTabState createState() => _ResourceTabState();
 }
 
-GlobalKey<NavigatorState> _articleNavKey = GlobalKey<NavigatorState>();
+GlobalKey<NavigatorState> _resourceNavKey = GlobalKey<NavigatorState>();
 
-class _ArticleTabState extends State<ArticleTab> {
+class _ResourceTabState extends State<ResourceTab> {
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
     return GraphQLClient(
@@ -182,7 +182,7 @@ class _ArticleTabState extends State<ArticleTab> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-        key: _articleNavKey,
+        key: _resourceNavKey,
         onGenerateRoute: (RouteSettings settings) {
           return MaterialPageRoute(
               settings: settings,
