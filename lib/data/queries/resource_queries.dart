@@ -15,7 +15,7 @@ query($lang: String, $group: String) {
     resource_group {slug}
     description
     publisher {name}
-    category {category_name}
+    category {category_name id}
     is_recommended
     references {
       reference_title
@@ -30,3 +30,64 @@ query($lang: String, $group: String) {
   }
 }
 ''';
+
+final String getNonLangResourcesQuery = r'''
+query nonLangResourcesQuery ($start: Int!, $limit: Int!){
+    LangResource: resources (start: $start, limit: $limit,where:{
+      _where:[{language:{slug:"NO"}}
+        ]
+    }
+  ) {
+    title
+    description
+    language {slug}
+    resource_group {slug}
+    description
+    publisher {name}
+    category {category_name id}
+    is_recommended
+    references {
+      reference_title
+      reference_description
+      reference_url
+      reference_button_text
+    }
+    documents {
+      document_name 
+      document_file {url}
+    }
+  }
+}
+''';
+
+final String getLangResourcesQuery = r'''
+query($lang: String, $category: Int) {
+  resources(
+    where: {
+      _where: [
+        { language: { slug: $lang } }
+        { category: { id: $category } }
+      ]
+    }
+  ) {
+    title
+    cover_photo {url}
+    description
+    language {slug}
+    resource_group {slug}
+    description
+    publisher {name}
+    category {category_name id}
+    is_recommended
+    references {
+      reference_title
+      reference_description
+      reference_url
+      reference_button_text
+    }
+    documents {
+      document_name 
+      document_file {url}
+    }
+  }
+}''';

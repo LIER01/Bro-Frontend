@@ -31,12 +31,31 @@ class Root {
       Root.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 
+class ResourceList {
+  ResourceList({
+    required this.resources,
+  });
+
+  final List<Resources> resources;
+
+  factory ResourceList.takeList(List<Map<String, dynamic>> list) {
+    var returnList = <Resources>[];
+    for (final item in list) {
+      if (item['resource_group'] != null) {
+        returnList.add(Resources.fromJson(item));
+      }
+    }
+    return ResourceList(resources: returnList);
+  }
+}
+
 class Data {
   Data({
     required this.resources,
   });
 
   factory Data.fromJson(Map<String, dynamic> jsonRes) {
+    // ignore: omit_local_variable_types
     final List<Resources>? resources =
         jsonRes['resources'] is List ? <Resources>[] : null;
     if (resources != null) {
@@ -81,6 +100,7 @@ class Resources {
   });
 
   factory Resources.fromJson(Map<String, dynamic> jsonRes) {
+    // ignore: omit_local_variable_types
     final List<References>? references =
         jsonRes['references'] is List ? <References>[] : null;
     if (references != null) {
@@ -91,6 +111,7 @@ class Resources {
       }
     }
 
+    // ignore: omit_local_variable_types
     final List<Documents>? documents =
         jsonRes['documents'] is List ? <Documents>[] : null;
     if (documents != null) {
@@ -258,13 +279,16 @@ class Publisher {
 class Category {
   Category({
     required this.categoryName,
+    required this.id,
   });
 
   factory Category.fromJson(Map<String, dynamic> jsonRes) => Category(
         categoryName: asT<String>(jsonRes['category_name'])!,
+        id: asT<String>(jsonRes['id'])!,
       );
 
   String categoryName;
+  String id;
 
   @override
   String toString() {
@@ -273,6 +297,7 @@ class Category {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'category_name': categoryName,
+        'id': id,
       };
 
   Category clone() => Category.fromJson(

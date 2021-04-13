@@ -22,7 +22,7 @@ class ResourceDetailReference extends StatelessWidget {
               reference.referenceTitle,
               style: Theme.of(context)
                   .textTheme
-                  .headline5!
+                  .headline6!
                   .copyWith(color: Colors.teal),
             ),
           ),
@@ -33,12 +33,13 @@ class ResourceDetailReference extends StatelessWidget {
               reference.referenceDescription,
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1!
+                  .bodyText2!
                   .copyWith(color: Colors.black),
             ),
           ),
           Container(
             height: 60,
+            margin: EdgeInsets.only(top: 8.0),
             child: GestureDetector(
               onTap: () {
                 debugPrint('Heisann');

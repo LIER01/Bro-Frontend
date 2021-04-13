@@ -188,10 +188,10 @@ class _CategoryViewState extends State<CategoryView> {
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pushNamed(
-                                    ExtractResourceDetailScreen.routeName,
-                                    arguments: ResourceDetailArguments(
-                                        lang: 'NO', group: 'resepter'),
-                                  );
+                                      ExtractResourceListScreen.routeName,
+                                      arguments: ResourceListArguments(
+                                          category: categories[currentIndex]
+                                              .category_name));
                                 },
                                 child: Container(
                                   height: 50,

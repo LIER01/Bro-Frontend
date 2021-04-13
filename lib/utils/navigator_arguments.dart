@@ -3,6 +3,11 @@ class CourseDetailArguments {
   CourseDetailArguments({required this.courseGroup});
 }
 
+class ResourceListArguments {
+  final String category;
+  ResourceListArguments({required this.category});
+}
+
 class ResourceDetailArguments {
   final String lang;
   final String group;
