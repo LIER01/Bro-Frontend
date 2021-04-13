@@ -88,15 +88,16 @@ class _InfoCardContentState extends State<InfoCardContent> {
     return Scaffold(
         body: Center(
       //Allows for animated color transition when card is clicked
-      child: widget.image == null
+      child: widget.image != null
           ? CachedNetworkImage(
-              imageUrl: 'https://bro-strapi.herokuapp.com' + widget.image!.url,
+              imageUrl: widget.image!.url,
               imageBuilder: (context, imageProvider) => _generateInfoCard(
-                  widget.active,
-                  widget.title,
-                  widget.description,
-                  context,
-                  imageProvider),
+                widget.active,
+                widget.title,
+                widget.description,
+                context,
+                imageProvider,
+              ),
               errorWidget: (context, url, error) =>
                   Image.asset('assets/images/placeholder.png'),
             )
