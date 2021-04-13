@@ -16,14 +16,26 @@ class ResourceDetailReference extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.topLeft,
-            child: Text(reference.referenceTitle),
+            child: Text(
+              reference.referenceTitle,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5!
+                  .copyWith(color: Colors.teal),
+            ),
           ),
           Container(
             alignment: Alignment.topLeft,
-            child: Text(reference.referenceDescription),
+            child: Text(
+              reference.referenceDescription,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .copyWith(color: Colors.black),
+            ),
           ),
           Container(
-            width: MediaQuery.of(context).size.width * 0.9,
+            height: 60,
             child: GestureDetector(
               onTap: () {
                 debugPrint('Heisann');
