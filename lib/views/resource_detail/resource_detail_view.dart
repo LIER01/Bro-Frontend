@@ -67,7 +67,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
           resource = state.resource;
 
           return Scaffold(
-            appBar: _buildAppBar(resource.title!),
+            appBar: _buildAppBar(resource.title),
             body: ListView(
               children: <Widget>[
                 Container(
@@ -76,7 +76,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(
-                        resource.coverPhoto!.url!,
+                        resource.coverPhoto.url,
                       ),
                       onError: (exception, stackTrace) {
                         Text(exception.toString());
@@ -90,7 +90,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   alignment: Alignment.topLeft,
                   child: Text(
-                    resource.category!.categoryName! + ' > ' + resource.title!,
+                    resource.category!.categoryName + ' > ' + resource.title,
                     style: Theme.of(context)
                         .textTheme
                         .caption!
@@ -103,7 +103,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   alignment: Alignment.topLeft,
                   child: Text(
-                    resource.description!,
+                    resource.description,
                     style: Theme.of(context)
                         .textTheme
                         .bodyText1!
@@ -116,10 +116,10 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                   child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: resource.references!.length,
+                    itemCount: resource.references.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ResourceDetailReference(
-                          reference: resource.references![index]);
+                          reference: resource.references[index]);
                     },
                   ),
                 ),

@@ -57,7 +57,7 @@ class ResourceListTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(cover_photo.url!))),
+                        image: NetworkImage(cover_photo.url))),
               )
             ]),
       ),

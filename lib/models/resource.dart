@@ -9,25 +9,14 @@ T? asT<T>(dynamic value) {
 
 class Root {
   Root({
-    this.resources,
+    required this.data,
   });
 
-  factory Root.fromJson(Map<String, dynamic> jsonRes) {
-    final List<Resources>? resources =
-        jsonRes['resources'] is List ? <Resources>[] : null;
-    if (resources != null) {
-      for (final dynamic item in jsonRes['resources']!) {
-        if (item != null) {
-          resources.add(Resources.fromJson(asT<Map<String, dynamic>>(item)!));
-        }
-      }
-    }
-    return Root(
-      resources: resources,
-    );
-  }
+  factory Root.fromJson(Map<String, dynamic> jsonRes) => Root(
+        data: Data.fromJson(asT<Map<String, dynamic>>(jsonRes['data'])!),
+      );
 
-  List<Resources>? resources;
+  Data data;
 
   @override
   String toString() {
@@ -35,7 +24,7 @@ class Root {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'resources': resources,
+        'data': data,
       };
 
   Root clone() =>
@@ -50,8 +39,6 @@ class ResourceList {
   final List<Resources> resources;
 
   factory ResourceList.takeList(List<Map<String, dynamic>> list) {
-    print('\ns\nd\ne\nt');
-    print(list.join());
     var returnList = <Resources>[];
     for (final item in list) {
       if (item['resource_group'] != null) {
@@ -62,17 +49,52 @@ class ResourceList {
   }
 }
 
+class Data {
+  Data({
+    required this.resources,
+  });
+
+  factory Data.fromJson(Map<String, dynamic> jsonRes) {
+    final List<Resources>? resources =
+        jsonRes['resources'] is List ? <Resources>[] : null;
+    if (resources != null) {
+      for (final dynamic item in jsonRes['resources']!) {
+        if (item != null) {
+          resources.add(Resources.fromJson(asT<Map<String, dynamic>>(item)!));
+        }
+      }
+    }
+    return Data(
+      resources: resources!,
+    );
+  }
+
+  List<Resources> resources;
+
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'resources': resources,
+      };
+
+  Data clone() =>
+      Data.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+}
+
 class Resources {
   Resources({
-    this.title,
-    this.coverPhoto,
-    this.description,
+    required this.title,
+    required this.coverPhoto,
+    required this.description,
     this.language,
     this.resourceGroup,
     this.publisher,
     this.category,
-    this.isRecommended,
-    this.references,
+    required this.isRecommended,
+    required this.references,
     this.documents,
   });
 
@@ -97,12 +119,10 @@ class Resources {
       }
     }
     return Resources(
-      title: asT<String?>(jsonRes['title']),
-      coverPhoto: jsonRes['cover_photo'] == null
-          ? null
-          : Cover_photo.fromJson(
-              asT<Map<String, dynamic>>(jsonRes['cover_photo'])!),
-      description: asT<String?>(jsonRes['description']),
+      title: asT<String>(jsonRes['title'])!,
+      coverPhoto: Cover_photo.fromJson(
+          asT<Map<String, dynamic>>(jsonRes['cover_photo'])!),
+      description: asT<String>(jsonRes['description'])!,
       language: jsonRes['language'] == null
           ? null
           : Language.fromJson(asT<Map<String, dynamic>>(jsonRes['language'])!),
@@ -117,21 +137,21 @@ class Resources {
       category: jsonRes['category'] == null
           ? null
           : Category.fromJson(asT<Map<String, dynamic>>(jsonRes['category'])!),
-      isRecommended: asT<bool?>(jsonRes['is_recommended']),
-      references: references,
+      isRecommended: asT<bool>(jsonRes['is_recommended'])!,
+      references: references!,
       documents: documents,
     );
   }
 
-  String? title;
-  Cover_photo? coverPhoto;
-  String? description;
+  String title;
+  Cover_photo coverPhoto;
+  String description;
   Language? language;
   Resource_group? resourceGroup;
   Publisher? publisher;
   Category? category;
-  bool? isRecommended;
-  List<References>? references;
+  bool isRecommended;
+  List<References> references;
   List<Documents>? documents;
 
   @override
@@ -158,14 +178,14 @@ class Resources {
 
 class Cover_photo {
   Cover_photo({
-    this.url,
+    required this.url,
   });
 
   factory Cover_photo.fromJson(Map<String, dynamic> jsonRes) => Cover_photo(
-        url: asT<String?>(jsonRes['url']),
+        url: asT<String>(jsonRes['url'])!,
       );
 
-  String? url;
+  String url;
 
   @override
   String toString() {
@@ -182,14 +202,14 @@ class Cover_photo {
 
 class Language {
   Language({
-    this.slug,
+    required this.slug,
   });
 
   factory Language.fromJson(Map<String, dynamic> jsonRes) => Language(
-        slug: asT<String?>(jsonRes['slug']),
+        slug: asT<String>(jsonRes['slug'])!,
       );
 
-  String? slug;
+  String slug;
 
   @override
   String toString() {
@@ -206,15 +226,15 @@ class Language {
 
 class Resource_group {
   Resource_group({
-    this.slug,
+    required this.slug,
   });
 
   factory Resource_group.fromJson(Map<String, dynamic> jsonRes) =>
       Resource_group(
-        slug: asT<String?>(jsonRes['slug']),
+        slug: asT<String>(jsonRes['slug'])!,
       );
 
-  String? slug;
+  String slug;
 
   @override
   String toString() {
@@ -231,14 +251,14 @@ class Resource_group {
 
 class Publisher {
   Publisher({
-    this.name,
+    required this.name,
   });
 
   factory Publisher.fromJson(Map<String, dynamic> jsonRes) => Publisher(
-        name: asT<String?>(jsonRes['name']),
+        name: asT<String>(jsonRes['name'])!,
       );
 
-  String? name;
+  String name;
 
   @override
   String toString() {
@@ -255,14 +275,17 @@ class Publisher {
 
 class Category {
   Category({
-    this.categoryName,
+    required this.categoryName,
+    required this.id,
   });
 
   factory Category.fromJson(Map<String, dynamic> jsonRes) => Category(
-        categoryName: asT<String?>(jsonRes['category_name']),
+        categoryName: asT<String>(jsonRes['category_name'])!,
+        id: asT<String>(jsonRes['id'])!,
       );
 
-  String? categoryName;
+  String categoryName;
+  String id;
 
   @override
   String toString() {
@@ -271,6 +294,7 @@ class Category {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'category_name': categoryName,
+        'id': id,
       };
 
   Category clone() => Category.fromJson(
@@ -279,23 +303,23 @@ class Category {
 
 class References {
   References({
-    this.referenceTitle,
-    this.referenceDescription,
-    this.referenceUrl,
-    this.referenceButtonText,
+    required this.referenceTitle,
+    required this.referenceDescription,
+    required this.referenceUrl,
+    required this.referenceButtonText,
   });
 
   factory References.fromJson(Map<String, dynamic> jsonRes) => References(
-        referenceTitle: asT<String?>(jsonRes['reference_title']),
-        referenceDescription: asT<String?>(jsonRes['reference_description']),
-        referenceUrl: asT<String?>(jsonRes['reference_url']),
-        referenceButtonText: asT<String?>(jsonRes['reference_button_text']),
+        referenceTitle: asT<String>(jsonRes['reference_title'])!,
+        referenceDescription: asT<String>(jsonRes['reference_description'])!,
+        referenceUrl: asT<String>(jsonRes['reference_url'])!,
+        referenceButtonText: asT<String>(jsonRes['reference_button_text'])!,
       );
 
-  String? referenceTitle;
-  String? referenceDescription;
-  String? referenceUrl;
-  String? referenceButtonText;
+  String referenceTitle;
+  String referenceDescription;
+  String referenceUrl;
+  String referenceButtonText;
 
   @override
   String toString() {
@@ -315,20 +339,18 @@ class References {
 
 class Documents {
   Documents({
-    this.documentName,
-    this.documentFile,
+    required this.documentName,
+    required this.documentFile,
   });
 
   factory Documents.fromJson(Map<String, dynamic> jsonRes) => Documents(
-        documentName: asT<String?>(jsonRes['document_name']),
-        documentFile: jsonRes['document_file'] == null
-            ? null
-            : Document_file.fromJson(
-                asT<Map<String, dynamic>>(jsonRes['document_file'])!),
+        documentName: asT<String>(jsonRes['document_name'])!,
+        documentFile: Document_file.fromJson(
+            asT<Map<String, dynamic>>(jsonRes['document_file'])!),
       );
 
-  String? documentName;
-  Document_file? documentFile;
+  String documentName;
+  Document_file documentFile;
 
   @override
   String toString() {
@@ -346,14 +368,14 @@ class Documents {
 
 class Document_file {
   Document_file({
-    this.url,
+    required this.url,
   });
 
   factory Document_file.fromJson(Map<String, dynamic> jsonRes) => Document_file(
-        url: asT<String?>(jsonRes['url']),
+        url: asT<String>(jsonRes['url'])!,
       );
 
-  String? url;
+  String url;
 
   @override
   String toString() {

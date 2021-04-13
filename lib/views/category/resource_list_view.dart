@@ -80,17 +80,17 @@ class _ResourceListViewState extends State<ResourceListView> {
                               Navigator.of(context).pushNamed(
                                   ExtractResourceDetailScreen.routeName,
                                   arguments: ResourceDetailArguments(
-                                      group: state.resources[index]
-                                          .resourceGroup!.slug!,
+                                      group: state
+                                          .resources[index].resourceGroup!.slug,
                                       lang: state
-                                          .resources[index].language!.slug!))
+                                          .resources[index].language!.slug))
                             },
                             child: ResourceListTile(
-                              title: state.resources[index].title!,
+                              title: state.resources[index].title,
                               resourceGroup:
                                   state.resources[index].resourceGroup,
-                              description: state.resources[index].description!,
-                              cover_photo: state.resources[index].coverPhoto!,
+                              description: state.resources[index].description,
+                              cover_photo: state.resources[index].coverPhoto,
                             ),
                           ),
                         );

@@ -17,18 +17,13 @@ class ResourceDetailReference extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 10),
             alignment: Alignment.topLeft,
-            child: Text(
-                reference.referenceTitle == null
-                    ? ''
-                    : reference.referenceTitle!,
+            child: Text(reference.referenceTitle,
                 style: Theme.of(context).textTheme.headline6),
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 10),
             alignment: Alignment.topLeft,
-            child: Text(reference.referenceDescription == null
-                ? ''
-                : reference.referenceDescription!),
+            child: Text(reference.referenceDescription),
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.9,
@@ -44,9 +39,7 @@ class ResourceDetailReference extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Text(
-                  reference.referenceButtonText == null
-                      ? ''
-                      : reference.referenceButtonText!,
+                  reference.referenceButtonText,
                   style: Theme.of(context).textTheme.button!.copyWith(
                       color: Theme.of(context).scaffoldBackgroundColor),
                 ),
