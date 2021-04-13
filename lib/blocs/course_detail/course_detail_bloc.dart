@@ -98,7 +98,7 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
           } catch (e, stackTrace) {
             log(e.toString());
             log(stackTrace.toString());
-            return Failed(err: 'Error, bad request 2222');
+            return Failed(err: 'Error, bad request');
           }
         } else {
           return Failed(err: 'Error, bad request');

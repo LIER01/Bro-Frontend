@@ -9,6 +9,7 @@ query($lang: String, $group: String) {
     }
   ) {
     title
+    cover_photo {url}
     description
     language {slug}
     resource_group {slug}

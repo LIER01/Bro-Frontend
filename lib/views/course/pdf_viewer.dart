@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:bro/models/resource.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -90,3 +91,6 @@ class PDFCard extends StatelessWidget {
     );
   }
 }
+=======
+
+>>>>>>> b98327517a399e0c38135f3785f0b4a52ac47250

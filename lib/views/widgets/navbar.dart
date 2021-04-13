@@ -194,6 +194,8 @@ class _ArticleTabState extends State<ArticleTab> {
                     return ExtractCategoryListScreen(client: _client());
                   case ExtractResourceListScreen.routeName:
                     return ExtractResourceListScreen(client: _client());
+                  case ExtractResourceDetailScreen.routeName:
+                    return ExtractResourceDetailScreen(client: _client());
                   default:
                     return ExtractCategoryListScreen(client: _client());
                 }

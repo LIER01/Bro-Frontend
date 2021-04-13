@@ -7,3 +7,10 @@ class ResourceListArguments {
   final String category;
   ResourceListArguments({required this.category});
 }
+
+class ResourceDetailArguments {
+  final String lang;
+  final String group;
+
+  ResourceDetailArguments({required this.lang, required this.group});
+}

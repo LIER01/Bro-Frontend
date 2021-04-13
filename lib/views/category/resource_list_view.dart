@@ -1,6 +1,7 @@
 import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/models/resource.dart';
 import 'package:bro/views/widgets/bottom_loader.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bro/utils/navigator_arguments.dart';
@@ -74,13 +75,16 @@ class _ResourceListViewState extends State<ResourceListView> {
                       : Container(
                           padding: EdgeInsets.symmetric(vertical: 7),
                           child: GestureDetector(
-                            onTap: () => print(
-                                'click') /* Navigator.of(context).pushNamed(
-                                ExtractCourseDetailScreen.routeName,
-                                arguments: CourseDetailArguments(
-                                    courseGroup:
-                                        state.courses[index].courseGroup!.slug)) */
-                            ,
+                            onTap: () => {
+                              print('click'),
+                              Navigator.of(context).pushNamed(
+                                  ExtractResourceDetailScreen.routeName,
+                                  arguments: ResourceDetailArguments(
+                                      group: state.resources[index]
+                                          .resourceGroup!.slug!,
+                                      lang: state
+                                          .resources[index].language!.slug!))
+                            },
                             child: ResourceListTile(
                               title: state.resources[index].title!,
                               resourceGroup:

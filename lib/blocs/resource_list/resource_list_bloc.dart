@@ -33,7 +33,8 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
           .then((res) async {
         if (res.data!.isEmpty) {
           print('WHAT IS HAPPENING' + res.data.toString());
-          final fallbackResourceResult = await repository.getResource('NO');
+          final fallbackResourceResult =
+              await repository.getLangResources('NO', 1);
 
           final fallbackResource = ResourceList.takeList(
                   List<Map<String, dynamic>>.from(

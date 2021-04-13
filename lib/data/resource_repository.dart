@@ -7,11 +7,11 @@ class ResourceRepository {
 
   ResourceRepository({required this.client});
 
-  Future<QueryResult> getResource(String lang) async {
+  Future<QueryResult> getResource(String lang, String group) async {
     final _options = WatchQueryOptions(
       document: parseString(getResourceQuery),
       fetchResults: true,
-      variables: <String, dynamic>{'lang': lang},
+      variables: <String, dynamic>{'lang': lang, 'group': group},
     );
 
     return await client.query(_options);
