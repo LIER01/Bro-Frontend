@@ -32,7 +32,6 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
           .getLangResources('NO', 1 /* , curr_len, 10 */)
           .then((res) async {
         if (res.data!.isEmpty) {
-          print('WHAT IS HAPPENING' + res.data.toString());
           final fallbackResourceResult =
               await repository.getLangResources('NO', 1);
 
@@ -42,7 +41,6 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
               .resources;
           return Success(resources: fallbackResource);
         } else if (res.data!.isNotEmpty) {
-          print('WHAT IS HAPPENING' + res.data.toString());
           try {
             final returnResource = ResourceList.takeList(
                     List<Map<String, dynamic>>.from(res.data!['resources']))
@@ -52,7 +50,6 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
           } catch (e, stackTrace) {
             log(e.toString());
             log(stackTrace.toString());
-            print('why!');
             return Failed(err: 'Error, bad request');
           }
         } else {

@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'extract_route_args.dart';
+import 'package:bro/views/course/exit_verification.dart';
 
 class BottomNavBar extends StatefulWidget {
   @override
@@ -17,7 +18,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
     _articleNavKey,
     _courseNavKey,
   ];
-
   void _onItemTapped(int index) {
     setState(() {
       if (index != _selectedIndex) {
@@ -37,10 +37,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
       _NavKeys[_selectedIndex]
           .currentState
           ?.pop(_NavKeys[_selectedIndex].currentContext);
+      return Future<bool>.value(false);
     } else {
       SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+      return Future<bool>.value(true);
     }
-    throw Exception('Something went wrong');
+    //throw Exception('Something went wrong');
   }
 
   @override
@@ -98,7 +100,6 @@ GlobalKey<NavigatorState> _homeNavKey = GlobalKey<NavigatorState>();
 class _HomeTabState extends State<HomeTab> {
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
-
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),
       link: _link,
@@ -136,7 +137,6 @@ GlobalKey<NavigatorState> _courseNavKey = GlobalKey<NavigatorState>();
 class _CourseTabState extends State<CourseTab> {
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
-
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),
       link: _link,
@@ -174,7 +174,6 @@ GlobalKey<NavigatorState> _articleNavKey = GlobalKey<NavigatorState>();
 class _ArticleTabState extends State<ArticleTab> {
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
-
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),
       link: _link,
