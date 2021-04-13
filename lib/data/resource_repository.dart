@@ -18,21 +18,22 @@ class ResourceRepository {
   }
 
   Future<QueryResult> getLangResources(
-      String lang_slug, int start, int limit) async {
+      String lang_slug, int category /* , int start, int limit */) async {
     final _options = WatchQueryOptions(
       document: parseString(getLangResourcesQuery),
       fetchResults: true,
       variables: <String, dynamic>{
-        'lang_slug': lang_slug,
-        'start': start,
-        'limit': limit
+        'lang': lang_slug,
+        'category': category,
+/*         'start': start,
+        'limit': limit */
       },
     );
 
     return await client.query(_options);
   }
 
-  Future<QueryResult> getNonLangCourses(int start, int limit) async {
+  Future<QueryResult> getNonLangResources(int start, int limit) async {
     final _options = WatchQueryOptions(
       document: parseString(getNonLangResourcesQuery),
       fetchResults: true,

@@ -32,8 +32,8 @@ class PDFList extends StatelessWidget {
                           itemCount: pdfPaths!.length,
                           itemBuilder: (BuildContext context, int index) {
                             return PDFCard(
-                              pdfPath: pdfPaths![index].documentFile.url,
-                              pdfName: pdfPaths![index].documentName,
+                              pdfPath: pdfPaths![index].documentFile!.url!,
+                              pdfName: pdfPaths![index].documentName!,
                             );
                           })),
                 ],

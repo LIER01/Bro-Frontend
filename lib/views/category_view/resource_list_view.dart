@@ -28,21 +28,20 @@ class _ResourceListViewState extends State<ResourceListView> {
     _resourceListBloc.add(ResourceListRequested(lang: 'NO'));
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(categoryName) {
     return AppBar(
-      title: Text('Navn på kategori'),
+      title: Text(categoryName),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    print('resourceList opened!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     return BlocBuilder<ResourceListBloc, ResourceListState>(
       // ignore: missing_return
       builder: (context, state) {
         if (state is Loading) {
           return Scaffold(
-            appBar: _buildAppBar(),
+            appBar: _buildAppBar(''),
             body: Center(
               child: CircularProgressIndicator(),
             ),
@@ -51,7 +50,7 @@ class _ResourceListViewState extends State<ResourceListView> {
 
         if (state is Failed) {
           return Scaffold(
-            appBar: _buildAppBar(),
+            appBar: _buildAppBar(''),
             body: Center(
               child: Text('Error'),
             ),
@@ -59,41 +58,46 @@ class _ResourceListViewState extends State<ResourceListView> {
         }
 
         if (state is Success) {
-          resources = state.resources.resources;
+          resources = state.resources;
           //print(resources);
           return Scaffold(
-            appBar: _buildAppBar(),
-            body: ListView.builder(
-              itemCount: state.resources.resources.length,
-              controller: _scrollController,
-              itemBuilder: (BuildContext context, int index) {
-                return index >= state.resources.resources.length
-                    ? BottomLoader()
-                    : GestureDetector(
-                        onTap: () => print(
-                            'click') /* Navigator.of(context).pushNamed(
-                            ExtractCourseDetailScreen.routeName,
-                            arguments: CourseDetailArguments(
-                                courseGroup:
-                                    state.courses[index].courseGroup!.slug)) */
-                        ,
-                        child: ResourceListTile(
-                          title: state.resources.resources[index].title,
-                          resourceGroup:
-                              state.resources.resources[index].resourceGroup,
-                          description:
-                              state.resources.resources[index].description,
-                          cover_photo:
-                              state.resources.resources[index].coverPhoto,
-                        ),
-                      );
-              },
+            appBar: _buildAppBar(widget.category),
+            body: Container(
+              padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.04),
+              child: ListView.builder(
+                itemCount: state.resources.length,
+                controller: _scrollController,
+                itemBuilder: (BuildContext context, int index) {
+                  return index >= state.resources.length
+                      ? BottomLoader()
+                      : Container(
+                          padding: EdgeInsets.symmetric(vertical: 7),
+                          child: GestureDetector(
+                            onTap: () => print(
+                                'click') /* Navigator.of(context).pushNamed(
+                                ExtractCourseDetailScreen.routeName,
+                                arguments: CourseDetailArguments(
+                                    courseGroup:
+                                        state.courses[index].courseGroup!.slug)) */
+                            ,
+                            child: ResourceListTile(
+                              title: state.resources[index].title!,
+                              resourceGroup:
+                                  state.resources[index].resourceGroup,
+                              description: state.resources[index].description!,
+                              cover_photo: state.resources[index].coverPhoto!,
+                            ),
+                          ),
+                        );
+                },
+              ),
             ),
           );
         }
 
         return Scaffold(
-          appBar: _buildAppBar(),
+          appBar: _buildAppBar(''),
           body: Center(child: Text('Det har skjedd en feil')),
         );
       },

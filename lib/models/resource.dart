@@ -9,34 +9,10 @@ T? asT<T>(dynamic value) {
 
 class Root {
   Root({
-    required this.data,
+    this.resources,
   });
 
-  factory Root.fromJson(Map<String, dynamic> jsonRes) => Root(
-        data: Data.fromJson(asT<Map<String, dynamic>>(jsonRes['data'])!),
-      );
-
-  Data data;
-
-  @override
-  String toString() {
-    return jsonEncode(this);
-  }
-
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'data': data,
-      };
-
-  Root clone() =>
-      Root.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
-}
-
-class Data {
-  Data({
-    required this.resources,
-  });
-
-  factory Data.fromJson(Map<String, dynamic> jsonRes) {
+  factory Root.fromJson(Map<String, dynamic> jsonRes) {
     final List<Resources>? resources =
         jsonRes['resources'] is List ? <Resources>[] : null;
     if (resources != null) {
@@ -46,12 +22,12 @@ class Data {
         }
       }
     }
-    return Data(
-      resources: resources!,
+    return Root(
+      resources: resources,
     );
   }
 
-  List<Resources> resources;
+  List<Resources>? resources;
 
   @override
   String toString() {
@@ -62,21 +38,41 @@ class Data {
         'resources': resources,
       };
 
-  Data clone() =>
-      Data.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+  Root clone() =>
+      Root.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+}
+
+class ResourceList {
+  ResourceList({
+    required this.resources,
+  });
+
+  final List<Resources> resources;
+
+  factory ResourceList.takeList(List<Map<String, dynamic>> list) {
+    print('\ns\nd\ne\nt');
+    print(list.join());
+    var returnList = <Resources>[];
+    for (final item in list) {
+      if (item['resource_group'] != null) {
+        returnList.add(Resources.fromJson(item));
+      }
+    }
+    return ResourceList(resources: returnList);
+  }
 }
 
 class Resources {
   Resources({
-    required this.title,
-    required this.coverPhoto,
-    required this.description,
+    this.title,
+    this.coverPhoto,
+    this.description,
     this.language,
     this.resourceGroup,
     this.publisher,
     this.category,
-    required this.isRecommended,
-    required this.references,
+    this.isRecommended,
+    this.references,
     this.documents,
   });
 
@@ -101,10 +97,12 @@ class Resources {
       }
     }
     return Resources(
-      title: asT<String>(jsonRes['title'])!,
-      coverPhoto: Cover_photo.fromJson(
-          asT<Map<String, dynamic>>(jsonRes['cover_photo'])!),
-      description: asT<String>(jsonRes['description'])!,
+      title: asT<String?>(jsonRes['title']),
+      coverPhoto: jsonRes['cover_photo'] == null
+          ? null
+          : Cover_photo.fromJson(
+              asT<Map<String, dynamic>>(jsonRes['cover_photo'])!),
+      description: asT<String?>(jsonRes['description']),
       language: jsonRes['language'] == null
           ? null
           : Language.fromJson(asT<Map<String, dynamic>>(jsonRes['language'])!),
@@ -119,21 +117,21 @@ class Resources {
       category: jsonRes['category'] == null
           ? null
           : Category.fromJson(asT<Map<String, dynamic>>(jsonRes['category'])!),
-      isRecommended: asT<bool>(jsonRes['is_recommended'])!,
-      references: references!,
+      isRecommended: asT<bool?>(jsonRes['is_recommended']),
+      references: references,
       documents: documents,
     );
   }
 
-  String title;
-  Cover_photo coverPhoto;
-  String description;
+  String? title;
+  Cover_photo? coverPhoto;
+  String? description;
   Language? language;
   Resource_group? resourceGroup;
   Publisher? publisher;
   Category? category;
-  bool isRecommended;
-  List<References> references;
+  bool? isRecommended;
+  List<References>? references;
   List<Documents>? documents;
 
   @override
@@ -160,14 +158,14 @@ class Resources {
 
 class Cover_photo {
   Cover_photo({
-    required this.url,
+    this.url,
   });
 
   factory Cover_photo.fromJson(Map<String, dynamic> jsonRes) => Cover_photo(
-        url: asT<String>(jsonRes['url'])!,
+        url: asT<String?>(jsonRes['url']),
       );
 
-  String url;
+  String? url;
 
   @override
   String toString() {
@@ -184,14 +182,14 @@ class Cover_photo {
 
 class Language {
   Language({
-    required this.slug,
+    this.slug,
   });
 
   factory Language.fromJson(Map<String, dynamic> jsonRes) => Language(
-        slug: asT<String>(jsonRes['slug'])!,
+        slug: asT<String?>(jsonRes['slug']),
       );
 
-  String slug;
+  String? slug;
 
   @override
   String toString() {
@@ -208,15 +206,15 @@ class Language {
 
 class Resource_group {
   Resource_group({
-    required this.slug,
+    this.slug,
   });
 
   factory Resource_group.fromJson(Map<String, dynamic> jsonRes) =>
       Resource_group(
-        slug: asT<String>(jsonRes['slug'])!,
+        slug: asT<String?>(jsonRes['slug']),
       );
 
-  String slug;
+  String? slug;
 
   @override
   String toString() {
@@ -233,14 +231,14 @@ class Resource_group {
 
 class Publisher {
   Publisher({
-    required this.name,
+    this.name,
   });
 
   factory Publisher.fromJson(Map<String, dynamic> jsonRes) => Publisher(
-        name: asT<String>(jsonRes['name'])!,
+        name: asT<String?>(jsonRes['name']),
       );
 
-  String name;
+  String? name;
 
   @override
   String toString() {
@@ -257,14 +255,14 @@ class Publisher {
 
 class Category {
   Category({
-    required this.categoryName,
+    this.categoryName,
   });
 
   factory Category.fromJson(Map<String, dynamic> jsonRes) => Category(
-        categoryName: asT<String>(jsonRes['category_name'])!,
+        categoryName: asT<String?>(jsonRes['category_name']),
       );
 
-  String categoryName;
+  String? categoryName;
 
   @override
   String toString() {
@@ -281,23 +279,23 @@ class Category {
 
 class References {
   References({
-    required this.referenceTitle,
-    required this.referenceDescription,
-    required this.referenceUrl,
-    required this.referenceButtonText,
+    this.referenceTitle,
+    this.referenceDescription,
+    this.referenceUrl,
+    this.referenceButtonText,
   });
 
   factory References.fromJson(Map<String, dynamic> jsonRes) => References(
-        referenceTitle: asT<String>(jsonRes['reference_title'])!,
-        referenceDescription: asT<String>(jsonRes['reference_description'])!,
-        referenceUrl: asT<String>(jsonRes['reference_url'])!,
-        referenceButtonText: asT<String>(jsonRes['reference_button_text'])!,
+        referenceTitle: asT<String?>(jsonRes['reference_title']),
+        referenceDescription: asT<String?>(jsonRes['reference_description']),
+        referenceUrl: asT<String?>(jsonRes['reference_url']),
+        referenceButtonText: asT<String?>(jsonRes['reference_button_text']),
       );
 
-  String referenceTitle;
-  String referenceDescription;
-  String referenceUrl;
-  String referenceButtonText;
+  String? referenceTitle;
+  String? referenceDescription;
+  String? referenceUrl;
+  String? referenceButtonText;
 
   @override
   String toString() {
@@ -317,18 +315,20 @@ class References {
 
 class Documents {
   Documents({
-    required this.documentName,
-    required this.documentFile,
+    this.documentName,
+    this.documentFile,
   });
 
   factory Documents.fromJson(Map<String, dynamic> jsonRes) => Documents(
-        documentName: asT<String>(jsonRes['document_name'])!,
-        documentFile: Document_file.fromJson(
-            asT<Map<String, dynamic>>(jsonRes['document_file'])!),
+        documentName: asT<String?>(jsonRes['document_name']),
+        documentFile: jsonRes['document_file'] == null
+            ? null
+            : Document_file.fromJson(
+                asT<Map<String, dynamic>>(jsonRes['document_file'])!),
       );
 
-  String documentName;
-  Document_file documentFile;
+  String? documentName;
+  Document_file? documentFile;
 
   @override
   String toString() {
@@ -346,14 +346,14 @@ class Documents {
 
 class Document_file {
   Document_file({
-    required this.url,
+    this.url,
   });
 
   factory Document_file.fromJson(Map<String, dynamic> jsonRes) => Document_file(
-        url: asT<String>(jsonRes['url'])!,
+        url: asT<String?>(jsonRes['url']),
       );
 
-  String url;
+  String? url;
 
   @override
   String toString() {

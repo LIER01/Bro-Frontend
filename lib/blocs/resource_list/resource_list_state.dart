@@ -11,7 +11,7 @@ abstract class ResourceListState extends Equatable {
 class Loading extends ResourceListState {}
 
 class Success extends ResourceListState {
-  final Data resources;
+  final List<Resources> resources;
 
   Success({required this.resources});
 
