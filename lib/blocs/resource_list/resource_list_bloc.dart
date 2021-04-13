@@ -26,14 +26,16 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
   }
 
   Future<ResourceListState> _retrieveResources(
-      ResourceListRequested event, int curr_len) async {
+    ResourceListRequested event,
+    int curr_len,
+  ) async {
     try {
       return await repository
-          .getLangResources('NO', 1 /* , curr_len, 10 */)
+          .getLangResources(event.lang, event.category_id /* , curr_len, 10 */)
           .then((res) async {
         if (res.data!.isEmpty) {
           final fallbackResourceResult =
-              await repository.getLangResources('NO', 1);
+              await repository.getLangResources(event.category_id, event.lang);
 
           final fallbackResource = ResourceList.takeList(
                   List<Map<String, dynamic>>.from(

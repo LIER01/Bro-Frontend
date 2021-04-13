@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/blocs/category/category_event.dart';
 import 'package:bro/models/category.dart';
-import 'package:bro/views/category/category_view.dart';
+import 'package:bro/views/resource/category_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -61,7 +61,8 @@ void mainTest() {
             Category(
                 cover_photo: CoverPhoto(url: '/image.url.png'),
                 category_name: 'Testkategori',
-                description: 'testdescription')
+                description: 'testdescription',
+                category_id: '1')
           ],
         ),
       );

@@ -5,7 +5,8 @@ class CourseDetailArguments {
 
 class ResourceListArguments {
   final String category;
-  ResourceListArguments({required this.category});
+  final String category_id;
+  ResourceListArguments({required this.category, required this.category_id});
 }
 
 class ResourceDetailArguments {

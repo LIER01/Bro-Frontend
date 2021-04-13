@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'extract_route_args.dart';
-import 'package:bro/views/course/exit_verification.dart';
 
 class BottomNavBar extends StatefulWidget {
   @override

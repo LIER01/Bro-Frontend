@@ -1,10 +1,10 @@
 import 'package:bro/blocs/resource_detail/resource_detail_bucket.dart';
 import 'package:bro/models/resource.dart';
-import 'package:bro/views/resource_detail/resource_detail_reference.dart';
+import 'package:bro/views/resource/resource_detail/pdf_viewer.dart';
+import 'package:bro/views/resource/resource_detail/resource_detail_reference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bro/views/resource_detail/pdf_viewer.dart';
 
 class ResourceDetailView extends StatefulWidget {
   final String lang;

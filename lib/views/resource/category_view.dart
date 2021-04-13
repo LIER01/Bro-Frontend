@@ -190,7 +190,9 @@ class _CategoryViewState extends State<CategoryView> {
                                       ExtractResourceListScreen.routeName,
                                       arguments: ResourceListArguments(
                                           category: categories[currentIndex]
-                                              .category_name));
+                                              .category_name,
+                                          category_id: categories[currentIndex]
+                                              .category_id));
                                 },
                                 child: Container(
                                   height: 50,

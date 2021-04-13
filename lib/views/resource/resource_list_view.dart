@@ -9,8 +9,11 @@ import 'package:bro/utils/navigator_arguments.dart';
 import 'resource_list_tile.dart';
 
 class ResourceListView extends StatefulWidget {
-  ResourceListView({Key? key, required this.category}) : super(key: key);
+  ResourceListView(
+      {Key? key, required this.category, required this.category_id})
+      : super(key: key);
   final String category;
+  final String category_id;
   @override
   _ResourceListViewState createState() => _ResourceListViewState();
 }
@@ -26,7 +29,8 @@ class _ResourceListViewState extends State<ResourceListView> {
     super.initState();
     _scrollController.addListener(_onScroll);
     _resourceListBloc = BlocProvider.of<ResourceListBloc>(context);
-    _resourceListBloc.add(ResourceListRequested(lang: 'NO'));
+    _resourceListBloc.add(
+        ResourceListRequested(lang: 'NO', category_id: widget.category_id));
   }
 
   AppBar _buildAppBar(categoryName) {
@@ -118,7 +122,8 @@ class _ResourceListViewState extends State<ResourceListView> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      _resourceListBloc.add(ResourceListRequested(lang: 'NO'));
+      _resourceListBloc.add(
+          ResourceListRequested(lang: 'NO', category_id: widget.category_id));
     }
   }
 }

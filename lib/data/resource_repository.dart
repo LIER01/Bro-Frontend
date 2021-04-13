@@ -18,13 +18,13 @@ class ResourceRepository {
   }
 
   Future<QueryResult> getLangResources(
-      String lang_slug, int category /* , int start, int limit */) async {
+      String lang_slug, String category /* , int start, int limit */) async {
     final _options = WatchQueryOptions(
       document: parseString(getLangResourcesQuery),
       fetchResults: true,
       variables: <String, dynamic>{
         'lang': lang_slug,
-        'category': category,
+        'category': int.parse(category),
 /*         'start': start,
         'limit': limit */
       },
