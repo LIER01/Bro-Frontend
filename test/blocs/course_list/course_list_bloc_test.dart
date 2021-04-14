@@ -5,8 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../mock_data/Non_Lang_courses_list_mock.dart';
-import '../mock_data/course_mock.dart';
+import '../../mock_data/Non_Lang_courses_list_mock.dart';
+import '../../mock_data/course_mock.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}
 
