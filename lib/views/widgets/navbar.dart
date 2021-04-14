@@ -16,6 +16,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     _homeNavKey,
     _articleNavKey,
     _courseNavKey,
+    _settingsNavKey,
   ];
 
   void _onItemTapped(int index) {
@@ -54,6 +55,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               HomeTab(),
               ArticleTab(),
               CourseTab(),
+              SettingsTab(),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -115,7 +117,7 @@ class _HomeTabState extends State<HomeTab> {
               builder: (BuildContext context) {
                 switch (settings.name) {
                   case '/':
-                    return ExtractRecommendedScreen(client: _client());
+                    return ExtractHomeScreen(client: _client());
                   case ExtractCourseDetailScreen.routeName:
                     return ExtractCourseDetailScreen(client: _client());
                   default:
@@ -194,6 +196,42 @@ class _ArticleTabState extends State<ArticleTab> {
                     return ExtractCategoryListScreen(client: _client());
                   default:
                     return ExtractCategoryListScreen(client: _client());
+                }
+              });
+        });
+  }
+}
+
+class SettingsTab extends StatefulWidget {
+  @override
+  _SettingsTabState createState() => _SettingsTabState();
+}
+
+GlobalKey<NavigatorState> _settingsNavKey = GlobalKey<NavigatorState>();
+
+class _SettingsTabState extends State<SettingsTab> {
+  GraphQLClient _client() {
+    final _link = HttpLink(env['API_URL']! + '/graphql');
+
+    return GraphQLClient(
+      cache: GraphQLCache(store: InMemoryStore()),
+      link: _link,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+        key: _settingsNavKey,
+        onGenerateRoute: (RouteSettings settings) {
+          return MaterialPageRoute(
+              settings: settings,
+              builder: (BuildContext context) {
+                switch (settings.name) {
+                  case ExtractSettingsScreen.routeName:
+                    return ExtractSettingsScreen(client: _client());
+                  default:
+                    return ExtractSettingsScreen(client: _client());
                 }
               });
         });

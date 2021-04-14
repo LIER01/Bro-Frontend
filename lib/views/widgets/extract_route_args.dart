@@ -2,13 +2,16 @@ import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/blocs/home/home_bucket.dart';
+import 'package:bro/blocs/settings/settings_bloc.dart';
 import 'package:bro/data/category_repository.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/home_repository.dart';
+import 'package:bro/data/settings_repository.dart';
 import 'package:bro/views/category_view/category_view.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:bro/views/course/course_list_view.dart';
 import 'package:bro/views/home_view/home_view.dart';
+import 'package:bro/views/settings/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:bro/utils/navigator_arguments.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,10 +74,10 @@ class ExtractCategoryListScreen extends StatelessWidget {
   }
 }
 
-class ExtractRecommendedScreen extends StatelessWidget {
+class ExtractHomeScreen extends StatelessWidget {
   static const routeName = '/homeView';
   final GraphQLClient client;
-  ExtractRecommendedScreen({required this.client});
+  ExtractHomeScreen({required this.client});
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +88,24 @@ class ExtractRecommendedScreen extends StatelessWidget {
         ),
       ),
       child: HomeView(),
+    );
+  }
+}
+
+class ExtractSettingsScreen extends StatelessWidget {
+  static const routeName = '/settingsView';
+  final GraphQLClient client;
+  ExtractSettingsScreen({required this.client});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SettingsBloc(
+        repository: SettingsRepository(
+          client: client,
+        ),
+      ),
+      child: SettingsView(),
     );
   }
 }
