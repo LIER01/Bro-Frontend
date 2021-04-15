@@ -40,18 +40,3 @@ Map<String, dynamic> resourceDetailMockJSON = {
 
 Resources resourceDetailMock =
     Resources.fromJson(resourceDetailMockJSON['resources'][0]);
-
-/*
-Resources referenceResource = Resources(
-  title: resource_detail_mock['resource']['title'],
-  coverPhoto: resource_detail_mock['resource']['title'],
-  description: resource_detail_mock['resource']['title'],
-  isRecommended: resource_detail_mock['resource']['title'],
-  references: resource_detail_mock['resource']['title'],
-  documents: resource_detail_mock['resource']['title'],
-  category: resource_detail_mock['resource']['title'],
-  language: resource_detail_mock['resource']['title'],
-  publisher: resource_detail_mock['resource']['title'],
-  resourceGroup: resource_detail_mock['resource']['title'],
-);
-*/
