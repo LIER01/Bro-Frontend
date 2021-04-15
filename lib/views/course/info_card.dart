@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bro/models/new_course.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,9 +90,9 @@ class _InfoCardContentState extends State<InfoCardContent> {
     return Scaffold(
         body: Center(
       //Allows for animated color transition when card is clicked
-      child: widget.image == null
+      child: widget.image != null
           ? CachedNetworkImage(
-              imageUrl: 'https://bro-strapi.herokuapp.com' + widget.image!.url,
+              imageUrl: widget.image!.url,
               imageBuilder: (context, imageProvider) => _generateInfoCard(
                   widget.active,
                   widget.title,
@@ -112,6 +114,7 @@ class _InfoCardContentState extends State<InfoCardContent> {
         // Uses antialias to avoid artifacts when overlaying the information textbox onto the image
         clipBehavior: Clip.antiAlias,
         child: Container(
+          height: double.infinity,
           // Defines height and width based on the size of the container context
           width: (MediaQuery.of(context).size.width) * 0.9,
 
@@ -160,21 +163,21 @@ class _InfoCardContentState extends State<InfoCardContent> {
                     ),
                   ),
                 ])
-              : Column(
-                  // Sets the alignment of the column to the center
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Padding to make create some whitespace with the text
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        // Displays the description
-                        description,
-                        style: TextStyle(color: Colors.white),
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: SingleChildScrollView(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          // Displays the description
+                          description,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )),
         ));
   }
 }

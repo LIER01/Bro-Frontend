@@ -96,7 +96,7 @@ class _CategoryViewState extends State<CategoryView> {
                     },
                     child: Container(
                       width: double.infinity,
-                      height: 500,
+                      height: MediaQuery.of(context).size.height * 0.6,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(

@@ -19,7 +19,7 @@ class LangCourseList {
   factory LangCourseList.takeList(List<Map<String, dynamic>> list) {
     var returnList = <LangCourse>[];
     for (final item in list) {
-      if (item['course_group'] != null) {
+      if (item['course_group'] != null && item['publisher'] != null) {
         returnList.add(LangCourse.fromJson(item));
       }
     }

@@ -28,25 +28,35 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
   Future<ResourceListState> _retrieveResources(
     ResourceListRequested event,
     int curr_len,
+    //Fiks så den loader mer
   ) async {
     try {
       return await repository
-          .getLangResources(event.lang, event.category_id /* , curr_len, 10 */)
+          .getLangResources(event.lang, event.category_id)
           .then((res) async {
         if (res.data!.isEmpty) {
           final fallbackResourceResult =
               await repository.getLangResources(event.category_id, event.lang);
 
-          final fallbackResource = ResourceList.takeList(
+          var fallbackResource = ResourceList.takeList(
                   List<Map<String, dynamic>>.from(
                       fallbackResourceResult.data!['resources']))
-              .resources;
+              .resources
+              //Checks that all relations not used in the query are included
+              .where((element) {
+            return (element.publisher != null && element.resourceGroup != null);
+          }).toList();
+
           return Success(resources: fallbackResource);
         } else if (res.data!.isNotEmpty) {
           try {
             final returnResource = ResourceList.takeList(
                     List<Map<String, dynamic>>.from(res.data!['resources']))
-                .resources;
+                .resources
+                .where((element) {
+              return (element.publisher != null &&
+                  element.resourceGroup != null);
+            }).toList();
 
             return Success(resources: returnResource);
           } catch (e, stackTrace) {

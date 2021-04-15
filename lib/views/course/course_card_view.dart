@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'info_card.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
@@ -95,17 +96,15 @@ class _CardContainerViewState extends State<CardContainerView> {
                       child: Padding(
                           padding: EdgeInsets.only(
                               left: MediaQuery.of(context).size.width * 0.073),
-                          child: RotatedBox(
-                              quarterTurns: 1,
-                              child: Icon(
-                                Icons.arrow_circle_down,
-                                color: indx != 0
-                                    ? Theme.of(context).primaryColor
-                                    : Theme.of(context)
-                                        .primaryColor
-                                        .withOpacity(0.3),
-                                size: MediaQuery.of(context).size.width * 0.175,
-                              ))),
+                          child: FaIcon(
+                            FontAwesomeIcons.chevronCircleLeft,
+                            color: indx != 0
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.3),
+                            size: MediaQuery.of(context).size.width * 0.15,
+                          )),
                     )),
                 indx + 1 != list.length
                     ? GestureDetector(
@@ -115,28 +114,23 @@ class _CardContainerViewState extends State<CardContainerView> {
                           child: Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 30),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Icon(
-                                    Icons.arrow_circle_down,
-                                    color: Colors.teal,
-                                    size: MediaQuery.of(context).size.width *
-                                        0.175,
-                                  ))),
+                              child: FaIcon(
+                                FontAwesomeIcons.chevronCircleRight,
+                                color: Colors.teal,
+                                size: MediaQuery.of(context).size.width * 0.15,
+                              )),
                         ))
                     : Container(
                         alignment: Alignment.center,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical:
-                                  MediaQuery.of(context).size.width * 0.015,
-                              horizontal: 30),
+                          padding: EdgeInsets.fromLTRB(30,
+                              MediaQuery.of(context).size.width * 0.015, 30, 0),
                           child: ElevatedButton(
                             child: Container(
                                 padding: EdgeInsets.symmetric(
                                     vertical:
                                         MediaQuery.of(context).size.width *
-                                            0.04),
+                                            0.03),
                                 child: Text('Start Quiz',
                                     style: Theme.of(context).textTheme.button)),
                             onPressed: () {
