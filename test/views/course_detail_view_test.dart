@@ -101,8 +101,9 @@ void mainTest() {
       await tester.pumpAndSettle();
       expect(find.text(referenceCourses.slides[2].title), findsOneWidget);
       expect(find.byType(ElevatedButton), findsOneWidget);
-      /* await tester.tap(find.byType(ElevatedButton));
-      await tester.pumpAndSettle(); */
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pumpAndSettle();
+      expect(find.text(referenceCourses.questions[0].question), findsOneWidget);
     });
   });
 }
