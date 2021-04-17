@@ -15,19 +15,10 @@ class Loading extends SettingsState {}
 
 class Success extends SettingsState {
   final Languages languages;
-
-  Success({required this.languages});
-
-  Success copyWith({required Languages languages}) {
-    return Success(languages: languages);
-  }
-}
-
-class getLangSuccess extends SettingsState {
-  final String lang;
-  getLangSuccess({required this.lang});
-  getLangSuccess copyWith({required String lang}){
-    return getLangSuccess(lang: lang);
+  String lang;
+  Success({required this.languages, required this.lang});
+  Success copyWith({required Languages languages, required String lang}) {
+    return Success(languages: languages, lang: lang);
   }
 }
 

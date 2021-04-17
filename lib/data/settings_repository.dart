@@ -11,8 +11,6 @@ class SettingsRepository {
   SettingsRepository({required this.client});
 
   Future<QueryResult> getLanguages() async {
-    debugPrint("yolo");
-    debugPrint("y");
     final _options = WatchQueryOptions(
       document: parseString(getLanguagesQuery),
       fetchResults: true,
@@ -22,14 +20,14 @@ class SettingsRepository {
     return await client.query(_options);
   }
 
-  static void setSelectedLang(String lang) {
+  void setSelectedLang(String lang) {
     SharedPreferences.getInstance()
         .then((prefs) => prefs.setString('lang', lang));
   }
 
   Future<String> getSelectedLang() {
     return SharedPreferences.getInstance()
-        .then((value) => value.getString('lang') ?? 'NO');
+        .then((value) => value.getString('lang') ?? 'RK');
   }
 
   Future<QueryResult> getPublishers() async {

@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 abstract class SettingsEvent extends Equatable {
-  SettingsEvent();
-
   @override
   List get props => [];
 }
@@ -17,6 +15,11 @@ class LanguagesRequested extends SettingsEvent {
   @override
   // This defines the props you need to check to determine if the state has changed.
   List get props => [preferredLanguageSlug];
+}
+
+class MutateCurrentLanguage extends SettingsEvent {
+  final String? lang;
+  MutateCurrentLanguage({required this.lang});
 }
 
 class CurrentLanguageRequested extends SettingsEvent {

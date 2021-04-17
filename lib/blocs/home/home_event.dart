@@ -1,4 +1,3 @@
-import 'package:bro/data/settings_repository.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class HomeEvent extends Equatable {
