@@ -2,10 +2,12 @@ import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/blocs/home/home_bucket.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
 import 'package:bro/blocs/settings/settings_bloc.dart';
 import 'package:bro/data/category_repository.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/home_repository.dart';
+import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/data/settings_repository.dart';
 import 'package:bro/views/category_view/category_view.dart';
 import 'package:bro/views/course/course.dart';
@@ -41,7 +43,8 @@ class ExtractCourseDetailScreen extends StatelessWidget {
 class ExtractCourseListScreen extends StatelessWidget {
   static const routeName = '/courseList';
   final GraphQLClient client;
-  ExtractCourseListScreen({required this.client});
+  final PreferredLanguageBloc preferredLanguageBloc;
+  ExtractCourseListScreen({required this.client,required this.preferredLanguageBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +52,13 @@ class ExtractCourseListScreen extends StatelessWidget {
       create: (context) => CourseListBloc(
         repository: CourseRepository(
           client: client,
-        ),
+        ), preferredLanguageBloc: preferredLanguageBloc,
       ),
       child: CourseListView(),
     );
   }
+
+
 }
 
 class ExtractCategoryListScreen extends StatelessWidget {

@@ -1,5 +1,7 @@
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -136,6 +138,12 @@ class CourseTab extends StatefulWidget {
 GlobalKey<NavigatorState> _courseNavKey = GlobalKey<NavigatorState>();
 
 class _CourseTabState extends State<CourseTab> {
+  late PreferredLanguageBloc _preferredLanguageBloc;
+  @override
+  void initState(){
+    super.initState();
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
+  }
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
 
@@ -155,11 +163,11 @@ class _CourseTabState extends State<CourseTab> {
               builder: (BuildContext context) {
                 switch (settings.name) {
                   case ExtractCourseListScreen.routeName:
-                    return ExtractCourseListScreen(client: _client());
+                    return ExtractCourseListScreen(client: _client(),preferredLanguageBloc:_preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
                     return ExtractCourseDetailScreen(client: _client());
                   default:
-                    return ExtractCourseListScreen(client: _client());
+                    return ExtractCourseListScreen(client: _client(),preferredLanguageBloc:_preferredLanguageBloc);
                 }
               });
         });
@@ -174,6 +182,8 @@ class ArticleTab extends StatefulWidget {
 GlobalKey<NavigatorState> _articleNavKey = GlobalKey<NavigatorState>();
 
 class _ArticleTabState extends State<ArticleTab> {
+
+
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
 

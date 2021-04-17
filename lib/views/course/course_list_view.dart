@@ -1,4 +1,5 @@
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
 import 'package:bro/views/course/course_list_tile.dart';
 import 'package:bro/views/widgets/bottom_loader.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,14 @@ class _CourseListViewState extends State<CourseListView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   late CourseListBloc _courseListBloc;
+  late PreferredLanguageBloc _preferredLanguageBloc;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     _courseListBloc = BlocProvider.of<CourseListBloc>(context);
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
     _courseListBloc.add(CourseListRequested());
   }
 

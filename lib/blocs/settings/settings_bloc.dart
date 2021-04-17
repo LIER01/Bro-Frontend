@@ -10,9 +10,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final SettingsRepository repository;
-
-  late List<String> githubRepositories;
-
+  
   SettingsBloc({required this.repository}) : super(Loading());
 
   @override

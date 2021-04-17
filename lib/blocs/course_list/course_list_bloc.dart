@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/models/new_courses.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +11,15 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   CourseRepository repository;
-
-  CourseListBloc({required this.repository}) : super(Loading());
+  PreferredLanguageBloc preferredLanguageBloc;
+  late StreamSubscription preferredLanguageSubscription;
+  CourseListBloc({required this.repository,required this.preferredLanguageBloc}) : super(Loading()) {
+    preferredLanguageSubscription = preferredLanguageBloc.stream.listen((event) {
+      if (event is LanguageChanged){
+        add(CourseListRequested(preferredLanguageSlug: event.newLang));
+      }
+    });
+  }
 
   @override
   Stream<CourseListState> mapEventToState(CourseListEvent event) async* {
@@ -46,12 +56,17 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
         yield Failed();
       }
     }
+    if (event is CourseListRequested) {
+      var res = await _retrieveCourses(event, 0);
+      yield res;
+    }
   }
 
   Future<CourseListState> _retrieveCourses(
       CourseListRequested event, int curr_len) async {
     try {
       if (event.preferredLanguageSlug != 'NO') {
+        log(event.preferredLanguageSlug!);
         return await repository
             .getLangCourses(event.preferredLanguageSlug!, curr_len, 10)
             .then((res) {

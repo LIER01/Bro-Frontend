@@ -1,4 +1,6 @@
+import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
 import 'package:bro/blocs/simple_bloc_observer.dart';
+import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/views/widgets/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +12,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
   await dot_env.load();
-  runApp(App());
+  final PreferredLanguageRepository preferredLanguageRepository = PreferredLanguageRepository();
+  runApp(App(preferredLanguageRepository:preferredLanguageRepository));
 }
 
 class Home extends StatelessWidget {
@@ -43,6 +46,9 @@ class Home extends StatelessWidget {
 // This widget is the root of your application.
 class App extends StatelessWidget {
   final navigatorKey = GlobalKey<NavigatorState>();
+  final PreferredLanguageRepository preferredLanguageRepository;
+
+  App({required this.preferredLanguageRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +127,11 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      home: BottomNavBar(),
+      home: BlocProvider(
+        create: (context) =>
+          PreferredLanguageBloc(repository:preferredLanguageRepository),
+          child: BottomNavBar(),
+      ),
     );
   }
 }

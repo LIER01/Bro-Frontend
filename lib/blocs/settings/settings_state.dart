@@ -22,4 +22,4 @@ class Success extends SettingsState {
   }
 }
 
-class Failed extends SettingsState {}
+class Failed extends SettingsState{}

@@ -1,4 +1,6 @@
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/blocs/settings/settings_bucket.dart';
+import 'package:bro/blocs/settings/settings_state.dart';
 import 'package:bro/data/settings_repository.dart';
 import 'package:bro/models/languages.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +22,7 @@ AppBar _buildAppBar() {
 
 class _SettingsViewState extends State<SettingsView> {
   late SettingsBloc _settingsBloc;
+  late PreferredLanguageBloc _preferredLanguageBloc;
   String selectedLang = '';
   String dropdownValue = 'NO';
 
@@ -29,9 +32,10 @@ class _SettingsViewState extends State<SettingsView> {
     super.initState();
     _settingsBloc = BlocProvider.of<SettingsBloc>(context);
     _settingsBloc.add(LanguagesRequested());
-
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
+    _preferredLanguageBloc.add(MutatePreferredLanguage());
     _getPreferredLanguage().then((value) {
-      setState((){
+      setState(() {
         dropdownValue = value;
         debugPrint(value);
       });
@@ -40,13 +44,14 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void _changeLanguage(String lang) {
-    SharedPreferences.getInstance()
-        .then((prefs) => prefs.setString('lang', lang));
+    _preferredLanguageBloc.add(MutatePreferredLanguage(preferredLanguage: lang));
   }
 
-  Future<String> _getPreferredLanguage(){
+  Future<String> _getPreferredLanguage() {
     //SharedPreferences.getInstance().then((prefs) => prefs.clear());
-    return SharedPreferences.getInstance().then((prefs) => prefs.getString('lang')??'NO');
+    _preferredLanguageBloc.add(PreferredLanguageRequested());
+    return SharedPreferences.getInstance()
+        .then((prefs) => prefs.getString('lang') ?? 'NO');
   }
 
   @override

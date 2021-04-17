@@ -1,6 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
 import 'package:bro/data/course_repository.dart';
+import 'package:bro/data/preferred_language_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mocktail/mocktail.dart';
@@ -10,16 +12,18 @@ import '../mock_data/course_mock.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}
 
+class MockPreferredLanguageRepository extends Mock implements PreferredLanguageRepository{}
 void main() {
   group('CourseListBloc', () {
     late CourseRepository courseRepository;
     late CourseListBloc courseListBloc;
-
+    late PreferredLanguageBloc preferredLanguageBloc;
     setUp(() {
       courseRepository = MockCourseRepository();
+      preferredLanguageBloc = PreferredLanguageBloc(repository: MockPreferredLanguageRepository());
       when(() => courseRepository.getCourses(0, 10)).thenAnswer(
           (_) => Future.value(QueryResult(source: null, data: mockedResult)));
-      courseListBloc = CourseListBloc(repository: courseRepository);
+      courseListBloc = CourseListBloc(repository: courseRepository, preferredLanguageBloc: preferredLanguageBloc);
     });
 
     blocTest(
