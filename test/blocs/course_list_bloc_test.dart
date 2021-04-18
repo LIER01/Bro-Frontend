@@ -12,7 +12,9 @@ import '../mock_data/course_mock.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}
 
-class MockPreferredLanguageRepository extends Mock implements PreferredLanguageRepository{}
+class MockPreferredLanguageRepository extends Mock
+    implements PreferredLanguageRepository {}
+
 void main() {
   group('CourseListBloc', () {
     late CourseRepository courseRepository;
@@ -20,10 +22,13 @@ void main() {
     late PreferredLanguageBloc preferredLanguageBloc;
     setUp(() {
       courseRepository = MockCourseRepository();
-      preferredLanguageBloc = PreferredLanguageBloc(repository: MockPreferredLanguageRepository());
+      preferredLanguageBloc =
+          PreferredLanguageBloc(repository: MockPreferredLanguageRepository());
       when(() => courseRepository.getCourses(0, 10)).thenAnswer(
           (_) => Future.value(QueryResult(source: null, data: mockedResult)));
-      courseListBloc = CourseListBloc(repository: courseRepository, preferredLanguageBloc: preferredLanguageBloc);
+      courseListBloc = CourseListBloc(
+          repository: courseRepository,
+          preferredLanguageBloc: preferredLanguageBloc);
     });
 
     blocTest(

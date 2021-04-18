@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:bro/data/queries/settings_queries.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Contains The different selectable languages, fetched from the backend.
 class SettingsRepository {
   final GraphQLClient client;
 
@@ -18,16 +18,6 @@ class SettingsRepository {
     );
 
     return await client.query(_options);
-  }
-
-  void setSelectedLang(String lang) {
-    SharedPreferences.getInstance()
-        .then((prefs) => prefs.setString('lang', lang));
-  }
-
-  Future<String> getSelectedLang() {
-    return SharedPreferences.getInstance()
-        .then((value) => value.getString('lang') ?? 'RK');
   }
 
   Future<QueryResult> getPublishers() async {

@@ -140,10 +140,11 @@ GlobalKey<NavigatorState> _courseNavKey = GlobalKey<NavigatorState>();
 class _CourseTabState extends State<CourseTab> {
   late PreferredLanguageBloc _preferredLanguageBloc;
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
   }
+
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
 
@@ -163,11 +164,15 @@ class _CourseTabState extends State<CourseTab> {
               builder: (BuildContext context) {
                 switch (settings.name) {
                   case ExtractCourseListScreen.routeName:
-                    return ExtractCourseListScreen(client: _client(),preferredLanguageBloc:_preferredLanguageBloc);
+                    return ExtractCourseListScreen(
+                        client: _client(),
+                        preferredLanguageBloc: _preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
                     return ExtractCourseDetailScreen(client: _client());
                   default:
-                    return ExtractCourseListScreen(client: _client(),preferredLanguageBloc:_preferredLanguageBloc);
+                    return ExtractCourseListScreen(
+                        client: _client(),
+                        preferredLanguageBloc: _preferredLanguageBloc);
                 }
               });
         });
@@ -182,8 +187,6 @@ class ArticleTab extends StatefulWidget {
 GlobalKey<NavigatorState> _articleNavKey = GlobalKey<NavigatorState>();
 
 class _ArticleTabState extends State<ArticleTab> {
-
-
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
 
@@ -222,7 +225,6 @@ GlobalKey<NavigatorState> _settingsNavKey = GlobalKey<NavigatorState>();
 class _SettingsTabState extends State<SettingsTab> {
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
-
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),
       link: _link,

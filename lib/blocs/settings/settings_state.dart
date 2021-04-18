@@ -1,4 +1,3 @@
-import 'package:bro/blocs/settings/settings_bucket.dart';
 import 'package:bro/models/languages.dart';
 import 'package:equatable/equatable.dart';
 
@@ -15,11 +14,13 @@ class Loading extends SettingsState {}
 
 class Success extends SettingsState {
   final Languages languages;
-  String lang;
-  Success({required this.languages, required this.lang});
-  Success copyWith({required Languages languages, required String lang}) {
-    return Success(languages: languages, lang: lang);
+  Success({required this.languages});
+  Success copyWith({required Languages languages}) {
+    return Success(languages: languages);
   }
+
+  @override
+  List<Object> get props => [languages];
 }
 
-class Failed extends SettingsState{}
+class Failed extends SettingsState {}

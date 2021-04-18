@@ -1,5 +1,3 @@
-import 'package:bro/models/languages.dart';
-import 'package:bro/models/new_courses.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class PreferredLanguageState extends Equatable {
@@ -25,4 +23,3 @@ class LanguageChanged extends PreferredLanguageState {
   @override
   List<Object> get props => [newLang];
 }
-

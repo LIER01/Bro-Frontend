@@ -5,7 +5,9 @@ import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
 import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/data/course_repository.dart';
+import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/models/new_courses.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -13,9 +15,14 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   CourseRepository repository;
   PreferredLanguageBloc preferredLanguageBloc;
   late StreamSubscription preferredLanguageSubscription;
-  CourseListBloc({required this.repository,required this.preferredLanguageBloc}) : super(Loading()) {
-    preferredLanguageSubscription = preferredLanguageBloc.stream.listen((event) {
-      if (event is LanguageChanged){
+  late PreferredLanguageRepository preferredLanguageRepository;
+  CourseListBloc(
+      {required this.repository, required this.preferredLanguageBloc})
+      : super(Loading()) {
+    preferredLanguageRepository = preferredLanguageBloc.repository;
+    preferredLanguageSubscription =
+        preferredLanguageBloc.stream.listen((event) {
+      if (event is LanguageChanged) {
         add(CourseListRequested(preferredLanguageSlug: event.newLang));
       }
     });
@@ -28,16 +35,17 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     if (event is CourseListRequested && !_hasReachedMax(currentState)) {
       try {
         if (currentState is Loading) {
+          debugPrint('loading');
           var res = await _retrieveCourses(event, 0);
           yield res;
           return;
         }
-
         if (currentState is Success) {
           final result =
               await _retrieveCourses(event, currentState.courses.length);
-
+          debugPrint('we got here');
           if (result is Success && currentState.courses.isNotEmpty) {
+            debugPrint('we got here');
             yield result.courses.isEmpty
                 ? currentState.copyWith(
                     hasReachedMax: true, courses: currentState.courses)
@@ -56,10 +64,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
         yield Failed();
       }
     }
-    if (event is CourseListRequested) {
-      var res = await _retrieveCourses(event, 0);
-      yield res;
-    }
   }
 
   Future<CourseListState> _retrieveCourses(
@@ -67,8 +71,9 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     try {
       if (event.preferredLanguageSlug != 'NO') {
         log(event.preferredLanguageSlug!);
+        var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
         return await repository
-            .getLangCourses(event.preferredLanguageSlug!, curr_len, 10)
+            .getLangCourses(langSlug, curr_len, 10)
             .then((res) {
           var res_list =
               List<Map<String, dynamic>>.from(res.data!['LangCourse']);
@@ -90,7 +95,11 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
           return Success(courses: returnCourse, hasReachedMax: false);
         });
       } else if (event.preferredLanguageSlug == 'NO') {
-        return await repository.getNonLangCourses(curr_len, 10).then((res) {
+        var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
+        debugPrint(langSlug);
+        return await repository
+            .getLangCourses(langSlug, curr_len, 10)
+            .then((res) {
           var res_list =
               List<Map<String, dynamic>>.from(res.data!['LangCourse']);
           final returnCourse = LangCourseList.takeList(res_list).langCourses;

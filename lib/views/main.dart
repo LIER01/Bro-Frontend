@@ -12,8 +12,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart' as dot_env;
 Future main() async {
   Bloc.observer = SimpleBlocObserver();
   await dot_env.load();
-  final PreferredLanguageRepository preferredLanguageRepository = PreferredLanguageRepository();
-  runApp(App(preferredLanguageRepository:preferredLanguageRepository));
+  final preferredLanguageRepository = PreferredLanguageRepository();
+  runApp(App(preferredLanguageRepository: preferredLanguageRepository));
 }
 
 class Home extends StatelessWidget {
@@ -129,8 +129,8 @@ class App extends StatelessWidget {
       ),
       home: BlocProvider(
         create: (context) =>
-          PreferredLanguageBloc(repository:preferredLanguageRepository),
-          child: BottomNavBar(),
+            PreferredLanguageBloc(repository: preferredLanguageRepository),
+        child: BottomNavBar(),
       ),
     );
   }

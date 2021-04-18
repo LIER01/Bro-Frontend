@@ -8,7 +8,7 @@ abstract class PreferredLanguageEvent extends Equatable {
 }
 
 class MutatePreferredLanguage extends PreferredLanguageEvent {
-  String preferredLanguage;
+  final String preferredLanguage;
   MutatePreferredLanguage({preferredLanguage})
       : preferredLanguage = preferredLanguage ?? 'NO';
 
@@ -17,8 +17,6 @@ class MutatePreferredLanguage extends PreferredLanguageEvent {
   List get props => [preferredLanguage];
 }
 
-class PreferredLanguageRequested extends PreferredLanguageEvent{
+class PreferredLanguageRequested extends PreferredLanguageEvent {
   PreferredLanguageRequested();
 }
-
-

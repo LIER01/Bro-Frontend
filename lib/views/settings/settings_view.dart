@@ -1,12 +1,12 @@
 import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/blocs/settings/settings_bucket.dart';
 import 'package:bro/blocs/settings/settings_state.dart';
-import 'package:bro/data/settings_repository.dart';
+
 import 'package:bro/models/languages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsView extends StatefulWidget {
@@ -23,7 +23,6 @@ AppBar _buildAppBar() {
 class _SettingsViewState extends State<SettingsView> {
   late SettingsBloc _settingsBloc;
   late PreferredLanguageBloc _preferredLanguageBloc;
-  String selectedLang = '';
   String dropdownValue = 'NO';
 
   @override
@@ -33,18 +32,18 @@ class _SettingsViewState extends State<SettingsView> {
     _settingsBloc = BlocProvider.of<SettingsBloc>(context);
     _settingsBloc.add(LanguagesRequested());
     _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
-    _preferredLanguageBloc.add(MutatePreferredLanguage());
+    _preferredLanguageBloc.add(PreferredLanguageRequested());
     _getPreferredLanguage().then((value) {
       setState(() {
         dropdownValue = value;
-        debugPrint(value);
       });
     });
     //_getPreferredLanguage();
   }
 
   void _changeLanguage(String lang) {
-    _preferredLanguageBloc.add(MutatePreferredLanguage(preferredLanguage: lang));
+    _preferredLanguageBloc
+        .add(MutatePreferredLanguage(preferredLanguage: lang));
   }
 
   Future<String> _getPreferredLanguage() {
@@ -73,36 +72,44 @@ class _SettingsViewState extends State<SettingsView> {
         }
 
         if (state is Success) {
+          var languages = state.languages.languages;
           return Scaffold(
               appBar: _buildAppBar(),
-              body: Column(
-                children: [
-                  DropdownButton<String>(
-                    value: dropdownValue,
-                    icon: const Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (String? newValue) {
-                      _changeLanguage(newValue!);
-                      setState(() {
-                        dropdownValue = newValue;
-                      });
-                    },
-                    items: state.languages.languages
-                        .map<DropdownMenuItem<String>>((Language lang) {
-                      return DropdownMenuItem<String>(
-                        value: lang.slug,
-                        child: Text(lang.languageFullName),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ));
+              body: BlocBuilder<PreferredLanguageBloc, PreferredLanguageState>(
+                  builder: (context, state) {
+                if (state is LanguageChanged) {
+                  return Column(
+                    children: [
+                      DropdownButton<String>(
+                        value: state.newLang,
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.deepPurple),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String? newValue) {
+                          _changeLanguage(newValue!);
+                          setState(() {
+                            dropdownValue = newValue;
+                          });
+                        },
+                        items: languages
+                            .map<DropdownMenuItem<String>>((Language lang) {
+                          return DropdownMenuItem<String>(
+                            value: lang.slug,
+                            child: Text(lang.languageFullName),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Container();
+                }
+              }));
         }
         return Scaffold(
           appBar: _buildAppBar(),

@@ -44,7 +44,8 @@ class ExtractCourseListScreen extends StatelessWidget {
   static const routeName = '/courseList';
   final GraphQLClient client;
   final PreferredLanguageBloc preferredLanguageBloc;
-  ExtractCourseListScreen({required this.client,required this.preferredLanguageBloc});
+  ExtractCourseListScreen(
+      {required this.client, required this.preferredLanguageBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +53,12 @@ class ExtractCourseListScreen extends StatelessWidget {
       create: (context) => CourseListBloc(
         repository: CourseRepository(
           client: client,
-        ), preferredLanguageBloc: preferredLanguageBloc,
+        ),
+        preferredLanguageBloc: preferredLanguageBloc,
       ),
       child: CourseListView(),
     );
   }
-
-
 }
 
 class ExtractCategoryListScreen extends StatelessWidget {

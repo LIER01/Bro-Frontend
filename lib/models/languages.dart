@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/src/material/dropdown.dart';
-
 T? asT<T>(dynamic value) {
   if (value is T) {
     return value;
@@ -39,8 +37,7 @@ class Languages {
   });
 
   factory Languages.fromJson(Map<String, dynamic> jsonRes) {
-    final List<Language>? languages =
-        jsonRes['languages'] is List ? <Language>[] : null;
+    final languages = jsonRes['languages'] is List ? <Language>[] : null;
     if (languages != null) {
       for (final dynamic item in jsonRes['languages']!) {
         if (item != null) {
