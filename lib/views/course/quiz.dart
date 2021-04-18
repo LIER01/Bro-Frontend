@@ -31,7 +31,6 @@ class _QuizViewState extends State<QuizView> {
 
   @override
   Widget build(BuildContext context) {
-    print(index.toString());
     alts = widget.questions[index].alternatives;
     return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
       Align(
