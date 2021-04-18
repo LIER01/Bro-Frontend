@@ -7,8 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
 class SettingsView extends StatefulWidget {
   @override
   _SettingsViewState createState() => _SettingsViewState();
@@ -33,24 +31,18 @@ class _SettingsViewState extends State<SettingsView> {
     _settingsBloc.add(LanguagesRequested());
     _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
     _preferredLanguageBloc.add(PreferredLanguageRequested());
-    _getPreferredLanguage().then((value) {
+    /*_getPreferredLanguage().then((value) {
       setState(() {
         dropdownValue = value;
       });
     });
+        */
     //_getPreferredLanguage();
   }
 
   void _changeLanguage(String lang) {
     _preferredLanguageBloc
         .add(MutatePreferredLanguage(preferredLanguage: lang));
-  }
-
-  Future<String> _getPreferredLanguage() {
-    //SharedPreferences.getInstance().then((prefs) => prefs.clear());
-    _preferredLanguageBloc.add(PreferredLanguageRequested());
-    return SharedPreferences.getInstance()
-        .then((prefs) => prefs.getString('lang') ?? 'NO');
   }
 
   @override
@@ -92,9 +84,6 @@ class _SettingsViewState extends State<SettingsView> {
                         ),
                         onChanged: (String? newValue) {
                           _changeLanguage(newValue!);
-                          setState(() {
-                            dropdownValue = newValue;
-                          });
                         },
                         items: languages
                             .map<DropdownMenuItem<String>>((Language lang) {

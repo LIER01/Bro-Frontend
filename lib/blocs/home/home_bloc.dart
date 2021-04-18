@@ -1,16 +1,32 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/blocs/home/home_state.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_state.dart';
 import 'package:bro/data/home_repository.dart';
+import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/models/new_courses.dart';
 import 'package:bro/models/home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  PreferredLanguageBloc preferredLanguageBloc;
+  late StreamSubscription preferredLanguageSubscription;
+  late PreferredLanguageRepository preferredLanguageRepository;
   HomeRepository repository;
 
-  HomeBloc({required this.repository}) : super(Loading());
+  HomeBloc({required this.repository, required this.preferredLanguageBloc})
+      : super(Loading()) {
+    preferredLanguageRepository = preferredLanguageBloc.repository;
+    preferredLanguageSubscription =
+        preferredLanguageBloc.stream.listen((event) {
+      if (event is LanguageChanged) {
+        add(HomeRequested(preferredLanguageSlug: event.newLang));
+      }
+    });
+  }
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
@@ -27,19 +43,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (currentState is Success) {
           final result =
               await _retrieveCourses(event, currentState.courses.length);
-
-          if (result is Success && currentState.courses.isNotEmpty) {
-            yield result.courses.isEmpty
-                ? currentState.copyWith(
-                    hasReachedMax: true, courses: currentState.courses)
-                : result.copyWith(
-                    courses: currentState.courses + result.courses,
-                    hasReachedMax: false);
-          } else if (result is Failed) {
-            yield result;
-          } else {
-            yield Failed();
-          }
+          yield result;
         }
       } catch (e, stackTrace) {
         log(e.toString());
@@ -54,16 +58,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       var home = await repository.getHome();
       var ret_home = Home.fromJson(home.data!['home']);
+      var returnLength = 3;
+      var langSlug;
+      if (event.preferredLanguageSlug == '') {
+        langSlug = await preferredLanguageRepository.getPreferredLangSlug();
+      } else {
+        langSlug = event.preferredLanguageSlug;
+      }
       return await repository
-          .getRecommendedCourses(event.preferredLanguageSlug, curr_len, 4)
+          .getRecommendedCourses(langSlug, curr_len, 3)
           .then((res) {
         var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse'])
           ..addAll(List.from(res.data!['nonLangCourse']));
 
         final returnCourse = LangCourseList.takeList(res_list).langCourses;
+        var rs = returnCourse;
+        if (returnCourse.length > returnLength) {
+          rs = returnCourse.sublist(0, 3);
+        }
 
-        return Success(
-            courses: returnCourse, hasReachedMax: false, home: ret_home);
+        return Success(courses: rs, hasReachedMax: false, home: ret_home);
       });
       // return result;
     } on NetworkException catch (e, stackTrace) {

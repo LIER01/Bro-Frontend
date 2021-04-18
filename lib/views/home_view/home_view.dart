@@ -76,7 +76,7 @@ class _HomeViewState extends State<HomeView> {
                     ])),
                 ExpansionPanelRadio(
                     canTapOnHeader: true,
-                    value: 'hey',
+                    value: 'anbefalte_kurs',
                     headerBuilder: (context, isExpanded) =>
                         ListTile(title: Text('Anbefalte Kurs')),
                     body: SingleChildScrollView(

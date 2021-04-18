@@ -100,6 +100,13 @@ class HomeTab extends StatefulWidget {
 GlobalKey<NavigatorState> _homeNavKey = GlobalKey<NavigatorState>();
 
 class _HomeTabState extends State<HomeTab> {
+  late PreferredLanguageBloc _preferredLanguageBloc;
+  @override
+  void initState() {
+    super.initState();
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
+  }
+
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
 
@@ -119,7 +126,9 @@ class _HomeTabState extends State<HomeTab> {
               builder: (BuildContext context) {
                 switch (settings.name) {
                   case '/':
-                    return ExtractHomeScreen(client: _client());
+                    return ExtractHomeScreen(
+                        client: _client(),
+                        preferredLanguageBloc: _preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
                     return ExtractCourseDetailScreen(client: _client());
                   default:

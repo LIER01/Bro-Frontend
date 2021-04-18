@@ -7,7 +7,7 @@ import 'package:bro/blocs/settings/settings_bloc.dart';
 import 'package:bro/data/category_repository.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/home_repository.dart';
-import 'package:bro/data/preferred_language_repository.dart';
+
 import 'package:bro/data/settings_repository.dart';
 import 'package:bro/views/category_view/category_view.dart';
 import 'package:bro/views/course/course.dart';
@@ -82,7 +82,9 @@ class ExtractCategoryListScreen extends StatelessWidget {
 class ExtractHomeScreen extends StatelessWidget {
   static const routeName = '/homeView';
   final GraphQLClient client;
-  ExtractHomeScreen({required this.client});
+  final PreferredLanguageBloc preferredLanguageBloc;
+  ExtractHomeScreen(
+      {required this.client, required this.preferredLanguageBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +93,7 @@ class ExtractHomeScreen extends StatelessWidget {
         repository: HomeRepository(
           client: client,
         ),
+        preferredLanguageBloc: preferredLanguageBloc,
       ),
       child: HomeView(),
     );

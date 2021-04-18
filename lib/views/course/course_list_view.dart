@@ -19,14 +19,13 @@ class _CourseListViewState extends State<CourseListView> {
   final _scrollThreshold = 200.0;
   late CourseListBloc _courseListBloc;
   late PreferredLanguageBloc _preferredLanguageBloc;
-
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     _courseListBloc = BlocProvider.of<CourseListBloc>(context);
-    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
     _courseListBloc.add(CourseListRequested());
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
   }
 
   AppBar _buildAppBar() {

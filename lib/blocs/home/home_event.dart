@@ -12,10 +12,10 @@ class HomeRequested extends HomeEvent {
 
   // Sets "NO" to default if no preferredLanguageSlug is defined
   HomeRequested({preferredLanguageSlug})
-      : preferredLanguageSlug = preferredLanguageSlug ?? 'NO';
+      : preferredLanguageSlug = preferredLanguageSlug ?? '';
 
   @override
 
   // This defines the props you need to check to determine if the state has changed.
-  List get props => [preferredLanguageSlug];
+  List get props => [];
 }
