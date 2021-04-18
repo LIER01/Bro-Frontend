@@ -16,7 +16,6 @@ class SettingsRepository {
       fetchResults: true,
       variables: <String, dynamic>{},
     );
-
     return await client.query(_options);
   }
 

@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/blocs/preferred_language/preferred_language_state.dart';
 import 'package:bro/data/home_repository.dart';
 import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/models/new_courses.dart';
 import 'package:bro/models/home.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -22,8 +24,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     preferredLanguageRepository = preferredLanguageBloc.repository;
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((event) {
-      if (event is LanguageChanged) {
-        add(HomeRequested(preferredLanguageSlug: event.newLang));
+      if (event is LanguageChanged || event is MutatePreferredLanguage) {
+        add(HomeRequested());
       }
     });
   }
@@ -60,18 +62,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       var ret_home = Home.fromJson(home.data!['home']);
       var returnLength = 3;
       var langSlug;
-      if (event.preferredLanguageSlug == '') {
+     /* if (event.preferredLanguageSlug == '') {
         langSlug = await preferredLanguageRepository.getPreferredLangSlug();
       } else {
         langSlug = event.preferredLanguageSlug;
-      }
+      }*/
+      langSlug = await preferredLanguageRepository.getPreferredLangSlug();
       return await repository
           .getRecommendedCourses(langSlug, curr_len, 3)
           .then((res) {
         var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse'])
           ..addAll(List.from(res.data!['nonLangCourse']));
-
         final returnCourse = LangCourseList.takeList(res_list).langCourses;
+        debugPrint(returnCourse.toString());
         var rs = returnCourse;
         if (returnCourse.length > returnLength) {
           rs = returnCourse.sublist(0, 3);

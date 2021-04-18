@@ -15,7 +15,6 @@ class HomeRequested extends HomeEvent {
       : preferredLanguageSlug = preferredLanguageSlug ?? '';
 
   @override
-
   // This defines the props you need to check to determine if the state has changed.
-  List get props => [];
+  List get props => [preferredLanguageSlug];
 }

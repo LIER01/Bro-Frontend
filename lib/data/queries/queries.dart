@@ -93,6 +93,7 @@ query langCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
   
   nonLangCourse: courses (start: $start, limit: $limit,where:{
       _where:[{language:{slug_ne:$lang_slug}}
+      {is_recommended:true}
         ]
     }){
     id

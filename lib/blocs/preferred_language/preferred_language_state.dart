@@ -22,4 +22,8 @@ class LanguageChanged extends PreferredLanguageState {
 
   @override
   List<Object> get props => [newLang];
+
+  @override
+  String toString() =>
+      'Success { newLang: $newLang}';
 }

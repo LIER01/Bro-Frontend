@@ -37,7 +37,7 @@ class Success extends HomeState {
 
   @override
   String toString() =>
-      'Success { courses: $courses, hasReachedMax: $hasReachedMax, home: $home }';
+      'Success { reccourses: $courses, hasReachedMax: $hasReachedMax, home: $home }';
 }
 
 class Failed extends HomeState {}

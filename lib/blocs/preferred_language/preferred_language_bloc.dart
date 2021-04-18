@@ -16,7 +16,7 @@ class PreferredLanguageBloc
     if (event is MutatePreferredLanguage) {
       await repository.setPreferredLangSlug(event.preferredLanguage);
       yield LanguageChanged(newLang: event.preferredLanguage);
-    } else if (event is PreferredLanguageRequested) {
+    } else if (event is PreferredLanguageRequested || state is Initial) {
       var res = await repository.getPreferredLangSlug();
       yield LanguageChanged(newLang: res);
     }
