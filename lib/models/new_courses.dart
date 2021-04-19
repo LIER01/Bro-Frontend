@@ -40,7 +40,6 @@ class LangCourse {
   });
 
   factory LangCourse.fromJson(Map<String, dynamic> jsonRes) {
-    debugPrint(jsonRes['questions'].toString());
     final questions = jsonRes['questions'] is List ? <Questions>[] : null;
     if (questions != null) {
       for (final dynamic item in jsonRes['questions']!) {
