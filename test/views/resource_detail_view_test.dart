@@ -1,6 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/resource_detail/resource_detail_bucket.dart';
-import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/resource_repository.dart';
 import 'package:bro/views/resource/resource_detail/resource_detail_view.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-import '../blocs/resource_detail/resource_detail_bloc_test.dart';
 import '../mock_data/resource_detail_mock.dart';
 
 class MockResourceDetailBloc

@@ -1,5 +1,4 @@
 import 'package:bro/models/new_course.dart';
-import 'package:gql/ast.dart';
 
 String url = 'assets/images/placeholder.png';
 

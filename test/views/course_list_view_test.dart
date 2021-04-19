@@ -50,9 +50,9 @@ void mainTest() {
         ),
       );
     });
-
+    List<LangCourse> mockedLangCourseList;
     testWidgets('renders properly with courses', (WidgetTester tester) async {
-      List<LangCourse> mockedLangCourseList = [];
+      mockedLangCourseList = [];
       mockedCourseList.forEach((element) {
         mockedLangCourseList.add(LangCourse.fromJson(element));
       });
@@ -69,6 +69,7 @@ void mainTest() {
         ),
       );
       await tester.pump();
+      debugPrint(mockedLangCourseList[0].title);
 
       expect(find.byType(LinearProgressIndicator), findsNothing);
 
