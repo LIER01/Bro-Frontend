@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/blocs/settings/settings_bucket.dart';
 import 'package:bro/blocs/settings/settings_state.dart';
@@ -6,6 +8,7 @@ import 'package:bro/models/languages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingsView extends StatefulWidget {
   @override
@@ -70,30 +73,44 @@ class _SettingsViewState extends State<SettingsView> {
               body: BlocBuilder<PreferredLanguageBloc, PreferredLanguageState>(
                   builder: (context, state) {
                 if (state is LanguageChanged) {
-                  return Column(
-                    children: [
-                      DropdownButton<String>(
-                        value: state.newLang,
-                        icon: const Icon(Icons.arrow_downward),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: const TextStyle(color: Colors.deepPurple),
-                        underline: Container(
-                          height: 2,
-                          color: Colors.deepPurpleAccent,
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            'Språk',
+                            style: Theme.of(context).textTheme.headline6,
+                            textAlign: TextAlign.left,
+                          ),
                         ),
-                        onChanged: (String? newValue) {
-                          _changeLanguage(newValue!);
-                        },
-                        items: languages
-                            .map<DropdownMenuItem<String>>((Language lang) {
-                          return DropdownMenuItem<String>(
-                            value: lang.slug,
-                            child: Text(lang.languageFullName),
-                          );
-                        }).toList(),
-                      ),
-                    ],
+                        Card(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: DropdownButton<String>(
+                              value: state.newLang,
+                              icon: const FaIcon(FontAwesomeIcons.chevronDown),
+                              iconSize: 16,
+                              isExpanded: true,
+                              underline: Container(),
+                              style: Theme.of(context).textTheme.subtitle1,
+                              onChanged: (String? newValue) {
+                                _changeLanguage(newValue!);
+                              },
+                              items: languages.map<DropdownMenuItem<String>>(
+                                  (Language lang) {
+                                return DropdownMenuItem<String>(
+                                  value: lang.slug,
+                                  child: Text(lang.languageFullName),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 } else {
                   return Container();
