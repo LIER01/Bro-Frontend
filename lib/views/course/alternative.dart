@@ -38,8 +38,12 @@ class _AlternativeState extends State<Alternative> {
         },
         child: Container(
           constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width / 2.5,
-              maxHeight: MediaQuery.of(context).size.width / 2.5),
+              maxWidth: widget.isPressed
+                  ? MediaQuery.of(context).size.width
+                  : MediaQuery.of(context).size.width / 2.5,
+              maxHeight: widget.isPressed
+                  ? MediaQuery.of(context).size.width / 2.1
+                  : MediaQuery.of(context).size.width / 2.5),
           alignment: FractionalOffset.center,
           decoration: widget.isPressed
               ? BoxDecoration(
@@ -92,7 +96,10 @@ class _AlternativeState extends State<Alternative> {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                decoration: BoxDecoration(color: Colors.teal),
+                                decoration: BoxDecoration(
+                                    color: widget.isPressed
+                                        ? validColor
+                                        : Colors.teal),
                                 child: Center(
                                     child: Text(widget.name,
                                         textAlign: TextAlign.center,
