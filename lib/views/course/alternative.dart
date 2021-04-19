@@ -1,6 +1,6 @@
 import 'package:bro/blocs/course_detail/course_detail_bloc.dart';
 import 'package:bro/blocs/course_detail/course_detail_event.dart';
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +10,7 @@ class Alternative extends StatefulWidget {
   final bool isTrue;
   final int id;
   final bool isPressed;
-  final Courses course;
+  final Course course;
   final Object? image;
 
   Alternative(

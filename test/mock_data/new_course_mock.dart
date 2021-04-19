@@ -1,4 +1,4 @@
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 
 String url = 'assets/images/placeholder.png';
 
@@ -119,4 +119,4 @@ var new_new_mock_course = {
   'course_group': {'name': 'Lier kommune', 'slug': 'lier-kommune-1'}
 };
 
-Courses referenceCourses = Courses.fromJson(new_new_mock_course);
+Course referenceCourses = Course.fromJson(new_new_mock_course);

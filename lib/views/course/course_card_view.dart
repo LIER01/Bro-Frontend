@@ -1,4 +1,4 @@
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -14,13 +14,13 @@ class CardContainerView extends StatefulWidget {
     Key? key,
     required this.course,
   }) : super(key: key);
-  final Courses course;
+  final Course course;
   @override
   _CardContainerViewState createState() => _CardContainerViewState();
 }
 
 class _CardContainerViewState extends State<CardContainerView> {
-  late final List<Slides> list;
+  late final List<Slide> list;
 
   late ScrollController _controller;
   double indx = 0;

@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 T? asT<T>(dynamic value) {
   if (value is T) {
     return value;
@@ -9,59 +7,45 @@ T? asT<T>(dynamic value) {
   return null;
 }
 
-class LangCourseList {
-  LangCourseList({
-    required this.langCourses,
-  });
-
-  final List<LangCourse> langCourses;
-
-  factory LangCourseList.takeList(List<Map<String, dynamic>> list) {
-    var returnList = <LangCourse>[];
-    for (final item in list) {
-      if (item['course_group'] != null && item['publisher'] != null) {
-        returnList.add(LangCourse.fromJson(item));
-      }
-    }
-    return LangCourseList(langCourses: returnList);
-  }
-}
-
-class LangCourse {
-  LangCourse({
+class Course {
+  Course({
     required this.questions,
     required this.slides,
     required this.title,
     required this.description,
+    this.language,
     this.publisher,
     this.category,
     required this.isRecommended,
     this.courseGroup,
   });
 
-  factory LangCourse.fromJson(Map<String, dynamic> jsonRes) {
-    final questions = jsonRes['questions'] is List ? <Questions>[] : null;
+  factory Course.fromJson(Map<String, dynamic> jsonRes) {
+    final questions = jsonRes['questions'] is List ? <Question>[] : null;
     if (questions != null) {
       for (final dynamic item in jsonRes['questions']!) {
         if (item != null) {
-          questions.add(Questions.fromJson(asT<Map<String, dynamic>>(item)!));
+          questions.add(Question.fromJson(asT<Map<String, dynamic>>(item)!));
         }
       }
     }
 
-    final slides = jsonRes['slides'] is List ? <Slides>[] : null;
+    final slides = jsonRes['slides'] is List ? <Slide>[] : null;
     if (slides != null) {
       for (final dynamic item in jsonRes['slides']!) {
         if (item != null) {
-          slides.add(Slides.fromJson(asT<Map<String, dynamic>>(item)!));
+          slides.add(Slide.fromJson(asT<Map<String, dynamic>>(item)!));
         }
       }
     }
-    return LangCourse(
+    return Course(
       questions: questions!,
       slides: slides!,
       title: asT<String>(jsonRes['title'])!,
       description: asT<String>(jsonRes['description'])!,
+      language: jsonRes['language'] == null
+          ? null
+          : Language.fromJson(asT<Map<String, dynamic>>(jsonRes['language'])!),
       publisher: jsonRes['publisher'] == null
           ? null
           : Publisher.fromJson(
@@ -77,10 +61,11 @@ class LangCourse {
     );
   }
 
-  final List<Questions> questions;
-  final List<Slides> slides;
+  final List<Question> questions;
+  final List<Slide> slides;
   final String title;
   final String description;
+  final Language? language;
   final Publisher? publisher;
   final Category? category;
   final bool isRecommended;
@@ -96,26 +81,45 @@ class LangCourse {
         'slides': slides,
         'title': title,
         'description': description,
+        'language': language,
         'publisher': publisher,
         'category': category,
         'is_recommended': isRecommended,
         'course_group': courseGroup,
       };
 
-  LangCourse clone() => LangCourse.fromJson(
-      asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+  Course clone() =>
+      Course.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 
-class Questions {
-  Questions({
-    required this.id,
+class Question {
+  Question({
+    required this.question,
+    required this.alternatives,
+    required this.clarification,
   });
 
-  factory Questions.fromJson(Map<String, dynamic> jsonRes) => Questions(
-        id: asT<String>(jsonRes['id'])!,
-      );
+  factory Question.fromJson(Map<String, dynamic> jsonRes) {
+    final alternatives =
+        jsonRes['alternatives'] is List ? <Alternative>[] : null;
+    if (alternatives != null) {
+      for (final dynamic item in jsonRes['alternatives']!) {
+        if (item != null) {
+          alternatives
+              .add(Alternative.fromJson(asT<Map<String, dynamic>>(item)!));
+        }
+      }
+    }
+    return Question(
+      question: asT<String>(jsonRes['question'])!,
+      alternatives: alternatives!,
+      clarification: asT<String>(jsonRes['clarification'])!,
+    );
+  }
 
-  final String id;
+  final String question;
+  final List<Alternative> alternatives;
+  final String clarification;
 
   @override
   String toString() {
@@ -123,23 +127,31 @@ class Questions {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
+        'question': question,
+        'alternatives': alternatives,
+        'clarification': clarification,
       };
 
-  Questions clone() => Questions.fromJson(
+  Question clone() => Question.fromJson(
       asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 
-class Slides {
-  Slides({
-    required this.id,
+class Alternative {
+  Alternative({
+    required this.alternativeText,
+    this.image,
+    required this.isCorrect,
   });
 
-  factory Slides.fromJson(Map<String, dynamic> jsonRes) => Slides(
-        id: asT<String>(jsonRes['id'])!,
+  factory Alternative.fromJson(Map<String, dynamic> jsonRes) => Alternative(
+        alternativeText: asT<String>(jsonRes['alternative_text'])!,
+        image: asT<Object?>(jsonRes['image']),
+        isCorrect: asT<bool>(jsonRes['is_correct'])!,
       );
 
-  final String id;
+  final String alternativeText;
+  final Object? image;
+  final bool isCorrect;
 
   @override
   String toString() {
@@ -147,11 +159,99 @@ class Slides {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
+        'alternative_text': alternativeText,
+        'image': image,
+        'is_correct': isCorrect,
       };
 
-  Slides clone() =>
-      Slides.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+  Alternative clone() => Alternative.fromJson(
+      asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+}
+
+class Slide {
+  Slide({
+    required this.title,
+    required this.description,
+    this.media,
+  });
+
+  factory Slide.fromJson(Map<String, dynamic> jsonRes) => Slide(
+        title: asT<String>(jsonRes['title'])!,
+        description: asT<String>(jsonRes['description'])!,
+        media: jsonRes['media'] == null
+            ? null
+            : Media.fromJson(asT<Map<String, dynamic>>(jsonRes['media'])!),
+      );
+
+  final String title;
+  final String description;
+  final Media? media;
+
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'title': title,
+        'description': description,
+        'media': media,
+      };
+
+  Slide clone() =>
+      Slide.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+}
+
+class Media {
+  Media({
+    required this.url,
+  });
+
+  factory Media.fromJson(Map<String, dynamic> jsonRes) => Media(
+        url: asT<String>(jsonRes['url'])!,
+      );
+
+  final String url;
+
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'url': url,
+      };
+
+  Media clone() =>
+      Media.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+}
+
+class Language {
+  Language({
+    required this.languageFullName,
+    required this.slug,
+  });
+
+  factory Language.fromJson(Map<String, dynamic> jsonRes) => Language(
+        languageFullName: asT<String>(jsonRes['language_full_name'])!,
+        slug: asT<String>(jsonRes['slug'])!,
+      );
+
+  final String languageFullName;
+  final String slug;
+
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'language_full_name': languageFullName,
+        'slug': slug,
+      };
+
+  Language clone() => Language.fromJson(
+      asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 
 class Publisher {
@@ -261,13 +361,16 @@ class Cover_photo {
 
 class Course_group {
   Course_group({
+    required this.name,
     required this.slug,
   });
 
   factory Course_group.fromJson(Map<String, dynamic> jsonRes) => Course_group(
+        name: asT<String>(jsonRes['name'])!,
         slug: asT<String>(jsonRes['slug'])!,
       );
 
+  final String name;
   final String slug;
 
   @override
@@ -276,6 +379,7 @@ class Course_group {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
         'slug': slug,
       };
 

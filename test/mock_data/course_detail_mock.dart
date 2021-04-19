@@ -1,4 +1,4 @@
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 
 String url = '../../test/mock_data/statics/test.jpeg';
 Map<String, dynamic> course_detail_mock = {
@@ -32,21 +32,21 @@ Map<String, dynamic> course_detail_mock = {
   }
 };
 
-Courses referenceCourse = Courses(
+Course referenceCourse = Course(
     title: course_detail_mock['course']['title'],
     description: course_detail_mock['course']['description'],
     questions: [
-      Questions(
+      Question(
           question: course_detail_mock['course']['questions'][0]['question'],
           alternatives: [
-            Alternatives(
+            Alternative(
                 image: course_detail_mock['course']['questions'][0]
                     ['alternatives'][0]['image'],
                 alternativeText: course_detail_mock['course']['questions'][0]
                     ['alternatives'][0]['name'],
                 isCorrect: course_detail_mock['course']['questions'][0]
                     ['alternatives'][0]['correct']),
-            Alternatives(
+            Alternative(
                 image: course_detail_mock['course']['questions'][0]
                     ['alternatives'][1]['image'],
                 alternativeText: course_detail_mock['course']['questions'][0]
@@ -58,12 +58,12 @@ Courses referenceCourse = Courses(
               ['clarification'])
     ],
     slides: [
-      Slides(
+      Slide(
           title: course_detail_mock['course']['slides'][0]['title'],
           description: course_detail_mock['course']['slides'][0]['description'],
           media: Media(
               url: course_detail_mock['course']['slides'][0]['image']['url'])),
-      Slides(
+      Slide(
           title: course_detail_mock['course']['slides'][1]['title'],
           description: course_detail_mock['course']['slides'][1]['description'],
           media: Media(

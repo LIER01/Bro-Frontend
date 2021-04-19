@@ -1,9 +1,9 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 
 class WrongEvent extends CourseDetailEvent {
   final int? courseId;
-  final Courses? course;
+  final Course? course;
   final bool isQuiz;
   final bool isAnswer;
   final int? answerId;

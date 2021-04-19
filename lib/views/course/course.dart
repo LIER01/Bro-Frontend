@@ -1,4 +1,4 @@
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 import 'package:bro/views/course/quiz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class CourseDetailView extends StatefulWidget {
 }
 
 class _CourseDetailViewState extends State<CourseDetailView> {
-  late Courses data;
+  late Course data;
   late CourseDetailBloc _courseDetailBloc;
   void testFunc(BuildContext context) {
     print('poppppppp');
