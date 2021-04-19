@@ -23,8 +23,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       : super(Loading()) {
     preferredLanguageRepository = preferredLanguageBloc.repository;
     preferredLanguageSubscription =
-        preferredLanguageBloc.stream.listen((event) {
-      if (event is LanguageChanged || event is MutatePreferredLanguage) {
+        preferredLanguageBloc.stream.listen((state) {
+      if (state is LanguageChanged) {
         add(HomeRequested());
       }
     });
@@ -35,23 +35,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // Not able to access state methods without this. Do not know why.
     final currentState = state;
     if (event is HomeRequested && !_hasReachedMax(currentState)) {
-      try {
-        if (currentState is Loading) {
-          var res = await _retrieveCourses(event, 0);
-          yield res;
-          return;
-        }
-
-        if (currentState is Success) {
-          final result =
-              await _retrieveCourses(event, currentState.courses.length);
-          yield result;
-        }
-      } catch (e, stackTrace) {
-        log(e.toString());
-        log(stackTrace.toString());
-
-        yield Failed();
+      if (event is HomeRequested) {
+        yield await _retrieveCourses(event, 0);
       }
     }
   }
@@ -61,13 +46,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       var home = await repository.getHome();
       var ret_home = Home.fromJson(home.data!['home']);
       var returnLength = 3;
-      var langSlug;
-     /* if (event.preferredLanguageSlug == '') {
-        langSlug = await preferredLanguageRepository.getPreferredLangSlug();
-      } else {
-        langSlug = event.preferredLanguageSlug;
-      }*/
-      langSlug = await preferredLanguageRepository.getPreferredLangSlug();
+      var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
       return await repository
           .getRecommendedCourses(langSlug, curr_len, 3)
           .then((res) {

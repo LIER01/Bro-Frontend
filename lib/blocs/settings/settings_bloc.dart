@@ -36,7 +36,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     } catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
-
       return Failed();
     }
   }

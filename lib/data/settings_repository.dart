@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bro/data/queries/settings_queries.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Contains The different selectable languages, fetched from the backend.
 class SettingsRepository {

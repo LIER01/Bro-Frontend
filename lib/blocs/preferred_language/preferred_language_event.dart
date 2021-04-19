@@ -10,7 +10,7 @@ abstract class PreferredLanguageEvent extends Equatable {
 class MutatePreferredLanguage extends PreferredLanguageEvent {
   final String preferredLanguage;
   MutatePreferredLanguage({preferredLanguage})
-      : preferredLanguage = preferredLanguage ?? 'EN';
+      : preferredLanguage = preferredLanguage ?? 'NO';
 
   @override
   // This defines the props you need to check to determine if the state has changed.

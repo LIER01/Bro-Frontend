@@ -6,8 +6,7 @@ abstract class PreferredLanguageState extends Equatable {
   List<Object> get props => [];
 }
 
-class Initial extends PreferredLanguageState {
-}
+class Initial extends PreferredLanguageState {}
 
 class PreferredLanguageLoading extends PreferredLanguageState {
   PreferredLanguageLoading();
@@ -22,6 +21,5 @@ class LanguageChanged extends PreferredLanguageState {
   List<Object> get props => [newLang];
 
   @override
-  String toString() =>
-      'Success { newLang: $newLang}';
+  String toString() => 'Success { newLang: $newLang}';
 }
