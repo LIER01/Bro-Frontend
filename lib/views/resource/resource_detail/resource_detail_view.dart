@@ -87,32 +87,33 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                 ),
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   alignment: Alignment.topLeft,
                   child: Text(
-                    resource.category!.categoryName + ' > ' + resource.title,
+                    resource.category!.categoryName.toUpperCase() +
+                        ' > ' +
+                        resource.title.toUpperCase(),
                     style: Theme.of(context)
                         .textTheme
-                        .caption!
+                        .overline!
                         .copyWith(color: Theme.of(context).colorScheme.primary),
                     textAlign: TextAlign.left,
                   ),
                 ),
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
                   alignment: Alignment.topLeft,
                   child: Text(
                     resource.description,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1!
+                        .bodyText2!
                         .copyWith(color: Colors.black),
                     textAlign: TextAlign.left,
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: 20),
                   child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -123,7 +124,12 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                     },
                   ),
                 ),
-                Container(child: PDFList(pdfPaths: state.resource.documents))
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  child: PDFList(
+                    pdfPaths: state.resource.documents,
+                  ),
+                )
               ],
             ),
           );

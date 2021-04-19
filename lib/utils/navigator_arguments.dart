@@ -15,3 +15,9 @@ class ResourceDetailArguments {
 
   ResourceDetailArguments({required this.lang, required this.group});
 }
+
+class ResourceDetailWebViewArguments {
+  final String url;
+
+  ResourceDetailWebViewArguments({required this.url});
+}

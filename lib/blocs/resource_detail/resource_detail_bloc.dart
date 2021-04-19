@@ -34,11 +34,11 @@ class ResourceDetailBloc
           .getResource(pref_lang_slug, event.group)
           .then((res) async {
         if (res.data!.isEmpty) {
-          final fallbackCourseResult =
+          final fallbackResourseResult =
               await repository.getResource('NO', event.group);
 
           final fallbackResource =
-              Resources.fromJson(fallbackCourseResult.data!['resources'][0]);
+              Resources.fromJson(fallbackResourseResult.data!['resources'][0]);
 
           return Success(resource: fallbackResource);
         } else if (res.data!.isNotEmpty) {
