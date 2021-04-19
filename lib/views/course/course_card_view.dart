@@ -131,7 +131,7 @@ class _CardContainerViewState extends State<CardContainerView> {
                                     vertical:
                                         MediaQuery.of(context).size.width *
                                             0.03),
-                                child: Text('Start Quiz',
+                                child: Text('START QUIZ',
                                     style: Theme.of(context).textTheme.button)),
                             onPressed: () {
                               BlocProvider.of<CourseDetailBloc>(context).add(
