@@ -16,10 +16,8 @@ class Loading extends HomeState {}
 class Success extends HomeState {
   final List<LangCourse> courses;
   final Home home;
-  final bool hasReachedMax;
 
-  Success(
-      {required this.courses, required this.hasReachedMax, required this.home});
+  Success({required this.courses, required this.home});
 
   Success copyWith({
     required List<LangCourse> courses,
@@ -27,17 +25,16 @@ class Success extends HomeState {
     bool? hasReachedMax,
   }) {
     return Success(
-        courses: courses,
-        home: home as Home? ?? this.home,
-        hasReachedMax: hasReachedMax ?? this.hasReachedMax);
+      courses: courses,
+      home: home as Home? ?? this.home,
+    );
   }
 
   @override
-  List<Object> get props => [home, courses, hasReachedMax];
+  List<Object> get props => [home, courses];
 
   @override
-  String toString() =>
-      'Success { reccourses: $courses, hasReachedMax: $hasReachedMax, home: $home }';
+  String toString() => 'Success { reccourses: $courses, home: $home }';
 }
 
 class Failed extends HomeState {}

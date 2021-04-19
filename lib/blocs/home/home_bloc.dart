@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/blocs/home/home_state.dart';
-import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
 import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
-import 'package:bro/blocs/preferred_language/preferred_language_state.dart';
 import 'package:bro/data/home_repository.dart';
 import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/models/new_courses.dart';
@@ -13,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+/// Homerequested contains home, recommended courses and recommended resources.
+/// Listens to changes in PreferredLanguageState and updates based on changes.
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   PreferredLanguageBloc preferredLanguageBloc;
   late StreamSubscription preferredLanguageSubscription;
@@ -52,16 +52,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .then((res) {
         var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse'])
           ..addAll(List.from(res.data!['nonLangCourse']));
-        final returnCourse = LangCourseList.takeList(res_list).langCourses;
+        var returnCourse = LangCourseList.takeList(res_list).langCourses;
         debugPrint(returnCourse.toString());
-        var rs = returnCourse;
         if (returnCourse.length > returnLength) {
-          rs = returnCourse.sublist(0, 3);
+          returnCourse = returnCourse.sublist(0, 3);
         }
-
-        return Success(courses: rs, hasReachedMax: false, home: ret_home);
+        return Success(courses: returnCourse, home: ret_home);
       });
-      // return result;
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
@@ -74,4 +71,4 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 }
 
-bool _hasReachedMax(HomeState state) => state is Success && state.hasReachedMax;
+bool _hasReachedMax(HomeState state) => state is Success;

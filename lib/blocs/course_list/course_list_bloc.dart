@@ -10,6 +10,8 @@ import 'package:bro/models/new_courses.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+/// CourseListBloc is in charge of pulling courses from the backend.
+/// It listens to PreferredLanguage State and will refresh the courses when the state is changed.
 class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   CourseRepository repository;
   PreferredLanguageBloc preferredLanguageBloc;
@@ -22,7 +24,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
       if (state is LanguageChanged) {
-        add(CourseListRefresh());
+        add(CourseListRequested(refresh: true));
       }
     });
   }
@@ -31,9 +33,8 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   Stream<CourseListState> mapEventToState(CourseListEvent event) async* {
     // Not able to access state methods without this. Do not know why.
     final currentState = state;
-    if (event is CourseListRefresh) {
-      final result = await _refreshCourses(event, 0);
-      yield result;
+    if (event is CourseListRequested && event.refresh) {
+      yield await _retrieveCourses(event, 0);
     }
     if (event is CourseListRequested && !_hasReachedMax(currentState)) {
       try {
@@ -66,56 +67,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     }
   }
 
-  Future<CourseListState> _refreshCourses(
-      CourseListRefresh event, int curr_len) async {
-    try {
-      var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
-      if (langSlug != 'NO') {
-        return await repository
-            .getLangCourses(langSlug, curr_len, 10)
-            .then((res) {
-          var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-          //..addAll(List.from(res.data!['nonLangCourse']));
-          for (final item in List.from(res.data!['nonLangCourse'])) {
-            var slug = item['course_group']['slug'];
-            var has_copy = false;
-            for (final target in res_list) {
-              if (slug == target['course_group']['slug']) {
-                has_copy = true;
-              }
-            }
-            if (!has_copy) {
-              res_list.add(item);
-            }
-          }
-          final returnCourse = LangCourseList.takeList(res_list).langCourses;
-          return Success(courses: returnCourse, hasReachedMax: false);
-        });
-      } else if (langSlug == 'NO') {
-        return await repository
-            .getLangCourses(langSlug, curr_len, 10)
-            .then((res) {
-          var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-          final returnCourse = LangCourseList.takeList(res_list).langCourses;
-          return Success(courses: returnCourse, hasReachedMax: false);
-        });
-      }
-      return Failed();
-      // return result;
-    } on NetworkException catch (e, stackTrace) {
-      log(e.toString());
-      log(stackTrace.toString());
-      return Failed();
-    } catch (e, stackTrace) {
-      log(e.toString());
-      log(stackTrace.toString());
-
-      return Failed();
-    }
-  }
-
+  /// Returns all courses in the preferredLanguage appended with courses in Norwegian.
   Future<CourseListState> _retrieveCourses(
       CourseListRequested event, int curr_len) async {
     try {
@@ -126,7 +78,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
             .then((res) {
           var res_list =
               List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-          //..addAll(List.from(res.data!['nonLangCourse']));
+          // removes duplicates of courses that have multiple languages.
           for (final item in List.from(res.data!['nonLangCourse'])) {
             var slug = item['course_group']['slug'];
             var has_copy = false;
@@ -161,7 +113,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     } catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
-
       return Failed();
     }
   }
