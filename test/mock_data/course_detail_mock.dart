@@ -1,6 +1,6 @@
 import 'package:bro/models/course.dart';
 
-String url = '../../test/mock_data/statics/Capture.PNG';
+String url = '../../test/mock_data/statics/test.jpeg';
 Map<String, dynamic> course_detail_mock = {
   'course': {
     'title': 'En meget fin testcourse',

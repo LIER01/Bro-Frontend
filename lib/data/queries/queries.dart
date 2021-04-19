@@ -14,6 +14,7 @@ query getCourseQuery($start: Int!, $limit: Int!) {
     id,
     title,
     description,
+    category {category_name}
     questions {id},
     slides {id},
   }

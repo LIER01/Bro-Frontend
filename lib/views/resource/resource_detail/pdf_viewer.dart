@@ -21,8 +21,10 @@ class PDFList extends StatelessWidget {
                   Container(
                     alignment: Alignment.topLeft,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    child: Text('Dokumenter',
-                        style: Theme.of(context).textTheme.headline6),
+                    child: Text(
+                      'Dokumenter',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   ),
                   Container(
                       height: MediaQuery.of(context).size.height * 0.25,
@@ -75,15 +77,20 @@ class PDFCard extends StatelessWidget {
                       alignment: Alignment.center,
                       child: FaIcon(
                         FontAwesomeIcons.filePdf,
-                        size: MediaQuery.of(context).size.width * 0.15,
+                        size: MediaQuery.of(context).size.width * 0.10,
                       ),
                     )
                   ],
                 )),
             Container(
-                width: MediaQuery.of(context).size.height * 0.10,
-                child:
-                    Text(pdfName, style: Theme.of(context).textTheme.bodyText2))
+              width: MediaQuery.of(context).size.height * 0.10,
+              child: Text(
+                pdfName,
+                style: Theme.of(context).textTheme.caption,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
       ),
