@@ -1,61 +1,3 @@
-final String getArticlesQuery = r'''
-query {
-  articles {
-    id,
-    title,
-    body
-  }
-}
-''';
-
-final String getCoursesQuery = r''' 
-query getCourseQuery($start: Int!, $limit: Int!) {
-  courses(start: $start, limit: $limit) {
-    id,
-    title,
-    description,
-    questions {id},
-    slides {id},
-  }
-}
-''';
-
-final String getHomeViewQuery = r'''
-query{
-  home {  
-    introduction,
-    header
-    }
-}
-''';
-
-final String getCourseQuery = r'''
-    query getCourseQuery ($course_id: ID!){
-    course (id:$course_id){
-        title
-        description
-        questions{
-            question
-            alternatives{
-                name
-                image{
-                    url
-                }
-                correct
-            }
-            clarification
-        }
-        slides{
-            title
-            description
-            image{
-                url
-            }
-        }
-    }
-}
-    ''';
-
 final String getRecommendedCoursesQuery = r'''
 query langCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
     LangCourse: courses (start: $start, limit: $limit,where:{
@@ -92,8 +34,9 @@ query langCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
   }
   
   nonLangCourse: courses (start: $start, limit: $limit,where:{
-      _where:[{language:{slug_ne:$lang_slug}}
-      {is_recommended:true}
+      _where:[
+        {language:{slug_ne:$lang_slug}}
+        {is_recommended:true}
         ]
     }){
     id
@@ -235,7 +178,7 @@ query nonLangCoursesQuery ($start: Int!, $limit: Int!){
 }
 ''';
 
-final String getNewCourse = r'''
+final String getCourse = r'''
 query getNewCourseQuery ($group_slug: String!, $lang_slug: String!){
     courses (where:{
       _where:[{

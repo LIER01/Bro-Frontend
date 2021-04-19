@@ -8,27 +8,6 @@ class CourseRepository {
 
   CourseRepository({required this.client});
 
-  // Course type should be made in a models/ directory
-  Future<QueryResult> getCourses(int start, int limit) async {
-    final _options = WatchQueryOptions(
-      document: parseString(getCoursesQuery),
-      fetchResults: true,
-      variables: <String, dynamic>{'start': start, 'limit': limit},
-    );
-
-    return await client.query(_options);
-  }
-
-  Future<QueryResult> getCourse(int i) async {
-    final _options = WatchQueryOptions(
-      document: parseString(getCourseQuery),
-      variables: {'course_id': i},
-      fetchResults: true,
-    );
-
-    return await client.query(_options);
-  }
-
   Future<QueryResult> getLangCourses(
       String lang_slug, int start, int limit) async {
     final _options = WatchQueryOptions(
@@ -54,9 +33,9 @@ class CourseRepository {
     return await client.query(_options);
   }
 
-  Future<QueryResult> getNewCourseQuery(String group, String lang) async {
+  Future<QueryResult> getCourseQuery(String group, String lang) async {
     final _options = WatchQueryOptions(
-      document: parseString(getNewCourse),
+      document: parseString(getCourse),
       fetchResults: true,
       variables: <String, dynamic>{'group_slug': group, 'lang_slug': lang},
     );

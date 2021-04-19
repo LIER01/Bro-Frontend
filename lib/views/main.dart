@@ -86,14 +86,39 @@ class App extends StatelessWidget {
         iconTheme: IconThemeData(size: 18.0, color: Colors.white),
         textTheme: TextTheme(
           headline1: GoogleFonts.notoSans(
-            fontSize: 72.0,
-            fontWeight: FontWeight.bold,
+            fontSize: 95.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: -1.5,
             color: Colors.teal,
           ),
-          headline4: GoogleFonts.notoSans(color: Colors.teal),
+          headline2: GoogleFonts.notoSans(
+            fontSize: 59.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: -0.5,
+            color: Colors.teal,
+          ),
+          headline3: GoogleFonts.notoSans(
+            fontSize: 48.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.0,
+            color: Colors.teal,
+          ),
+          headline4: GoogleFonts.notoSans(
+            fontSize: 34.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.25,
+            color: Colors.teal,
+          ),
+          headline5: GoogleFonts.notoSans(
+            fontSize: 24.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.0,
+            color: Colors.teal,
+          ),
           headline6: GoogleFonts.notoSans(
             fontSize: 20.0,
             fontWeight: FontWeight.w500,
+            letterSpacing: 0.15,
             color: Colors.teal,
           ),
           subtitle1: GoogleFonts.notoSans(
@@ -108,22 +133,32 @@ class App extends StatelessWidget {
             letterSpacing: 0.10,
             color: Colors.black,
           ),
-          caption: GoogleFonts.notoSans(
-            fontSize: 12.0,
-            fontWeight: FontWeight.normal,
-            letterSpacing: 0.40,
-          ),
-          button: GoogleFonts.notoSans(
-            fontSize: 14.0,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.125,
-            color: Colors.white,
-          ),
           bodyText1: GoogleFonts.notoSans(
             fontSize: 16.0,
             fontWeight: FontWeight.normal,
             letterSpacing: 0.5,
             color: Colors.white,
+          ),
+          bodyText2: GoogleFonts.notoSans(
+            fontSize: 14.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.25,
+          ),
+          button: GoogleFonts.notoSans(
+            fontSize: 14.0,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 1.25,
+            color: Colors.white,
+          ),
+          caption: GoogleFonts.notoSans(
+            fontSize: 12.0,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 0.40,
+          ),
+          overline: GoogleFonts.notoSans(
+            fontSize: 10,
+            fontWeight: FontWeight.normal,
+            letterSpacing: 1.5,
           ),
         ),
       ),

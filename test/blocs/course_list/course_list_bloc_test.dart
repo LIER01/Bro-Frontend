@@ -7,8 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../mock_data/Non_Lang_courses_list_mock.dart';
-import '../mock_data/course_mock.dart';
+import '../../mock_data/Non_Lang_courses_list_mock.dart';
+import '../../mock_data/category_mock.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}
 
@@ -24,8 +24,11 @@ void main() {
       courseRepository = MockCourseRepository();
       preferredLanguageBloc =
           PreferredLanguageBloc(repository: MockPreferredLanguageRepository());
-      when(() => courseRepository.getCourses(0, 10)).thenAnswer(
+      when(() => courseRepository.getLangCourses('NO', 0, 10)).thenAnswer(
           (_) => Future.value(QueryResult(source: null, data: mockedResult)));
+      courseListBloc = CourseListBloc(
+          repository: courseRepository,
+          preferredLanguageBloc: preferredLanguageBloc);
       courseListBloc = CourseListBloc(
           repository: courseRepository,
           preferredLanguageBloc: preferredLanguageBloc);
@@ -34,7 +37,7 @@ void main() {
     blocTest(
       'should emit Failed if repository throws',
       build: () {
-        when(() => courseRepository.getCourses(0, 10))
+        when(() => courseRepository.getNonLangCourses(0, 10))
             .thenThrow(Exception('Woops'));
         return courseListBloc;
       },
@@ -56,8 +59,7 @@ void main() {
                 source: null, data: non_lang_courses_mock['data'])));
         return courseListBloc;
       },
-      act: (CourseListBloc bloc) async =>
-          bloc.add(CourseListRequested(preferredLanguageSlug: 'NO')),
+      act: (CourseListBloc bloc) async => bloc.add(CourseListRequested()),
       expect: () => [
         isA<Success>(),
       ],

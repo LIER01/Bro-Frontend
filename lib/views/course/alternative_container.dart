@@ -1,4 +1,4 @@
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -14,8 +14,8 @@ class AlternativeContainer extends StatefulWidget {
     this.answerId,
     required this.clarification,
   }) : super(key: key);
-  final Courses course;
-  final List<Alternatives> alternatives;
+  final Course course;
+  final List<Alternative> alternatives;
   final String name;
   final bool isAnswer;
   final int? answerId;
@@ -26,7 +26,7 @@ class AlternativeContainer extends StatefulWidget {
 
 class _AlternativeContainerState extends State<AlternativeContainer> {
   bool clicked = false;
-  late List<Alternatives> alts;
+  late List<Alternative> alts;
   String? validation;
 
   @override
