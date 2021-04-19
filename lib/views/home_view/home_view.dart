@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     _scrollController.addListener(_onScroll);
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc.add(HomeRequested());
+    //_homeBloc.add(HomeRequested());
   }
 
   AppBar _buildAppBar() {

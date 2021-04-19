@@ -30,7 +30,7 @@ class Success extends CourseListState {
 
   @override
   String toString() =>
-      'Success { courses: $courses, hasReachedMax: $hasReachedMax }';
+      'Success { courses: ${courses[0].description}, hasReachedMax: $hasReachedMax }';
 }
 
 class Failed extends CourseListState {}

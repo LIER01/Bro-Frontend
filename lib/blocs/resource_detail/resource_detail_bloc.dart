@@ -17,7 +17,7 @@ class ResourceDetailBloc
       ResourceDetailEvent event) async* {
     if (event is ResourceDetailRequested) {
       try {
-        yield await _retrieveResource(event, 'NO');
+        yield await _retrieveResource(event, event.lang);
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
@@ -35,7 +35,7 @@ class ResourceDetailBloc
           .then((res) async {
         if (res.data!.isEmpty) {
           final fallbackResourseResult =
-              await repository.getResource('NO', event.group);
+              await repository.getResource(pref_lang_slug, event.group);
 
           final fallbackResource =
               Resources.fromJson(fallbackResourseResult.data!['resources'][0]);

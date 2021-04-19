@@ -22,7 +22,6 @@ class Success extends HomeState {
   Success copyWith({
     required List<LangCourse> courses,
     Map<String, dynamic>? home,
-    bool? hasReachedMax,
   }) {
     return Success(
       courses: courses,
@@ -34,7 +33,8 @@ class Success extends HomeState {
   List<Object> get props => [home, courses];
 
   @override
-  String toString() => 'Success { reccourses: $courses, home: $home }';
+  String toString() =>
+      'Success { reccourses: ${courses[0].description}, home: $home }';
 }
 
 class Failed extends HomeState {}

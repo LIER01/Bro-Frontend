@@ -13,6 +13,14 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
+  late PreferredLanguageBloc _preferredLanguageBloc;
+  @override
+  void initState() {
+    super.initState();
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
+    _preferredLanguageBloc.add(PreferredLanguageRequested());
+  }
+
   int _selectedIndex = 0;
   final List<GlobalKey<NavigatorState>> _NavKeys = [
     _homeNavKey,

@@ -23,8 +23,8 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     preferredLanguageRepository = preferredLanguageBloc.repository;
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
-      if (state is LanguageChanged) {
-        add(CourseListRequested(refresh: true));
+      if (state is LanguageChanged || state is MutatePreferredLanguage) {
+        add(CourseListRefresh());
       }
     });
   }
@@ -33,26 +33,20 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   Stream<CourseListState> mapEventToState(CourseListEvent event) async* {
     // Not able to access state methods without this. Do not know why.
     final currentState = state;
-    if (event is CourseListRequested && event.refresh) {
+    if (event is CourseListRefresh) {
       yield await _retrieveCourses(event, 0);
     }
     if (event is CourseListRequested && !_hasReachedMax(currentState)) {
       try {
-        if (currentState is Loading) {
-          var res = await _retrieveCourses(event, 0);
-          yield res;
-          return;
-        }
         if (currentState is Success) {
           final result =
               await _retrieveCourses(event, currentState.courses.length);
+          var c = currentState.courses;
+          if (result is Success) var k = result.courses;
           if (result is Success && currentState.courses.isNotEmpty) {
-            yield result.courses.isEmpty
-                ? currentState.copyWith(
-                    hasReachedMax: true, courses: currentState.courses)
-                : Success(
-                    courses: currentState.courses + result.courses,
-                    hasReachedMax: false);
+            yield Success(
+                courses: currentState.courses + result.courses,
+                hasReachedMax: false);
           } else if (result is Failed) {
             yield result;
           } else {
@@ -69,7 +63,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
 
   /// Returns all courses in the preferredLanguage appended with courses in Norwegian.
   Future<CourseListState> _retrieveCourses(
-      CourseListRequested event, int curr_len) async {
+      CourseListEvent event, int curr_len) async {
     try {
       var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
       if (langSlug != 'NO') {

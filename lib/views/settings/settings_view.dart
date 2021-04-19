@@ -30,7 +30,7 @@ class _SettingsViewState extends State<SettingsView> {
     _settingsBloc = BlocProvider.of<SettingsBloc>(context);
     _settingsBloc.add(LanguagesRequested());
     _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
-    _preferredLanguageBloc.add(PreferredLanguageRequested());
+    //_preferredLanguageBloc.add(PreferredLanguageRequested());
     /*_getPreferredLanguage().then((value) {
       setState(() {
         dropdownValue = value;

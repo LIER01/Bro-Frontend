@@ -25,7 +25,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       if (event is LanguagesRequested) {
         final res = await repository.getLanguages();
         final languages = Languages.fromJson(res.data!);
-        debugPrint(languages.toString());
         return Success(languages: languages);
       }
       return Failed();

@@ -24,7 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     preferredLanguageRepository = preferredLanguageBloc.repository;
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
-      if (state is LanguageChanged) {
+      if (state is LanguageChanged || state is MutatePreferredLanguage) {
         add(HomeRequested());
       }
     });
@@ -34,31 +34,42 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     // Not able to access state methods without this. Do not know why.
     final currentState = state;
-    if (event is HomeRequested && !_hasReachedMax(currentState)) {
-      if (event is HomeRequested) {
-        yield await _retrieveCourses(event, 0);
-      }
+    if (event is HomeRequested) {
+      yield await _retrieveCourses(event, 0);
     }
   }
 
   Future<HomeState> _retrieveCourses(HomeRequested event, int curr_len) async {
     try {
       var home = await repository.getHome();
-      var ret_home = Home.fromJson(home.data!['home']);
+      var returnHome = Home.fromJson(home.data!['home']);
       var returnLength = 3;
       var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
-      return await repository
+      var returnCourses = await repository
           .getRecommendedCourses(langSlug, curr_len, 3)
           .then((res) {
         var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse'])
           ..addAll(List.from(res.data!['nonLangCourse']));
         var returnCourse = LangCourseList.takeList(res_list).langCourses;
-        debugPrint(returnCourse.toString());
+        if (returnCourse.length > returnLength) {
+          returnCourse = returnCourse.sublist(0, 3);
+        }
+        return returnCourse;
+      });
+      return Success(courses: returnCourses, home: returnHome);
+
+      /*return await repository
+          .getRecommendedCourses(langSlug, curr_len, 3)
+          .then((res) {
+        var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse'])
+          ..addAll(List.from(res.data!['nonLangCourse']));
+        var returnCourse = LangCourseList.takeList(res_list).langCourses;
         if (returnCourse.length > returnLength) {
           returnCourse = returnCourse.sublist(0, 3);
         }
         return Success(courses: returnCourse, home: ret_home);
-      });
+      });*/
+
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());

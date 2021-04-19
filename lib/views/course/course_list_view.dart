@@ -22,7 +22,6 @@ class _CourseListViewState extends State<CourseListView> {
     super.initState();
     _scrollController.addListener(_onScroll);
     _courseListBloc = BlocProvider.of<CourseListBloc>(context);
-    _courseListBloc.add(CourseListRequested());
   }
 
   AppBar _buildAppBar() {
@@ -36,7 +35,6 @@ class _CourseListViewState extends State<CourseListView> {
     return BlocBuilder<CourseListBloc, CourseListState>(
       // ignore: missing_return
       builder: (context, state) {
-        //log(state.toString());
         if (state is Loading) {
           return Scaffold(
             appBar: _buildAppBar(),
