@@ -5,7 +5,11 @@ import 'package:bro/views/course/course_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import '../mock_data/Lang_courses_mock.dart';
 import 'package:mocktail/mocktail.dart';
+
+import '../mock_data/category_mock.dart';
+import '../mock_data/course_mock.dart';
 
 class MockCourseListView extends MockBloc<CourseListEvent, CourseListState>
     implements CourseListBloc {}
@@ -48,21 +52,12 @@ void mainTest() {
     });
 
     testWidgets('renders properly with courses', (WidgetTester tester) async {
+      List<LangCourse> mockedLangCourseList = [];
+      mockedCourseList.forEach((element) {
+        mockedLangCourseList.add(LangCourse.fromJson(element));
+      });
       when(() => courseListBloc.state).thenReturn(
-        Success(courses: [
-          LangCourse(
-            title: 'Kurstittel',
-            description: 'Kursbeskrivelse',
-            slides: [
-              Slides(id: '1'),
-            ],
-            questions: [
-              Questions(id: '1'),
-            ],
-            isRecommended: true,
-          )
-        ], hasReachedMax: true),
-      );
+          Success(courses: mockedLangCourseList, hasReachedMax: true));
       await tester.pumpWidget(
         BlocProvider.value(
           value: courseListBloc,
@@ -74,13 +69,12 @@ void mainTest() {
         ),
       );
       await tester.pump();
+      debugPrint(mockedLangCourseList[0].title);
 
       expect(find.byType(LinearProgressIndicator), findsNothing);
 
-      await tester.pump();
-
-      expect(find.text('Kurstittel'), findsOneWidget);
-      expect(find.text('Kursbeskrivelse'), findsOneWidget);
+      expect(find.text(mockedLangCourseList[0].title), findsOneWidget);
+      expect(find.text(mockedLangCourseList[0].description), findsWidgets);
     });
   });
 }

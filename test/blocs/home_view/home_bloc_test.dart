@@ -17,7 +17,8 @@ void main() {
     setUp(() {
       homeRepository = MockHomeRepository();
       when(() => homeRepository.getRecommendedCourses('NO', 0, 10)).thenAnswer(
-          (_) => Future.value(QueryResult(source: null, data: mockedResult)));
+          (_) =>
+              Future.value(QueryResult(source: null, data: mockedCourseMap)));
       homeBloc = HomeBloc(repository: homeRepository);
     });
 

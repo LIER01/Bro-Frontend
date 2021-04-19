@@ -55,6 +55,7 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> jsonRes) {
+    // ignore: omit_local_variable_types
     final List<Resources>? resources =
         jsonRes['resources'] is List ? <Resources>[] : null;
     if (resources != null) {
@@ -99,6 +100,7 @@ class Resources {
   });
 
   factory Resources.fromJson(Map<String, dynamic> jsonRes) {
+    // ignore: omit_local_variable_types
     final List<References>? references =
         jsonRes['references'] is List ? <References>[] : null;
     if (references != null) {
@@ -109,6 +111,7 @@ class Resources {
       }
     }
 
+    // ignore: omit_local_variable_types
     final List<Documents>? documents =
         jsonRes['documents'] is List ? <Documents>[] : null;
     if (documents != null) {

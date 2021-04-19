@@ -11,6 +11,7 @@ import 'package:bro/data/home_repository.dart';
 import 'package:bro/views/resource/category_view.dart';
 import 'package:bro/views/resource/resource_detail/resource_detail_view.dart';
 import 'package:bro/views/resource/resource_list_view.dart';
+import 'package:bro/views/resource/resource_detail/resource_web_view.dart';
 import 'package:bro/views/course/course.dart';
 import 'package:bro/views/course/course_list_view.dart';
 import 'package:bro/views/home_view/home_view.dart';
@@ -37,6 +38,18 @@ class ExtractResourceDetailScreen extends StatelessWidget {
       ),
       child: ResourceDetailView(lang: args.lang, group: args.group),
     );
+  }
+}
+
+class ExtractResourseDetailWebViewScreen extends StatelessWidget {
+  static const routeName = '/courseDetailWebView';
+
+  @override
+  Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments
+        as ResourceDetailWebViewArguments;
+
+    return ResourceDetailWebView(url: args.url);
   }
 }
 

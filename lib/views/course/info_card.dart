@@ -94,11 +94,12 @@ class _InfoCardContentState extends State<InfoCardContent> {
           ? CachedNetworkImage(
               imageUrl: widget.image!.url,
               imageBuilder: (context, imageProvider) => _generateInfoCard(
-                  widget.active,
-                  widget.title,
-                  widget.description,
-                  context,
-                  imageProvider),
+                widget.active,
+                widget.title,
+                widget.description,
+                context,
+                imageProvider,
+              ),
               errorWidget: (context, url, error) =>
                   Image.asset('assets/images/placeholder.png'),
             )

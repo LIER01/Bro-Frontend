@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../mock_data/category_mock.dart';
+import '../../mock_data/category_mock.dart';
 
 class MockCategoryRepository extends Mock implements CategoryRepository {}
 
