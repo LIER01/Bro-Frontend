@@ -94,7 +94,7 @@ class _AlternativeState extends State<Alternative> {
                               ),
                             ),
                             Expanded(
-                              flex: 2,
+                              flex: widget.name.length >= 14 ? 5 : 2,
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: widget.isPressed

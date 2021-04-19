@@ -60,6 +60,7 @@ class ResourceDetailReference extends StatelessWidget {
                   child: Row(
                     children: [
                       Expanded(
+                        flex: 10,
                         child: Text(
                           reference.referenceButtonText,
                           style: Theme.of(context).textTheme.button!.copyWith(
