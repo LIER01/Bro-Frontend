@@ -1,4 +1,4 @@
-import 'package:bro/models/course.dart';
+import 'package:bro/models/new_course.dart';
 
 String url = '../../test/mock_data/statics/test.jpeg';
 Map<String, dynamic> course_detail_mock = {
@@ -32,40 +32,41 @@ Map<String, dynamic> course_detail_mock = {
   }
 };
 
-Course referenceCourse = Course(
+Courses referenceCourse = Courses(
     title: course_detail_mock['course']['title'],
     description: course_detail_mock['course']['description'],
     questions: [
-      Question(
+      Questions(
           question: course_detail_mock['course']['questions'][0]['question'],
           alternatives: [
-            Alternative(
-                name: course_detail_mock['course']['questions'][0]
+            Alternatives(
+                image: course_detail_mock['course']['questions'][0]
+                    ['alternatives'][0]['image'],
+                alternativeText: course_detail_mock['course']['questions'][0]
                     ['alternatives'][0]['name'],
-                correct: course_detail_mock['course']['questions'][0]
-                    ['alternatives'][0]['correct'],
+                isCorrect: course_detail_mock['course']['questions'][0]
+                    ['alternatives'][0]['correct']),
+            Alternatives(
                 image: course_detail_mock['course']['questions'][0]
-                    ['alternatives'][0]['image']),
-            Alternative(
-                name: course_detail_mock['course']['questions'][0]
+                    ['alternatives'][1]['image'],
+                alternativeText: course_detail_mock['course']['questions'][0]
                     ['alternatives'][1]['name'],
-                correct: course_detail_mock['course']['questions'][0]
-                    ['alternatives'][1]['correct'],
-                image: course_detail_mock['course']['questions'][0]
-                    ['alternatives'][1]['image'])
+                isCorrect: course_detail_mock['course']['questions'][0]
+                    ['alternatives'][1]['correct']),
           ],
           clarification: course_detail_mock['course']['questions'][0]
               ['clarification'])
     ],
     slides: [
-      Slide(
+      Slides(
           title: course_detail_mock['course']['slides'][0]['title'],
           description: course_detail_mock['course']['slides'][0]['description'],
-          image: SlideImage(
+          media: Media(
               url: course_detail_mock['course']['slides'][0]['image']['url'])),
-      Slide(
+      Slides(
           title: course_detail_mock['course']['slides'][1]['title'],
           description: course_detail_mock['course']['slides'][1]['description'],
-          image: SlideImage(
+          media: Media(
               url: course_detail_mock['course']['slides'][1]['image']['url']))
-    ]);
+    ],
+    isRecommended: false);
