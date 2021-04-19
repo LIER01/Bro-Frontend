@@ -26,8 +26,9 @@ void mainBloc() {
 
     setUp(() {
       courseRepository = MockCourseRepository();
-      when(() => courseRepository.getCourse(any())).thenAnswer((_) =>
-          Future.value(QueryResult(source: null, data: course_detail_mock)));
+      when(() => courseRepository.getNewCourseQuery(any(), any())).thenAnswer(
+          (_) => Future.value(
+              QueryResult(source: null, data: course_detail_mock)));
       courseDetailBloc = CourseDetailBloc(repository: courseRepository);
     });
 
@@ -53,7 +54,7 @@ void mainBloc() {
     blocTest(
       'should emit failed if server does not respond',
       build: () {
-        when(() => courseRepository.getCourse(any())).thenThrow(
+        when(() => courseRepository.getNewCourseQuery(any(), any())).thenThrow(
             NetworkException(message: 'Error,connection failed', uri: Uri()));
         return courseDetailBloc;
       },

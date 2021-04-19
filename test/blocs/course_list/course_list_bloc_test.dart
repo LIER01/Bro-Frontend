@@ -18,15 +18,13 @@ void main() {
 
     setUp(() {
       courseRepository = MockCourseRepository();
-      when(() => courseRepository.getCourses(0, 10)).thenAnswer((_) =>
-          Future.value(QueryResult(source: null, data: mockedCourseMap)));
       courseListBloc = CourseListBloc(repository: courseRepository);
     });
 
     blocTest(
       'should emit Failed if repository throws',
       build: () {
-        when(() => courseRepository.getCourses(0, 10))
+        when(() => courseRepository.getNonLangCourses(0, 10))
             .thenThrow(Exception('Woops'));
         return courseListBloc;
       },

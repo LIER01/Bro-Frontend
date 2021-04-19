@@ -33,8 +33,6 @@ void mainTest() {
 
     setUp(() {
       courseRepository = MockCourseRepository();
-      when(() => courseRepository.getCourse(any())).thenAnswer((_) =>
-          Future.value(QueryResult(source: null, data: new_new_mock_course)));
       courseDetailBloc = MockCourseDetailBloc();
     });
 
