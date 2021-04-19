@@ -70,7 +70,6 @@ class _CourseDetailViewState extends State<CourseDetailView> {
         }
 
         if (state is CourseState) {
-          print('courseState');
           data = state.course;
           if (state.isQuiz == false) {
             return Scaffold(

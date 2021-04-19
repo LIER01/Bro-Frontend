@@ -38,8 +38,10 @@ class _QuizViewState extends State<QuizView> {
         alignment: Alignment.topCenter,
         child: Container(
             padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.05),
+                vertical: MediaQuery.of(context).size.height * 0.05,
+                horizontal: MediaQuery.of(context).size.width * 0.06),
             child: Text(widget.questions[index].question,
+                textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.teal, fontSize: 20))),
       ),
       Align(
