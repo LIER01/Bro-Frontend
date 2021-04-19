@@ -90,7 +90,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
-
       return Failed();
     }
   }

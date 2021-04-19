@@ -35,7 +35,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     if (event is CourseListRequested && !_hasReachedMax(currentState)) {
       try {
         if (currentState is Loading) {
-          debugPrint('loading');
           var res = await _retrieveCourses(event, 0);
           yield res;
           return;
@@ -67,27 +66,36 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   Future<CourseListState> _retrieveCourses(
       CourseListRequested event, int curr_len) async {
     try {
-      if (event.preferredLanguageSlug != 'NO') {
+      var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
+      if (langSlug !='NO') {
         log(event.preferredLanguageSlug!);
-        var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
         return await repository
             .getLangCourses(langSlug, curr_len, 10)
             .then((res) {
           var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse'])
-                ..addAll(List.from(res.data!['nonLangCourse']));
-
+              List<Map<String, dynamic>>.from(res.data!['LangCourse']);
+                //..addAll(List.from(res.data!['nonLangCourse']));
+          for (final item in List.from(res.data!['nonLangCourse'])) {
+            var slug = item['course_group']['slug'];
+            var has_copy = false;
+            for (final target in res_list) {
+              if (slug == target['course_group']['slug']) {
+                has_copy = true;
+              }
+            }
+            if (!has_copy) {
+              res_list.add(item);
+            }
+          }
           final returnCourse = LangCourseList.takeList(res_list).langCourses;
           return Success(courses: returnCourse, hasReachedMax: false);
         });
-      } else if (event.preferredLanguageSlug == 'NO') {
-        var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
+      } else if (langSlug== 'NO') {
         return await repository
             .getLangCourses(langSlug, curr_len, 10)
             .then((res) {
           var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse'])
-                ..addAll(List.from(res.data!['nonLangCourse']));
+              List<Map<String, dynamic>>.from(res.data!['LangCourse']);
           final returnCourse = LangCourseList.takeList(res_list).langCourses;
           return Success(courses: returnCourse, hasReachedMax: false);
         });
