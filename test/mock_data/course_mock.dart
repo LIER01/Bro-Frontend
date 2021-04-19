@@ -1,4 +1,3 @@
-import 'package:bro/models/course.dart';
 import 'package:bro/models/courses.dart';
 
 int id = 0;

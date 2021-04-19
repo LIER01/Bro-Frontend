@@ -74,11 +74,11 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
       CourseDetailRequested event, String pref_lang_slug) async {
     try {
       return await repository
-          .getNewCourseQuery(event.courseGroupSlug!, pref_lang_slug)
+          .getCourseQuery(event.courseGroupSlug!, pref_lang_slug)
           .then((res) async {
         if (res.data!.isEmpty) {
           final fallbackCourseResult =
-              await repository.getNewCourseQuery(event.courseGroupSlug!, 'NO');
+              await repository.getCourseQuery(event.courseGroupSlug!, 'NO');
           final fallbackCourse =
               Course.fromJson(fallbackCourseResult.data!['courses'][0]);
           return CourseState(

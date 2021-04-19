@@ -5,10 +5,7 @@ import 'package:bro/views/course/course_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../mock_data/Lang_courses_mock.dart';
 import 'package:mocktail/mocktail.dart';
-
-import '../mock_data/category_mock.dart';
 import '../mock_data/course_mock.dart';
 
 class MockCourseListView extends MockBloc<CourseListEvent, CourseListState>
@@ -69,7 +66,6 @@ void mainTest() {
         ),
       );
       await tester.pump();
-      debugPrint(mockedLangCourseList[0].title);
 
       expect(find.byType(LinearProgressIndicator), findsNothing);
 
