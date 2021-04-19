@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/data/home_repository.dart';
-import 'package:bro/models/new_courses.dart';
+import 'package:bro/models/courses.dart';
 import 'package:bro/models/home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';

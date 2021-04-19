@@ -1,5 +1,5 @@
 import 'package:bro/blocs/home/home_bucket.dart';
-import 'package:bro/models/new_courses.dart';
+import 'package:bro/models/courses.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../../mock_data/Non_Lang_courses_list_mock.dart';
 import '../../mock_data/home_mock.dart';

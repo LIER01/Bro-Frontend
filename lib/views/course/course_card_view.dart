@@ -1,8 +1,9 @@
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'info_card.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
@@ -13,13 +14,13 @@ class CardContainerView extends StatefulWidget {
     Key? key,
     required this.course,
   }) : super(key: key);
-  final Courses course;
+  final Course course;
   @override
   _CardContainerViewState createState() => _CardContainerViewState();
 }
 
 class _CardContainerViewState extends State<CardContainerView> {
-  late final List<Slides> list;
+  late final List<Slide> list;
 
   late ScrollController _controller;
   double indx = 0;
@@ -61,23 +62,21 @@ class _CardContainerViewState extends State<CardContainerView> {
     if (list.isNotEmpty) {
       return Column(
         children: [
-          Expanded(
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: _controller,
-                    scrollDirection: Axis.horizontal,
-                    physics: PageScrollPhysics(),
-                    itemCount: list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InfoCard(
-                          title: list[index].title,
-                          description: list[index].description,
-                          image: list[index].media);
-                    })),
-          ),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: _controller,
+                  scrollDirection: Axis.horizontal,
+                  physics: PageScrollPhysics(),
+                  itemCount: list.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InfoCard(
+                        title: list[index].title,
+                        description: list[index].description,
+                        image: list[index].media);
+                  })),
           //Shows which page the user is on
           DotsIndicator(
               dotsCount: list.length,
@@ -97,13 +96,15 @@ class _CardContainerViewState extends State<CardContainerView> {
                       child: Padding(
                           padding: EdgeInsets.only(
                               left: MediaQuery.of(context).size.width * 0.073),
-                          child: RotatedBox(
-                              quarterTurns: 1,
-                              child: Icon(
-                                Icons.arrow_circle_down,
-                                color: Colors.teal,
-                                size: MediaQuery.of(context).size.width * 0.175,
-                              ))),
+                          child: FaIcon(
+                            FontAwesomeIcons.chevronCircleLeft,
+                            color: indx != 0
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.3),
+                            size: MediaQuery.of(context).size.width * 0.15,
+                          )),
                     )),
                 indx + 1 != list.length
                     ? GestureDetector(
@@ -113,28 +114,23 @@ class _CardContainerViewState extends State<CardContainerView> {
                           child: Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 30),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Icon(
-                                    Icons.arrow_circle_down,
-                                    color: Colors.teal,
-                                    size: MediaQuery.of(context).size.width *
-                                        0.175,
-                                  ))),
+                              child: FaIcon(
+                                FontAwesomeIcons.chevronCircleRight,
+                                color: Colors.teal,
+                                size: MediaQuery.of(context).size.width * 0.15,
+                              )),
                         ))
                     : Container(
                         alignment: Alignment.center,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical:
-                                  MediaQuery.of(context).size.width * 0.015,
-                              horizontal: 30),
+                          padding: EdgeInsets.fromLTRB(30,
+                              MediaQuery.of(context).size.width * 0.015, 30, 0),
                           child: ElevatedButton(
                             child: Container(
                                 padding: EdgeInsets.symmetric(
                                     vertical:
                                         MediaQuery.of(context).size.width *
-                                            0.04),
+                                            0.03),
                                 child: Text('Start Quiz',
                                     style: Theme.of(context).textTheme.button)),
                             onPressed: () {

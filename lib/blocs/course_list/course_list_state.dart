@@ -1,4 +1,4 @@
-import 'package:bro/models/new_courses.dart';
+import 'package:bro/models/courses.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class CourseListState extends Equatable {

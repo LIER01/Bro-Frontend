@@ -14,10 +14,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
   final List<GlobalKey<NavigatorState>> _NavKeys = [
     _homeNavKey,
-    _articleNavKey,
+    _resourceNavKey,
     _courseNavKey,
   ];
-
   void _onItemTapped(int index) {
     setState(() {
       if (index != _selectedIndex) {
@@ -37,10 +36,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
       _NavKeys[_selectedIndex]
           .currentState
           ?.pop(_NavKeys[_selectedIndex].currentContext);
+      return Future<bool>.value(false);
     } else {
       SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+      return Future<bool>.value(true);
     }
-    throw Exception('Something went wrong');
+    //throw Exception('Something went wrong');
   }
 
   @override
@@ -52,7 +53,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             index: _selectedIndex,
             children: <Widget>[
               HomeTab(),
-              ArticleTab(),
+              ResourceTab(),
               CourseTab(),
             ],
           ),
@@ -65,7 +66,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               BottomNavigationBarItem(
                 icon: FaIcon(FontAwesomeIcons.book),
-                label: 'Artikler',
+                label: 'Ressurser',
                 backgroundColor: Colors.teal,
               ),
               BottomNavigationBarItem(
@@ -98,7 +99,6 @@ GlobalKey<NavigatorState> _homeNavKey = GlobalKey<NavigatorState>();
 class _HomeTabState extends State<HomeTab> {
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
-
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),
       link: _link,
@@ -136,7 +136,6 @@ GlobalKey<NavigatorState> _courseNavKey = GlobalKey<NavigatorState>();
 class _CourseTabState extends State<CourseTab> {
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
-
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),
       link: _link,
@@ -164,17 +163,16 @@ class _CourseTabState extends State<CourseTab> {
   }
 }
 
-class ArticleTab extends StatefulWidget {
+class ResourceTab extends StatefulWidget {
   @override
-  _ArticleTabState createState() => _ArticleTabState();
+  _ResourceTabState createState() => _ResourceTabState();
 }
 
-GlobalKey<NavigatorState> _articleNavKey = GlobalKey<NavigatorState>();
+GlobalKey<NavigatorState> _resourceNavKey = GlobalKey<NavigatorState>();
 
-class _ArticleTabState extends State<ArticleTab> {
+class _ResourceTabState extends State<ResourceTab> {
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
-
     return GraphQLClient(
       cache: GraphQLCache(store: InMemoryStore()),
       link: _link,
@@ -184,7 +182,7 @@ class _ArticleTabState extends State<ArticleTab> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-        key: _articleNavKey,
+        key: _resourceNavKey,
         onGenerateRoute: (RouteSettings settings) {
           return MaterialPageRoute(
               settings: settings,
@@ -192,6 +190,12 @@ class _ArticleTabState extends State<ArticleTab> {
                 switch (settings.name) {
                   case ExtractCategoryListScreen.routeName:
                     return ExtractCategoryListScreen(client: _client());
+                  case ExtractResourceListScreen.routeName:
+                    return ExtractResourceListScreen(client: _client());
+                  case ExtractResourceDetailScreen.routeName:
+                    return ExtractResourceDetailScreen(client: _client());
+                  case ExtractResourseDetailWebViewScreen.routeName:
+                    return ExtractResourseDetailWebViewScreen();
                   default:
                     return ExtractCategoryListScreen(client: _client());
                 }

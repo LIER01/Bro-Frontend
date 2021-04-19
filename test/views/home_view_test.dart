@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/models/home.dart';
-import 'package:bro/models/new_courses.dart';
+import 'package:bro/models/courses.dart';
 import 'package:bro/views/home_view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

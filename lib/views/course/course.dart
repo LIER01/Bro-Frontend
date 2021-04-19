@@ -1,4 +1,4 @@
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 import 'package:bro/views/course/quiz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +19,12 @@ class CourseDetailView extends StatefulWidget {
 }
 
 class _CourseDetailViewState extends State<CourseDetailView> {
-  late Courses data;
+  late Course data;
   late CourseDetailBloc _courseDetailBloc;
+  void testFunc(BuildContext context) {
+    print('poppppppp');
+    Navigator.pushReplacementNamed(context, '/resourceList');
+  }
 
   @override
   void initState() {
@@ -33,6 +37,21 @@ class _CourseDetailViewState extends State<CourseDetailView> {
       answerId: null,
     ));
   }
+
+/*   Future<dynamic> _onBackPressed() {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('Are you sure?'),
+      actions: <Widget>[
+        GestureDetector(
+          onTap: () => Navigator.of(context).pop(false),
+          child: Text('NO'),
+        ),]
+    ),
+  ) ??
+      Future<dynamic>.value(false); 
+}*/
 
   @override
   Widget build(BuildContext context) {

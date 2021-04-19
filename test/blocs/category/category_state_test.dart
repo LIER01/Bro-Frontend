@@ -13,6 +13,7 @@ void main() {
     group('CategorySuccess', () {
       final category = Category(
         category_name: 'Kategori',
+        category_id: '1',
         description: 'Testbeskrivelse',
         cover_photo: CoverPhoto(url: 'Test'),
       );

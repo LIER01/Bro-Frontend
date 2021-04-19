@@ -5,10 +5,8 @@ import 'package:bro/views/course/course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import '../mock_data/course_detail_mock.dart';
-
 import '../mock_data/new_course_mock.dart';
 
 class MockCourseDetailBloc
@@ -29,13 +27,9 @@ void main() {
 
 void mainTest() {
   group('CourseDetailView', () {
-    CourseRepository courseRepository;
     late CourseDetailBloc courseDetailBloc;
 
     setUp(() {
-      courseRepository = MockCourseRepository();
-      when(() => courseRepository.getCourse(any())).thenAnswer((_) =>
-          Future.value(QueryResult(source: null, data: course_detail_mock)));
       courseDetailBloc = MockCourseDetailBloc();
     });
 
@@ -64,8 +58,8 @@ void mainTest() {
       await tester.pumpAndSettle();
 
       expect(find.byType(LinearProgressIndicator), findsNothing);
-      expect(find.text('En meget fin testcourse'), findsOneWidget);
-      expect(find.text('Testslide'), findsOneWidget);
+      expect(find.text(referenceCourses.title), findsOneWidget);
+      expect(find.text(referenceCourses.slides[0].title), findsOneWidget);
     });
     testWidgets('navigation arrows and start quiz appears on last slide',
         (WidgetTester tester) async {
@@ -84,12 +78,23 @@ void mainTest() {
       );
 
       await tester.pumpAndSettle();
-
-      expect(find.text('Testslide 2'), findsNothing);
-      expect(find.text('Testslide'), findsOneWidget);
-      await tester.tap(find.byIcon(Icons.arrow_circle_down).last);
+      expect(find.text(referenceCourses.slides[0].title), findsOneWidget);
+      expect(find.text(referenceCourses.slides[1].title), findsNothing);
+      expect(
+          // FontAwesome does not support byIcon
+          find.byWidgetPredicate((Widget widget) =>
+              widget is FaIcon &&
+              widget.icon == FontAwesomeIcons.chevronCircleRight),
+          findsOneWidget);
+      await tester.tap(find.byWidgetPredicate((Widget widget) =>
+          widget is FaIcon &&
+          widget.icon == FontAwesomeIcons.chevronCircleRight));
       await tester.pumpAndSettle();
-      expect(find.text('Testslide 2'), findsOneWidget);
+      await tester.tap(find.byWidgetPredicate((Widget widget) =>
+          widget is FaIcon &&
+          widget.icon == FontAwesomeIcons.chevronCircleRight));
+      await tester.pumpAndSettle();
+      expect(find.text(referenceCourses.slides[2].title), findsOneWidget);
       expect(find.byType(ElevatedButton), findsOneWidget);
     });
   });

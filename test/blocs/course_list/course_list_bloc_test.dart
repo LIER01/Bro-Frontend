@@ -5,8 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../mock_data/Non_Lang_courses_list_mock.dart';
-import '../mock_data/course_mock.dart';
+import '../../mock_data/Non_Lang_courses_list_mock.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}
 
@@ -17,15 +16,13 @@ void main() {
 
     setUp(() {
       courseRepository = MockCourseRepository();
-      when(() => courseRepository.getCourses(0, 10)).thenAnswer(
-          (_) => Future.value(QueryResult(source: null, data: mockedResult)));
       courseListBloc = CourseListBloc(repository: courseRepository);
     });
 
     blocTest(
       'should emit Failed if repository throws',
       build: () {
-        when(() => courseRepository.getCourses(0, 10))
+        when(() => courseRepository.getNonLangCourses(0, 10))
             .thenThrow(Exception('Woops'));
         return courseListBloc;
       },

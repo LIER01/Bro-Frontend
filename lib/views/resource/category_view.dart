@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:bro/blocs/category/category_bucket.dart';
 import 'package:bro/models/category.dart';
+import 'package:bro/utils/navigator_arguments.dart';
+import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -33,7 +35,7 @@ class _CategoryViewState extends State<CategoryView> {
       if (currentIndex < categories.length - 1) {
         currentIndex++;
       } else {
-        currentIndex = currentIndex;
+        currentIndex = 0;
       }
     });
   }
@@ -43,7 +45,7 @@ class _CategoryViewState extends State<CategoryView> {
       if (currentIndex > 0) {
         currentIndex--;
       } else {
-        currentIndex = 0;
+        currentIndex = categories.length - 1;
       }
     });
   }
@@ -94,7 +96,7 @@ class _CategoryViewState extends State<CategoryView> {
                     },
                     child: Container(
                       width: double.infinity,
-                      height: 500,
+                      height: MediaQuery.of(context).size.height * 0.6,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(
@@ -177,6 +179,7 @@ class _CategoryViewState extends State<CategoryView> {
                             child: Align(
                               child: Text(
                                 categories[currentIndex].description,
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
@@ -184,7 +187,13 @@ class _CategoryViewState extends State<CategoryView> {
                             child: Align(
                               child: GestureDetector(
                                 onTap: () {
-                                  log('ROUTING HER');
+                                  Navigator.of(context).pushNamed(
+                                      ExtractResourceListScreen.routeName,
+                                      arguments: ResourceListArguments(
+                                          category: categories[currentIndex]
+                                              .category_name,
+                                          category_id: categories[currentIndex]
+                                              .category_id));
                                 },
                                 child: Container(
                                   height: 50,
