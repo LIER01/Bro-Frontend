@@ -60,15 +60,7 @@ class _HomeViewState extends State<HomeView> {
             body: Column(children: [
               Column(children: [
                 ListTile(title: Text(state.home.introduction)),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      TextButton(
-                        child: const Text('Les Mer'),
-                        onPressed: () {/* ... */},
-                      ),
-                      const SizedBox(width: 8)
-                    ]),
+                const SizedBox(height: 20)
               ]),
               SingleChildScrollView(
                   child: ExpansionPanelList.radio(children: [
