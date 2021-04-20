@@ -61,8 +61,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         return returnCourse;
       });
 
-      var resources = await repository.getRecommendedNonLangResources(
-          0, 1);
+      var resources = await repository.getRecommendedNonLangResources(0, 1);
       var res_list =
           List<Map<String, dynamic>>.from(resources.data!['LangResource']);
       var r = ResourceList.takeList(res_list).resources;
