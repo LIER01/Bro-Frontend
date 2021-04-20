@@ -2,6 +2,7 @@ import 'package:bro/blocs/home/home_bloc.dart';
 import 'package:bro/blocs/home/home_event.dart';
 import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/views/course/course_list_tile.dart';
+import 'package:bro/views/resource/resource_list_tile.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,6 +51,8 @@ class _HomeViewState extends State<HomeView> {
         );
       }
       if (state is Success) {
+        var courses = state.courses;
+        var resources = state.resources;
         return Scaffold(
             appBar: AppBar(
               title: Text(state.home.header),
@@ -82,7 +85,7 @@ class _HomeViewState extends State<HomeView> {
                     body: SingleChildScrollView(
                         controller: _scrollController,
                         child: Column(
-                            children: state.courses
+                            children: state.resources
                                 .asMap()
                                 .keys
                                 .toList()
@@ -91,8 +94,7 @@ class _HomeViewState extends State<HomeView> {
                                         .pushNamed(
                                             ExtractCourseDetailScreen.routeName,
                                             arguments: CourseDetailArguments(
-                                                courseGroup: state
-                                                    .courses[index]
+                                                courseGroup: courses[index]
                                                     .courseGroup!
                                                     .slug)),
                                     child: CourseListTile(
@@ -102,9 +104,32 @@ class _HomeViewState extends State<HomeView> {
                 ExpansionPanelRadio(
                     canTapOnHeader: true,
                     value: 'Anbefalte Artikler',
-                    headerBuilder: (context, isExpanded) => ListTile(
-                        leading: null, title: Text('Anbefalte Artikler')),
-                    body: Card())
+                    headerBuilder: (context, isExpanded) =>
+                        ListTile(title: Text('Anbefalte Artikler')),
+                    body: SingleChildScrollView(
+                        controller: _scrollController,
+                        child: Column(
+                            children: resources
+                                .asMap()
+                                .keys
+                                .toList()
+                                .map((index) => GestureDetector(
+                                    onTap: () => Navigator.of(context)
+                                        .pushNamed(
+                                            ExtractResourceDetailScreen
+                                                .routeName,
+                                            arguments: ResourceDetailArguments(
+                                                group: state.resources[index]
+                                                    .resourceGroup!.slug,
+                                                lang: 'NO')),
+                                    child: ResourceListTile(
+                                      cover_photo: resources[index].coverPhoto,
+                                      title: resources[index].title,
+                                      description: resources[index].description,
+                                      resourceGroup:
+                                          resources[index].resourceGroup,
+                                    )))
+                                .toList()))),
               ]))
             ]));
       }

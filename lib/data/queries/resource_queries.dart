@@ -39,6 +39,7 @@ query nonLangResourcesQuery ($start: Int!, $limit: Int!){
     }
   ) {
     title
+
     description
     language {slug}
     resource_group {slug}

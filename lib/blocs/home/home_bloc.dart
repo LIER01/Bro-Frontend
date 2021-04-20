@@ -5,8 +5,10 @@ import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/data/home_repository.dart';
 import 'package:bro/data/preferred_language_repository.dart';
+import 'package:bro/data/resource_repository.dart';
 import 'package:bro/models/courses.dart';
 import 'package:bro/models/home.dart';
+import 'package:bro/models/resource.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -39,14 +41,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  Future<HomeState> _retrieveCourses(HomeRequested event, int curr_len) async {
+  Future<HomeState> _retrieveCourses(
+      HomeRequested event, int currLength) async {
     try {
       var home = await repository.getHome();
       var returnHome = Home.fromJson(home.data!['home']);
       var returnLength = 3;
       var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
+
       var returnCourses = await repository
-          .getRecommendedCourses(langSlug, curr_len, 3)
+          .getRecommendedCourses(langSlug, currLength, 3)
           .then((res) {
         var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse'])
           ..addAll(List.from(res.data!['nonLangCourse']));
@@ -56,20 +60,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
         return returnCourse;
       });
-      return Success(courses: returnCourses, home: returnHome);
 
-      /*return await repository
-          .getRecommendedCourses(langSlug, curr_len, 3)
-          .then((res) {
-        var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse'])
-          ..addAll(List.from(res.data!['nonLangCourse']));
-        var returnCourse = LangCourseList.takeList(res_list).langCourses;
-        if (returnCourse.length > returnLength) {
-          returnCourse = returnCourse.sublist(0, 3);
-        }
-        return Success(courses: returnCourse, home: ret_home);
-      });*/
-
+      var resources = await repository.getRecommendedNonLangResources(
+          0, 1);
+      var res_list =
+          List<Map<String, dynamic>>.from(resources.data!['LangResource']);
+      var r = ResourceList.takeList(res_list).resources;
+      return Success(courses: returnCourses, home: returnHome, resources: r);
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());

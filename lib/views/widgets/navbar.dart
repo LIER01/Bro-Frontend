@@ -139,6 +139,8 @@ class _HomeTabState extends State<HomeTab> {
                         preferredLanguageBloc: _preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
                     return ExtractCourseDetailScreen(client: _client());
+                  case ExtractResourceDetailScreen.routeName:
+                    return ExtractResourceDetailScreen(client: _client());
                   default:
                     throw Exception('Invalid route: ${settings.name}');
                 }
