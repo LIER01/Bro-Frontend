@@ -41,8 +41,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
         if (currentState is Success) {
           final result =
               await _retrieveCourses(event, currentState.courses.length);
-          var c = currentState.courses;
-          if (result is Success) var k = result.courses;
           if (result is Success && currentState.courses.isNotEmpty) {
             yield Success(
                 courses: currentState.courses + result.courses,

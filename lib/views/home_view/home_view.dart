@@ -103,9 +103,9 @@ class _HomeViewState extends State<HomeView> {
                                 .toList()))),
                 ExpansionPanelRadio(
                     canTapOnHeader: true,
-                    value: 'Anbefalte Artikler',
+                    value: 'Anbefalte Ressurser',
                     headerBuilder: (context, isExpanded) =>
-                        ListTile(title: Text('Anbefalte Artikler')),
+                        ListTile(title: Text('Anbefalte Ressurser')),
                     body: SingleChildScrollView(
                         controller: _scrollController,
                         child: Column(

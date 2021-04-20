@@ -5,7 +5,6 @@ import 'package:bro/blocs/settings/settings_event.dart';
 import 'package:bro/blocs/settings/settings_state.dart';
 import 'package:bro/data/settings_repository.dart';
 import 'package:bro/models/languages.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
