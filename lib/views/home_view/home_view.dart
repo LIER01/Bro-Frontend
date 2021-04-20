@@ -58,25 +58,20 @@ class _HomeViewState extends State<HomeView> {
               title: Text(state.home.header),
             ),
             body: Column(children: [
+              Column(children: [
+                ListTile(title: Text(state.home.introduction)),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      TextButton(
+                        child: const Text('Les Mer'),
+                        onPressed: () {/* ... */},
+                      ),
+                      const SizedBox(width: 8)
+                    ]),
+              ]),
               SingleChildScrollView(
                   child: ExpansionPanelList.radio(children: [
-                ExpansionPanelRadio(
-                    value: 'Intro',
-                    canTapOnHeader: true,
-                    headerBuilder: (context, isExpanded) =>
-                        ListTile(title: Text('Hva er Bro?')),
-                    body: Column(children: [
-                      ListTile(title: Text(state.home.introduction)),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            TextButton(
-                              child: const Text('Les Mer'),
-                              onPressed: () {/* ... */},
-                            ),
-                            const SizedBox(width: 8)
-                          ]),
-                    ])),
                 ExpansionPanelRadio(
                     canTapOnHeader: true,
                     value: 'anbefalte_kurs',

@@ -24,11 +24,9 @@ void main() {
       courseRepository = MockCourseRepository();
       preferredLanguageBloc =
           PreferredLanguageBloc(repository: MockPreferredLanguageRepository());
+
       when(() => courseRepository.getLangCourses('NO', 0, 10)).thenAnswer(
           (_) => Future.value(QueryResult(source: null, data: mockedResult)));
-      courseListBloc = CourseListBloc(
-          repository: courseRepository,
-          preferredLanguageBloc: preferredLanguageBloc);
       courseListBloc = CourseListBloc(
           repository: courseRepository,
           preferredLanguageBloc: preferredLanguageBloc);
