@@ -19,12 +19,12 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   late PreferredLanguageRepository preferredLanguageRepository;
   CourseListBloc(
       {required this.repository, required this.preferredLanguageBloc})
-      : super(Loading()) {
+      : super(InitialCourseList()) {
     preferredLanguageRepository = preferredLanguageBloc.repository;
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
-      if (state is LanguageChanged || state is MutatePreferredLanguage) {
-        add(CourseListRefresh());
+      if (state is LanguageChanged) {
+        add(CourseListRefresh(state.preferredLang));
       }
     });
   }
@@ -34,7 +34,11 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     // Not able to access state methods without this. Do not know why.
     final currentState = state;
     if (event is CourseListRefresh) {
-      yield await _retrieveCourses(event, 0);
+      try {
+        yield await _retrieveCourses(event, 0);
+      } catch (e) {
+        yield Failed();
+      }
     }
     if (event is CourseListRequested && !_hasReachedMax(currentState)) {
       try {
@@ -63,7 +67,10 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   Future<CourseListState> _retrieveCourses(
       CourseListEvent event, int curr_len) async {
     try {
-      var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
+      var langSlug;
+      event is CourseListRefresh
+          ? langSlug = event.preferredLang
+          : langSlug = await preferredLanguageRepository.getPreferredLangSlug();
       if (langSlug != 'NO') {
         return await repository
             .getLangCourses(langSlug, curr_len, 10)

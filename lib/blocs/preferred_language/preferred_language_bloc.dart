@@ -13,12 +13,12 @@ class PreferredLanguageBloc
   @override
   Stream<PreferredLanguageState> mapEventToState(
       PreferredLanguageEvent event) async* {
-    if (event is MutatePreferredLanguage) {
-      await repository.setPreferredLangSlug(event.preferredLanguage);
-      yield LanguageChanged(newLang: event.preferredLanguage);
+    if (event is MutatePreferredLang) {
+      await repository.setPreferredLangSlug(event.preferredLang);
+      yield LanguageChanged(preferredLang: event.preferredLang);
     } else if (event is PreferredLanguageRequested || state is Initial) {
       var res = await repository.getPreferredLangSlug();
-      yield LanguageChanged(newLang: res);
+      yield LanguageChanged(preferredLang: res);
     }
   }
 }

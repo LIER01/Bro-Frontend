@@ -13,13 +13,13 @@ class PreferredLanguageLoading extends PreferredLanguageState {
 }
 
 class LanguageChanged extends PreferredLanguageState {
-  final String newLang;
+  final String preferredLang;
 
-  LanguageChanged({required this.newLang}) : super();
-
-  @override
-  List<Object> get props => [newLang];
+  LanguageChanged({required this.preferredLang}) : super();
 
   @override
-  String toString() => 'Success { newLang: $newLang}';
+  List<Object> get props => [preferredLang];
+
+  @override
+  String toString() => 'Success { newLang: $preferredLang}';
 }

@@ -78,15 +78,14 @@ void mainTest() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Velkommen til Bro'), findsOneWidget);
+      expect(find.text(mockedHome.header), findsOneWidget);
+      expect(find.text(mockedHome.introduction), findsOneWidget);
       await tester.tap(find.text('Anbefalte Ressurser'));
       expect(find.text(successResources[0].title), findsOneWidget);
       expect(find.text(successResources[0].description), findsOneWidget);
       await tester.tap(find.text('Anbefalte Kurs'));
       expect(find.text(successCourses.title), findsOneWidget);
       expect(find.text(successCourses.description), findsOneWidget);
-      await tester.tap(find.text('Hva er Bro?'));
-      expect(find.text(mockedHome.introduction), findsOneWidget);
     });
   });
 }

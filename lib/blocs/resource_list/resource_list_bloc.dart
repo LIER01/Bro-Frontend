@@ -23,7 +23,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
         preferredLanguageBloc.stream.listen((state) {
       if (state is LanguageChanged) {
         add(ResourceListRequested(
-            lang: state.newLang, category_id: previousCategoryId));
+            lang: state.preferredLang, category_id: previousCategoryId));
       }
     });
   }

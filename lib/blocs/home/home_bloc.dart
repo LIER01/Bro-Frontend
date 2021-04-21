@@ -24,7 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     preferredLanguageRepository = preferredLanguageBloc.repository;
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
-      if (state is LanguageChanged || state is MutatePreferredLanguage) {
+      if (state is LanguageChanged) {
         add(HomeRequested());
       }
     });

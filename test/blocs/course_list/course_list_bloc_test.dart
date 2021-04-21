@@ -20,10 +20,12 @@ void main() {
     late CourseRepository courseRepository;
     late CourseListBloc courseListBloc;
     late PreferredLanguageBloc preferredLanguageBloc;
+    late PreferredLanguageRepository preferredLanguageRepository;
     setUp(() {
       courseRepository = MockCourseRepository();
+      preferredLanguageRepository = MockPreferredLanguageRepository();
       preferredLanguageBloc =
-          PreferredLanguageBloc(repository: MockPreferredLanguageRepository());
+          PreferredLanguageBloc(repository: preferredLanguageRepository);
 
       when(() => courseRepository.getLangCourses('NO', 0, 10)).thenAnswer(
           (_) => Future.value(QueryResult(source: null, data: mockedResult)));
@@ -39,7 +41,7 @@ void main() {
             .thenThrow(Exception('Woops'));
         return courseListBloc;
       },
-      act: (CourseListBloc bloc) async => bloc.add(CourseListRequested()),
+      act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh('NO')),
       expect: () => <CourseListState>[Failed()],
     );
 
@@ -50,17 +52,41 @@ void main() {
     );
 
     blocTest(
-      'should load more items in response to an CourseListRequested event',
+      'should load initial items on a CourseListRefresh',
       build: () {
         when(() => courseRepository.getNonLangCourses(any(), 10)).thenAnswer(
             (_) => Future.value(QueryResult(
                 source: null, data: non_lang_courses_mock['data'])));
+        when(() => courseRepository.getLangCourses(any(),any(),any())).thenAnswer(
+            (_) => Future.value(QueryResult(
+              source: null ,data: non_lang_courses_mock['data'])));
         return courseListBloc;
       },
-      act: (CourseListBloc bloc) async => bloc.add(CourseListRequested()),
+      act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh('NO')),
       expect: () => [
         isA<Success>(),
       ],
     );
+
+    blocTest(
+      'should load more items in response to an CourseListRequested event',
+      build: () {
+        when(() => courseRepository.getNonLangCourses(any(), 10)).thenAnswer(
+                (_) => Future.value(QueryResult(
+                source: null, data: non_lang_courses_mock['data'])));
+        when(() => courseRepository.getLangCourses(any(),any(),10)).thenAnswer(
+                (_) => Future.value(QueryResult(
+                source: null, data: non_lang_courses_mock['data'])));
+        when(() => preferredLanguageRepository.getPreferredLangSlug()).thenAnswer(
+                (_) => Future.value('NO'));
+        return courseListBloc;
+      },
+      act: (CourseListBloc bloc) async {bloc.add(CourseListRefresh('NO'));bloc.add(CourseListRequested());},
+      expect: () => [
+        isA<Success>(),
+        isA<Success>(),
+      ],
+    );
+
   });
 }

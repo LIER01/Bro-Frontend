@@ -41,8 +41,7 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void _changeLanguage(String lang) {
-    _preferredLanguageBloc
-        .add(MutatePreferredLanguage(preferredLanguage: lang));
+    _preferredLanguageBloc.add(MutatePreferredLang(preferredLang: lang));
   }
 
   @override
@@ -87,7 +86,7 @@ class _SettingsViewState extends State<SettingsView> {
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8),
                             child: DropdownButton<String>(
-                              value: state.newLang,
+                              value: state.preferredLang,
                               icon: const FaIcon(FontAwesomeIcons.chevronDown),
                               iconSize: 16,
                               isExpanded: true,
