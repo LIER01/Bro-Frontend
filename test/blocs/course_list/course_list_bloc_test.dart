@@ -57,9 +57,9 @@ void main() {
         when(() => courseRepository.getNonLangCourses(any(), 10)).thenAnswer(
             (_) => Future.value(QueryResult(
                 source: null, data: non_lang_courses_mock['data'])));
-        when(() => courseRepository.getLangCourses(any(),any(),any())).thenAnswer(
-            (_) => Future.value(QueryResult(
-              source: null ,data: non_lang_courses_mock['data'])));
+        when(() => courseRepository.getLangCourses(any(), any(), any()))
+            .thenAnswer((_) => Future.value(QueryResult(
+                source: null, data: non_lang_courses_mock['data'])));
         return courseListBloc;
       },
       act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh('NO')),
@@ -72,21 +72,23 @@ void main() {
       'should load more items in response to an CourseListRequested event',
       build: () {
         when(() => courseRepository.getNonLangCourses(any(), 10)).thenAnswer(
-                (_) => Future.value(QueryResult(
+            (_) => Future.value(QueryResult(
                 source: null, data: non_lang_courses_mock['data'])));
-        when(() => courseRepository.getLangCourses(any(),any(),10)).thenAnswer(
-                (_) => Future.value(QueryResult(
+        when(() => courseRepository.getLangCourses(any(), any(), 10))
+            .thenAnswer((_) => Future.value(QueryResult(
                 source: null, data: non_lang_courses_mock['data'])));
-        when(() => preferredLanguageRepository.getPreferredLangSlug()).thenAnswer(
-                (_) => Future.value('NO'));
+        when(() => preferredLanguageRepository.getPreferredLangSlug())
+            .thenAnswer((_) => Future.value('NO'));
         return courseListBloc;
       },
-      act: (CourseListBloc bloc) async {bloc.add(CourseListRefresh('NO'));bloc.add(CourseListRequested());},
+      act: (CourseListBloc bloc) async {
+        bloc.add(CourseListRefresh('NO'));
+        bloc.add(CourseListRequested());
+      },
       expect: () => [
         isA<Success>(),
         isA<Success>(),
       ],
     );
-
   });
 }
