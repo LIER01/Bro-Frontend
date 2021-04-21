@@ -71,40 +71,13 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       event is CourseListRefresh
           ? langSlug = event.preferredLang
           : langSlug = await preferredLanguageRepository.getPreferredLangSlug();
-      if (langSlug != 'NO') {
-        return await repository
-            .getLangCourses(langSlug, curr_len, 10)
-            .then((res) {
-          var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-          // removes duplicates of courses that have multiple languages.
-          for (final item in List.from(res.data!['nonLangCourse'])) {
-            var slug = item['course_group']['slug'];
-            var has_copy = false;
-            for (final target in res_list) {
-              if (slug == target['course_group']['slug']) {
-                has_copy = true;
-              }
-            }
-            if (!has_copy) {
-              res_list.add(item);
-            }
-          }
-          final returnCourse = LangCourseList.takeList(res_list).langCourses;
-          return Success(courses: returnCourse, hasReachedMax: false);
-        });
-      } else if (langSlug == 'NO') {
-        return await repository
-            .getLangCourses(langSlug, curr_len, 10)
-            .then((res) {
-          var res_list =
-              List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-          final returnCourse = LangCourseList.takeList(res_list).langCourses;
-          return Success(courses: returnCourse, hasReachedMax: false);
-        });
-      }
-      return Failed();
-      // return result;
+      return await repository
+          .getLangCourses(langSlug, curr_len, 10)
+          .then((res) {
+        var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse']);
+        final returnCourse = LangCourseList.takeList(res_list).langCourses;
+        return Success(courses: returnCourse, hasReachedMax: false);
+      });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());

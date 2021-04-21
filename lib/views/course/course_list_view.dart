@@ -1,6 +1,7 @@
 import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/views/course/course_list_tile.dart';
 import 'package:bro/views/widgets/bottom_loader.dart';
+import 'package:bro/views/widgets/contentNotAvailable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bro/utils/navigator_arguments.dart';
@@ -52,26 +53,28 @@ class _CourseListViewState extends State<CourseListView> {
         if (state is Success) {
           return Scaffold(
             appBar: _buildAppBar(),
-            body: ListView.builder(
-              itemCount: state.hasReachedMax
-                  ? state.courses.length
-                  : state.courses.length + 1,
-              controller: _scrollController,
-              itemBuilder: (BuildContext context, int index) {
-                return index >= state.courses.length
-                    ? BottomLoader()
-                    : GestureDetector(
-                        onTap: () => Navigator.of(context).pushNamed(
-                            ExtractCourseDetailScreen.routeName,
-                            arguments: CourseDetailArguments(
-                                courseGroup:
-                                    state.courses[index].courseGroup!.slug)),
-                        child: CourseListTile(
-                          course: state.courses[index],
-                        ),
-                      );
-              },
-            ),
+            body: state.courses.isEmpty
+                ? ContentNotAvailable()
+                : ListView.builder(
+                    itemCount: state.hasReachedMax
+                        ? state.courses.length + 1
+                        : state.courses.length,
+                    controller: _scrollController,
+                    itemBuilder: (BuildContext context, int index) {
+                      return index >= state.courses.length
+                          ? BottomLoader()
+                          : GestureDetector(
+                              onTap: () => Navigator.of(context).pushNamed(
+                                  ExtractCourseDetailScreen.routeName,
+                                  arguments: CourseDetailArguments(
+                                      courseGroup: state
+                                          .courses[index].courseGroup!.slug)),
+                              child: CourseListTile(
+                                course: state.courses[index],
+                              ),
+                            );
+                    },
+                  ),
           );
         }
         return Scaffold(

@@ -30,14 +30,6 @@ class _SettingsViewState extends State<SettingsView> {
     _settingsBloc = BlocProvider.of<SettingsBloc>(context);
     _settingsBloc.add(LanguagesRequested());
     _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
-    //_preferredLanguageBloc.add(PreferredLanguageRequested());
-    /*_getPreferredLanguage().then((value) {
-      setState(() {
-        dropdownValue = value;
-      });
-    });
-        */
-    //_getPreferredLanguage();
   }
 
   void _changeLanguage(String lang) {
@@ -105,17 +97,31 @@ class _SettingsViewState extends State<SettingsView> {
                             ),
                           ),
                         ),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 8),
+                            width: double.infinity,
+                            child: Text(
+                              'OBS! Alt innhold i appen eksisterer på Norsk. Om du ikke finner et spesifikt kurs eller en ressurs etter å ha byttet språk, kan det være at en oversatt versjon ikke er tilgjenglig enda.',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(color: Colors.black),
+                            )),
                       ],
                     ),
                   );
                 } else {
-                  return Container();
+                  return Scaffold(
+                    appBar: _buildAppBar(),
+                    body: Center(child: Text('Det har skjedd en feil')),
+                  );
                 }
               }));
         }
         return Scaffold(
           appBar: _buildAppBar(),
-          body: Center(child: Text('Dunno')),
+          body: Center(child: Text('Det har skjedd en feil')),
         );
       },
     );

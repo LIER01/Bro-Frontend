@@ -3,6 +3,7 @@ import 'package:bro/blocs/home/home_event.dart';
 import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/views/course/course_list_tile.dart';
 import 'package:bro/views/resource/resource_list_tile.dart';
+import 'package:bro/views/widgets/contentNotAvailable.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,62 +63,83 @@ class _HomeViewState extends State<HomeView> {
                 ListTile(title: Text(state.home.introduction)),
                 const SizedBox(height: 20)
               ]),
-              SingleChildScrollView(
-                  child: ExpansionPanelList.radio(children: [
+              ExpansionPanelList.radio(children: [
                 ExpansionPanelRadio(
                     canTapOnHeader: true,
                     value: 'anbefalte_kurs',
-                    headerBuilder: (context, isExpanded) =>
-                        ListTile(title: Text('Anbefalte Kurs')),
-                    body: SingleChildScrollView(
-                        controller: _scrollController,
-                        child: Column(
-                            children: state.resources
-                                .asMap()
-                                .keys
-                                .toList()
-                                .map((index) => GestureDetector(
-                                    onTap: () => Navigator.of(context)
-                                        .pushNamed(
-                                            ExtractCourseDetailScreen.routeName,
-                                            arguments: CourseDetailArguments(
-                                                courseGroup: courses[index]
-                                                    .courseGroup!
-                                                    .slug)),
-                                    child: CourseListTile(
-                                      course: state.courses[index],
-                                    )))
-                                .toList()))),
+                    headerBuilder: (context, isExpanded) => ListTile(
+                        title: Text('Anbefalte Kurs',
+                            style:
+                                Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(color: Colors.teal))),
+                    body: resources.isEmpty
+                        ? SizedBox(height:170,child:ContentNotAvailable())
+                        : SingleChildScrollView(
+                            controller: _scrollController,
+                            child: Column(
+                                children: state.resources
+                                    .asMap()
+                                    .keys
+                                    .toList()
+                                    .map((index) => GestureDetector(
+                                        onTap: () => Navigator.of(context)
+                                            .pushNamed(
+                                                ExtractCourseDetailScreen
+                                                    .routeName,
+                                                arguments:
+                                                    CourseDetailArguments(
+                                                        courseGroup:
+                                                            courses[index]
+                                                                .courseGroup!
+                                                                .slug)),
+                                        child: CourseListTile(
+                                          course: state.courses[index],
+                                        )))
+                                    .toList()))),
                 ExpansionPanelRadio(
                     canTapOnHeader: true,
                     value: 'Anbefalte Ressurser',
-                    headerBuilder: (context, isExpanded) =>
-                        ListTile(title: Text('Anbefalte Ressurser')),
-                    body: SingleChildScrollView(
-                        controller: _scrollController,
-                        child: Column(
-                            children: resources
-                                .asMap()
-                                .keys
-                                .toList()
-                                .map((index) => GestureDetector(
-                                    onTap: () => Navigator.of(context)
-                                        .pushNamed(
-                                            ExtractResourceDetailScreen
-                                                .routeName,
-                                            arguments: ResourceDetailArguments(
-                                                group: state.resources[index]
-                                                    .resourceGroup!.slug,
-                                                lang: 'NO')),
-                                    child: ResourceListTile(
-                                      cover_photo: resources[index].coverPhoto,
-                                      title: resources[index].title,
-                                      description: resources[index].description,
-                                      resourceGroup:
-                                          resources[index].resourceGroup,
-                                    )))
-                                .toList()))),
-              ]))
+                    headerBuilder: (context, isExpanded) => ListTile(
+                        title: Text('Anbefalte Ressurser',
+                            style:
+                                Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(color: Colors.teal))),
+                    body: resources.isEmpty
+                        ? SizedBox(height:170,child:ContentNotAvailable())
+                        : SingleChildScrollView(
+                            controller: _scrollController,
+                            child: Column(
+                                children: resources
+                                    .asMap()
+                                    .keys
+                                    .toList()
+                                    .map((index) => GestureDetector(
+                                        onTap: () => Navigator.of(context)
+                                            .pushNamed(
+                                                ExtractResourceDetailScreen
+                                                    .routeName,
+                                                arguments:
+                                                    ResourceDetailArguments(
+                                                        group: state
+                                                            .resources[index]
+                                                            .resourceGroup!
+                                                            .slug,
+                                                        lang: 'NO')),
+                                        child: ResourceListTile(
+                                          cover_photo:
+                                              resources[index].coverPhoto,
+                                          title: resources[index].title,
+                                          description:
+                                              resources[index].description,
+                                          resourceGroup:
+                                              resources[index].resourceGroup,
+                                        )))
+                                    .toList()))),
+              ])
             ]));
       }
       ;
