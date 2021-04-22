@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
+import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/data/resource_repository.dart';
 import 'package:bro/models/resource.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,13 +10,29 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
   ResourceRepository repository;
+  late String previousCategoryId;
+  PreferredLanguageBloc preferredLanguageBloc;
+  late StreamSubscription preferredLanguageSubscription;
+  late PreferredLanguageRepository preferredLanguageRepository;
 
-  ResourceListBloc({required this.repository}) : super(Loading());
+  ResourceListBloc(
+      {required this.repository, required this.preferredLanguageBloc})
+      : super(Loading()) {
+    preferredLanguageRepository = preferredLanguageBloc.repository;
+    preferredLanguageSubscription =
+        preferredLanguageBloc.stream.listen((state) {
+      if (state is LanguageChanged) {
+        add(ResourceListRequested(
+            lang: state.preferredLang, category_id: previousCategoryId));
+      }
+    });
+  }
 
   @override
   Stream<ResourceListState> mapEventToState(ResourceListEvent event) async* {
     if (event is ResourceListRequested) {
       try {
+        previousCategoryId = event.category_id;
         yield await _retrieveResources(event, 0);
       } catch (e, stackTrace) {
         log(e.toString());
@@ -29,13 +48,14 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
     int curr_len,
     //Fiks så den loader mer
   ) async {
+    var langSlug = event.lang;
     try {
       return await repository
-          .getLangResources(event.lang, event.category_id)
+          .getLangResources(langSlug, event.category_id)
           .then((res) async {
         if (res.data!.isEmpty) {
           final fallbackResourceResult =
-              await repository.getLangResources(event.category_id, event.lang);
+              await repository.getLangResources(langSlug, event.category_id);
 
           var fallbackResource = ResourceList.takeList(
                   List<Map<String, dynamic>>.from(

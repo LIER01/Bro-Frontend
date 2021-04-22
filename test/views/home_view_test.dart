@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/models/home.dart';
 import 'package:bro/models/courses.dart';
+import 'package:bro/models/resource.dart';
 import 'package:bro/views/home_view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../mock_data/Non_Lang_courses_list_mock.dart';
+import '../mock_data/home_mock.dart';
+import '../mock_data/resource_detail_mock.dart';
 
 class MockHomeView extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
 
@@ -33,12 +36,12 @@ void mainTest() {
       homeViewBloc.close();
     });
 
-    testWidgets('renders properly without courses and home',
+    testWidgets('renders properly without courses,resources and home',
         (WidgetTester tester) async {
       when(() => homeViewBloc.state).thenReturn(Success(
           courses: [],
-          hasReachedMax: true,
-          home: Home(header: '', introduction: '')));
+          home: Home(header: '', introduction: ''),
+          resources: []));
       await tester.pumpWidget(
         BlocProvider.value(
           value: homeViewBloc,
@@ -50,18 +53,19 @@ void mainTest() {
         ),
       );
     });
-    testWidgets('renders properly with courses and Home',
+
+    testWidgets('renders properly with courses, resources and home',
         (WidgetTester tester) async {
-      var successlist =
+      var successCourses =
           LangCourse.fromJson(non_lang_courses_mock['data']!['LangCourse']![0]);
+      final successResources =
+          ResourceList.takeList([resourceDetailMockJSON['resources'][0]])
+              .resources;
       when(() => homeViewBloc.state).thenReturn(
         Success(
-            courses: [successlist],
-            hasReachedMax: true,
-            home: Home(
-                header: 'Velkommen til Bro',
-                introduction:
-                    'Dette er en introduksjons tekst som skal være passe lang.')),
+            courses: [successCourses],
+            home: mockedHome,
+            resources: successResources),
       );
       await tester.pumpWidget(
         BlocProvider.value(
@@ -74,15 +78,14 @@ void mainTest() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Velkommen til Bro'), findsOneWidget);
+      expect(find.text(mockedHome.header), findsOneWidget);
+      expect(find.text(mockedHome.introduction), findsOneWidget);
+      await tester.tap(find.text('Anbefalte Ressurser'));
+      expect(find.text(successResources[0].title), findsOneWidget);
+      expect(find.text(successResources[0].description), findsOneWidget);
       await tester.tap(find.text('Anbefalte Kurs'));
-      expect(find.text('Title'), findsOneWidget);
-      expect(find.text('Desc'), findsOneWidget);
-      await tester.tap(find.text('Hva er Bro?'));
-      expect(
-          find.text(
-              'Dette er en introduksjons tekst som skal være passe lang.'),
-          findsOneWidget);
+      expect(find.text(successCourses.title), findsOneWidget);
+      expect(find.text(successCourses.description), findsOneWidget);
     });
   });
 }

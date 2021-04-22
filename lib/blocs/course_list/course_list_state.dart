@@ -8,7 +8,7 @@ abstract class CourseListState extends Equatable {
   List<Object> get props => [];
 }
 
-class Initial extends CourseListState {}
+class InitialCourseList extends CourseListState {}
 
 class Loading extends CourseListState {}
 
@@ -30,7 +30,7 @@ class Success extends CourseListState {
 
   @override
   String toString() =>
-      'Success { courses: $courses, hasReachedMax: $hasReachedMax }';
+      'Success { courses: ${courses}, hasReachedMax: $hasReachedMax }';
 }
 
 class Failed extends CourseListState {}

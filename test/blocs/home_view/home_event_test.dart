@@ -5,7 +5,7 @@ void main() {
   group('HomeEvent', () {
     group('HomeRequested', () {
       test('toString returns correct value', () {
-        expect(HomeRequested().toString(), 'HomeRequested(NO)');
+        expect(HomeRequested().toString(), 'HomeRequested()');
       });
     });
   });

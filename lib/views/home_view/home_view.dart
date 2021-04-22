@@ -2,6 +2,8 @@ import 'package:bro/blocs/home/home_bloc.dart';
 import 'package:bro/blocs/home/home_event.dart';
 import 'package:bro/blocs/home/home_state.dart';
 import 'package:bro/views/course/course_list_tile.dart';
+import 'package:bro/views/resource/resource_list_tile.dart';
+import 'package:bro/views/widgets/contentNotAvailable.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +25,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     _scrollController.addListener(_onScroll);
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _homeBloc.add(HomeRequested());
+    //_homeBloc.add(HomeRequested());
   }
 
   AppBar _buildAppBar() {
@@ -50,62 +52,94 @@ class _HomeViewState extends State<HomeView> {
         );
       }
       if (state is Success) {
+        var courses = state.courses;
+        var resources = state.resources;
         return Scaffold(
             appBar: AppBar(
               title: Text(state.home.header),
             ),
             body: Column(children: [
-              SingleChildScrollView(
-                  child: ExpansionPanelList.radio(children: [
-                ExpansionPanelRadio(
-                    value: 'Intro',
-                    canTapOnHeader: true,
-                    headerBuilder: (context, isExpanded) =>
-                        ListTile(title: Text('Hva er Bro?')),
-                    body: Column(children: [
-                      ListTile(title: Text(state.home.introduction)),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            TextButton(
-                              child: const Text('Les Mer'),
-                              onPressed: () {/* ... */},
-                            ),
-                            const SizedBox(width: 8)
-                          ]),
-                    ])),
+              Column(children: [
+                ListTile(title: Text(state.home.introduction)),
+                const SizedBox(height: 20)
+              ]),
+              ExpansionPanelList.radio(children: [
                 ExpansionPanelRadio(
                     canTapOnHeader: true,
-                    value: 'hey',
-                    headerBuilder: (context, isExpanded) =>
-                        ListTile(title: Text('Anbefalte Kurs')),
-                    body: SingleChildScrollView(
-                        controller: _scrollController,
-                        child: Column(
-                            children: state.courses
-                                .asMap()
-                                .keys
-                                .toList()
-                                .map((index) => GestureDetector(
-                                    onTap: () => Navigator.of(context)
-                                        .pushNamed(
-                                            ExtractCourseDetailScreen.routeName,
-                                            arguments: CourseDetailArguments(
-                                                courseGroup: state
-                                                    .courses[index]
-                                                    .courseGroup!
-                                                    .slug)),
-                                    child: CourseListTile(
-                                      course: state.courses[index],
-                                    )))
-                                .toList()))),
-                ExpansionPanelRadio(
-                    canTapOnHeader: true,
-                    value: 'Anbefalte Artikler',
+                    value: 'anbefalte_kurs',
                     headerBuilder: (context, isExpanded) => ListTile(
-                        leading: null, title: Text('Anbefalte Artikler')),
-                    body: Card())
-              ]))
+                        title: Text('Anbefalte Kurs',
+                            style:
+                                Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(color: Colors.teal))),
+                    body: resources.isEmpty
+                        ? SizedBox(height:170,child:ContentNotAvailable())
+                        : SingleChildScrollView(
+                            controller: _scrollController,
+                            child: Column(
+                                children: state.resources
+                                    .asMap()
+                                    .keys
+                                    .toList()
+                                    .map((index) => GestureDetector(
+                                        onTap: () => Navigator.of(context)
+                                            .pushNamed(
+                                                ExtractCourseDetailScreen
+                                                    .routeName,
+                                                arguments:
+                                                    CourseDetailArguments(
+                                                        courseGroup:
+                                                            courses[index]
+                                                                .courseGroup!
+                                                                .slug)),
+                                        child: CourseListTile(
+                                          course: state.courses[index],
+                                        )))
+                                    .toList()))),
+                ExpansionPanelRadio(
+                    canTapOnHeader: true,
+                    value: 'Anbefalte Ressurser',
+                    headerBuilder: (context, isExpanded) => ListTile(
+                        title: Text('Anbefalte Ressurser',
+                            style:
+                                Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(color: Colors.teal))),
+                    body: resources.isEmpty
+                        ? SizedBox(height:170,child:ContentNotAvailable())
+                        : SingleChildScrollView(
+                            controller: _scrollController,
+                            child: Column(
+                                children: resources
+                                    .asMap()
+                                    .keys
+                                    .toList()
+                                    .map((index) => GestureDetector(
+                                        onTap: () => Navigator.of(context)
+                                            .pushNamed(
+                                                ExtractResourceDetailScreen
+                                                    .routeName,
+                                                arguments:
+                                                    ResourceDetailArguments(
+                                                        group: state
+                                                            .resources[index]
+                                                            .resourceGroup!
+                                                            .slug,
+                                                        lang: 'NO')),
+                                        child: ResourceListTile(
+                                          cover_photo:
+                                              resources[index].coverPhoto,
+                                          title: resources[index].title,
+                                          description:
+                                              resources[index].description,
+                                          resourceGroup:
+                                              resources[index].resourceGroup,
+                                        )))
+                                    .toList()))),
+              ])
             ]));
       }
       ;

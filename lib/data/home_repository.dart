@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bro/data/queries/queries.dart';
+import 'package:bro/data/queries/home_view_queries.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -29,6 +29,21 @@ class HomeRepository {
     final _options = WatchQueryOptions(
       document: parseString(getHomeQuery),
       fetchResults: true,
+    );
+
+    return await client.query(_options);
+  }
+
+  Future<QueryResult> getRecommendedLangResources(
+      int start, int limit, String lang) async {
+    final _options = WatchQueryOptions(
+      document: parseString(getRecommendedLangResourcesQuery),
+      fetchResults: true,
+      variables: <String, dynamic>{
+        'start': start,
+        'limit': limit,
+        'lang': lang
+      },
     );
 
     return await client.query(_options);
