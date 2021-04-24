@@ -15,7 +15,7 @@ class MockResourceListView
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<ResourceListState>(Failed(err: "WRONG"));
+    registerFallbackValue<ResourceListState>(Failed(err: 'WRONG'));
     registerFallbackValue<ResourceListEvent>(
         ResourceListRequested(category_id: '1', lang: 'NO'));
   });
@@ -52,6 +52,7 @@ void mainTest() {
         ),
       );
     });
+    // ignore: omit_local_variable_types
     List<Resources> listMock = [];
     testWidgets('renders properly with resources', (WidgetTester tester) async {
       mockedResourceList.resources.forEach((e) {

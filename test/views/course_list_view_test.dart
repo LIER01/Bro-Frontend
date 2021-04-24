@@ -8,8 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import '../mock_data/course_mock.dart';
 
-import '../mock_data/course_mock.dart';
-
 class MockCourseListView extends MockBloc<CourseListEvent, CourseListState>
     implements CourseListBloc {}
 
