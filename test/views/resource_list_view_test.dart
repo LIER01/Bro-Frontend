@@ -1,20 +1,23 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
+import 'package:bro/models/resource.dart';
 import 'package:bro/views/resource/resource_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../mock_data/course_mock.dart';
+import '../mock_data/resource_list_mock.dart';
 
-class MockCourseListView extends MockBloc<ResourceListEvent, ResourceListState>
+class MockResourceListView
+    extends MockBloc<ResourceListEvent, ResourceListState>
     implements ResourceListBloc {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<ResourceListState>(Failed());
-    registerFallbackValue<ResourceListEvent>(ResourceListRequested());
+    registerFallbackValue<ResourceListState>(Failed(err: "WRONG"));
+    registerFallbackValue<ResourceListEvent>(
+        ResourceListRequested(category_id: '1', lang: 'NO'));
   });
 
   mainTest();
@@ -22,22 +25,22 @@ void main() {
 
 void mainTest() {
   group('ResourceListView', () {
-    late ResourceListBloc courseListBloc;
+    late ResourceListBloc resourceListBloc;
 
     setUp(() {
-      courseListBloc = MockResourceListView();
+      resourceListBloc = MockResourceListView();
     });
 
     tearDown(() {
-      courseListBloc.close();
+      resourceListBloc.close();
     });
 
-    testWidgets('renders properly without courses',
+    testWidgets('renders properly without resources',
         (WidgetTester tester) async {
-      when(() => courseListBloc.state).thenReturn(Success(resources: []));
+      when(() => resourceListBloc.state).thenReturn(Success(resources: []));
       await tester.pumpWidget(
         BlocProvider.value(
-          value: courseListBloc,
+          value: resourceListBloc,
           child: MaterialApp(
             home: Scaffold(
               body: ResourceListView(
@@ -49,31 +52,32 @@ void mainTest() {
         ),
       );
     });
-    List<LangResource> mockedLangCourseList;
-    testWidgets('renders properly with courses', (WidgetTester tester) async {
-      mockedLangCourseList = [];
-      mockedCourseList.forEach((element) {
-        mockedLangCourseList.add(LangResource.fromJson(element));
+    List<Resources> listMock = [];
+    testWidgets('renders properly with resources', (WidgetTester tester) async {
+      mockedResourceList.resources.forEach((e) {
+        listMock.add(e);
       });
-      when(() => courseListBloc.state).thenReturn(
-          Success(courses: mockedLangResourceList, hasReachedMax: true));
+      when(() => resourceListBloc.state)
+          .thenReturn(Success(resources: listMock));
       await tester.pumpWidget(
         BlocProvider.value(
-          value: courseListBloc,
+          value: resourceListBloc,
           child: MaterialApp(
             home: Scaffold(
-              body: ResourceListView(),
+              body: ResourceListView(
+                category_id: '1',
+                category: 'NO',
+              ),
             ),
           ),
         ),
       );
       await tester.pump();
-      debugPrint(mockedLangResourceList[0].title);
 
       expect(find.byType(LinearProgressIndicator), findsNothing);
 
-      expect(find.text(mockedLangResourceList[0].title), findsOneWidget);
-      expect(find.text(mockedLangResourceList[0].description), findsWidgets);
+      expect(find.text(listMock[0].title), findsOneWidget);
+      expect(find.text(listMock[0].description), findsWidgets);
     });
   });
 }

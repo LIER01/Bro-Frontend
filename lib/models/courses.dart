@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 T? asT<T>(dynamic value) {
   if (value is T) {
     return value;
@@ -40,21 +38,21 @@ class LangCourse {
   });
 
   factory LangCourse.fromJson(Map<String, dynamic> jsonRes) {
-    debugPrint(jsonRes['questions'].toString());
-    final questions = jsonRes['questions'] is List ? <Questions>[] : null;
+    final questions = jsonRes['questions'] is List ? <ReducedQuestion>[] : null;
     if (questions != null) {
       for (final dynamic item in jsonRes['questions']!) {
         if (item != null) {
-          questions.add(Questions.fromJson(asT<Map<String, dynamic>>(item)!));
+          questions
+              .add(ReducedQuestion.fromJson(asT<Map<String, dynamic>>(item)!));
         }
       }
     }
 
-    final slides = jsonRes['slides'] is List ? <Slides>[] : null;
+    final slides = jsonRes['slides'] is List ? <ReducedSlide>[] : null;
     if (slides != null) {
       for (final dynamic item in jsonRes['slides']!) {
         if (item != null) {
-          slides.add(Slides.fromJson(asT<Map<String, dynamic>>(item)!));
+          slides.add(ReducedSlide.fromJson(asT<Map<String, dynamic>>(item)!));
         }
       }
     }
@@ -78,8 +76,8 @@ class LangCourse {
     );
   }
 
-  final List<Questions> questions;
-  final List<Slides> slides;
+  final List<ReducedQuestion> questions;
+  final List<ReducedSlide> slides;
   final String title;
   final String description;
   final Publisher? publisher;
@@ -107,12 +105,13 @@ class LangCourse {
       asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 
-class Questions {
-  Questions({
+class ReducedQuestion {
+  ReducedQuestion({
     required this.id,
   });
 
-  factory Questions.fromJson(Map<String, dynamic> jsonRes) => Questions(
+  factory ReducedQuestion.fromJson(Map<String, dynamic> jsonRes) =>
+      ReducedQuestion(
         id: asT<String>(jsonRes['id'])!,
       );
 
@@ -127,16 +126,16 @@ class Questions {
         'id': id,
       };
 
-  Questions clone() => Questions.fromJson(
+  ReducedQuestion clone() => ReducedQuestion.fromJson(
       asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 
-class Slides {
-  Slides({
+class ReducedSlide {
+  ReducedSlide({
     required this.id,
   });
 
-  factory Slides.fromJson(Map<String, dynamic> jsonRes) => Slides(
+  factory ReducedSlide.fromJson(Map<String, dynamic> jsonRes) => ReducedSlide(
         id: asT<String>(jsonRes['id'])!,
       );
 
@@ -151,8 +150,8 @@ class Slides {
         'id': id,
       };
 
-  Slides clone() =>
-      Slides.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
+  ReducedSlide clone() => ReducedSlide.fromJson(
+      asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 
 class Publisher {

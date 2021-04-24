@@ -8,14 +8,18 @@ abstract class CourseListEvent extends Equatable {
 }
 
 class CourseListRequested extends CourseListEvent {
-  final String? preferredLanguageSlug;
-
   // Sets 'NO' to default if no preferredLanguageSlug is defined
-  CourseListRequested({preferredLanguageSlug})
-      : preferredLanguageSlug = preferredLanguageSlug ?? 'NO';
+  CourseListRequested();
 
   @override
-
   // This defines the props you need to check to determine if the state has changed.
-  List get props => [preferredLanguageSlug];
+  List get props => [];
+}
+
+class CourseListRefresh extends CourseListEvent {
+  final String preferredLang;
+  CourseListRefresh(preferredLang) : preferredLang = preferredLang ?? '';
+
+  @override
+  List get props => [preferredLang];
 }

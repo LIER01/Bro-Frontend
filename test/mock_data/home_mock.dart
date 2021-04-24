@@ -1,5 +1,5 @@
-import 'package:bro/models/course.dart';
 import 'package:bro/models/home.dart';
+import 'package:bro/models/course.dart';
 
 String header = 'Velkommen til Bro';
 String introduction =
@@ -11,4 +11,5 @@ Course mockedCourse = Course(
     title: 'Kurstittel',
     description: 'Kursbeskrivelse',
     slides: [],
-    questions: []);
+    questions: [],
+    isRecommended: false);

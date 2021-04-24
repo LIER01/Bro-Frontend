@@ -1,8 +1,10 @@
 import 'package:bro/blocs/home/home_bucket.dart';
-import 'package:bro/models/new_courses.dart';
+import 'package:bro/models/courses.dart';
+import 'package:bro/models/resource.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../../mock_data/Non_Lang_courses_list_mock.dart';
 import '../../mock_data/home_mock.dart';
+import '../../mock_data/resource_detail_mock.dart';
 
 void main() {
   group('HomeState', () {
@@ -22,11 +24,16 @@ void main() {
       final successCourse =
           LangCourseList.takeList(non_lang_courses_mock['data']!['LangCourse']!)
               .langCourses;
+      final successResources =
+          ResourceList.takeList([resourceDetailMockJSON]).resources;
       test('toString returns correct value', () {
         expect(
-            Success(courses: successCourse, hasReachedMax: false, home: home)
+            Success(
+                    courses: successCourse,
+                    home: home,
+                    resources: successResources)
                 .toString(),
-            'Success { courses: $successCourse, hasReachedMax: false, home: $home }');
+            'Success { courses: $successCourse, home: $home, resources: $successResources}');
       });
     });
     group('HomeFailed', () {

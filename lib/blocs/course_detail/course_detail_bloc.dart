@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/data/course_repository.dart';
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -74,13 +74,13 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
       CourseDetailRequested event, String pref_lang_slug) async {
     try {
       return await repository
-          .getNewCourseQuery(event.courseGroupSlug!, pref_lang_slug)
+          .getCourseQuery(event.courseGroupSlug!, pref_lang_slug)
           .then((res) async {
         if (res.data!.isEmpty) {
           final fallbackCourseResult =
-              await repository.getNewCourseQuery(event.courseGroupSlug!, 'NO');
+              await repository.getCourseQuery(event.courseGroupSlug!, 'NO');
           final fallbackCourse =
-              Courses.fromJson(fallbackCourseResult.data!['courses'][0]);
+              Course.fromJson(fallbackCourseResult.data!['courses'][0]);
           return CourseState(
               course: fallbackCourse,
               isQuiz: event.isQuiz,
@@ -88,7 +88,7 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
               answerId: event.answerId);
         } else if (res.data!.isNotEmpty) {
           try {
-            final returnCourse = Courses.fromJson(res.data!['courses'][0]);
+            final returnCourse = Course.fromJson(res.data!['courses'][0]);
 
             return CourseState(
                 course: returnCourse,

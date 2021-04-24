@@ -5,7 +5,7 @@ void main() {
   group('CourseListState', () {
     group('CourseListInitial', () {
       test('toString returns correct value', () {
-        expect(Initial().toString(), 'Initial()');
+        expect(InitialCourseList().toString(), 'InitialCourseList()');
       });
     });
 

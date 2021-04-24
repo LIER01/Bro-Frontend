@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

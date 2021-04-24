@@ -1,5 +1,7 @@
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -11,11 +13,20 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
+  late PreferredLanguageBloc _preferredLanguageBloc;
+  @override
+  void initState() {
+    super.initState();
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
+    _preferredLanguageBloc.add(PreferredLanguageRequested());
+  }
+
   int _selectedIndex = 0;
   final List<GlobalKey<NavigatorState>> _NavKeys = [
     _homeNavKey,
     _resourceNavKey,
     _courseNavKey,
+    _settingsNavKey,
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -55,6 +66,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               HomeTab(),
               ResourceTab(),
               CourseTab(),
+              SettingsTab(),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -97,6 +109,13 @@ class HomeTab extends StatefulWidget {
 GlobalKey<NavigatorState> _homeNavKey = GlobalKey<NavigatorState>();
 
 class _HomeTabState extends State<HomeTab> {
+  late PreferredLanguageBloc _preferredLanguageBloc;
+  @override
+  void initState() {
+    super.initState();
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
+  }
+
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
     return GraphQLClient(
@@ -115,9 +134,13 @@ class _HomeTabState extends State<HomeTab> {
               builder: (BuildContext context) {
                 switch (settings.name) {
                   case '/':
-                    return ExtractRecommendedScreen(client: _client());
+                    return ExtractHomeScreen(
+                        client: _client(),
+                        preferredLanguageBloc: _preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
                     return ExtractCourseDetailScreen(client: _client());
+                  case ExtractResourceDetailScreen.routeName:
+                    return ExtractResourceDetailScreen(client: _client());
                   default:
                     throw Exception('Invalid route: ${settings.name}');
                 }
@@ -134,6 +157,13 @@ class CourseTab extends StatefulWidget {
 GlobalKey<NavigatorState> _courseNavKey = GlobalKey<NavigatorState>();
 
 class _CourseTabState extends State<CourseTab> {
+  late PreferredLanguageBloc _preferredLanguageBloc;
+  @override
+  void initState() {
+    super.initState();
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
+  }
+
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
     return GraphQLClient(
@@ -152,11 +182,15 @@ class _CourseTabState extends State<CourseTab> {
               builder: (BuildContext context) {
                 switch (settings.name) {
                   case ExtractCourseListScreen.routeName:
-                    return ExtractCourseListScreen(client: _client());
+                    return ExtractCourseListScreen(
+                        client: _client(),
+                        preferredLanguageBloc: _preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
                     return ExtractCourseDetailScreen(client: _client());
                   default:
-                    return ExtractCourseListScreen(client: _client());
+                    return ExtractCourseListScreen(
+                        client: _client(),
+                        preferredLanguageBloc: _preferredLanguageBloc);
                 }
               });
         });
@@ -171,6 +205,13 @@ class ResourceTab extends StatefulWidget {
 GlobalKey<NavigatorState> _resourceNavKey = GlobalKey<NavigatorState>();
 
 class _ResourceTabState extends State<ResourceTab> {
+  late PreferredLanguageBloc _preferredLanguageBloc;
+  @override
+  void initState() {
+    super.initState();
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
+  }
+
   GraphQLClient _client() {
     final _link = HttpLink(env['API_URL']! + '/graphql');
     return GraphQLClient(
@@ -191,13 +232,51 @@ class _ResourceTabState extends State<ResourceTab> {
                   case ExtractCategoryListScreen.routeName:
                     return ExtractCategoryListScreen(client: _client());
                   case ExtractResourceListScreen.routeName:
-                    return ExtractResourceListScreen(client: _client());
+                    return ExtractResourceListScreen(
+                      client: _client(),
+                      preferredLanguageBloc: _preferredLanguageBloc,
+                    );
                   case ExtractResourceDetailScreen.routeName:
                     return ExtractResourceDetailScreen(client: _client());
                   case ExtractResourseDetailWebViewScreen.routeName:
                     return ExtractResourseDetailWebViewScreen();
                   default:
                     return ExtractCategoryListScreen(client: _client());
+                }
+              });
+        });
+  }
+}
+
+class SettingsTab extends StatefulWidget {
+  @override
+  _SettingsTabState createState() => _SettingsTabState();
+}
+
+GlobalKey<NavigatorState> _settingsNavKey = GlobalKey<NavigatorState>();
+
+class _SettingsTabState extends State<SettingsTab> {
+  GraphQLClient _client() {
+    final _link = HttpLink(env['API_URL']! + '/graphql');
+    return GraphQLClient(
+      cache: GraphQLCache(store: InMemoryStore()),
+      link: _link,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+        key: _settingsNavKey,
+        onGenerateRoute: (RouteSettings settings) {
+          return MaterialPageRoute(
+              settings: settings,
+              builder: (BuildContext context) {
+                switch (settings.name) {
+                  case ExtractSettingsScreen.routeName:
+                    return ExtractSettingsScreen(client: _client());
+                  default:
+                    return ExtractSettingsScreen(client: _client());
                 }
               });
         });

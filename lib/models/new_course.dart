@@ -145,12 +145,14 @@ class Alternatives {
 
   factory Alternatives.fromJson(Map<String, dynamic> jsonRes) => Alternatives(
         alternativeText: asT<String>(jsonRes['alternative_text'])!,
-        image: asT<Object?>(jsonRes['image']),
+        image: jsonRes['image'] == null
+            ? null
+            : Media.fromJson(asT<Map<String, dynamic>>(jsonRes['image'])!),
         isCorrect: asT<bool>(jsonRes['is_correct'])!,
       );
 
   final String alternativeText;
-  final Object? image;
+  final Media? image;
   final bool isCorrect;
 
   @override

@@ -1,6 +1,7 @@
 import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/models/resource.dart';
 import 'package:bro/views/widgets/bottom_loader.dart';
+import 'package:bro/views/widgets/contentNotAvailable.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,38 +68,43 @@ class _ResourceListViewState extends State<ResourceListView> {
           //print(resources);
           return Scaffold(
             appBar: _buildAppBar(widget.category),
-            body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: ListView.builder(
-                itemCount: state.resources.length,
-                controller: _scrollController,
-                itemBuilder: (BuildContext context, int index) {
-                  return index >= state.resources.length
-                      ? BottomLoader()
-                      : Container(
-                          padding: EdgeInsets.symmetric(vertical: 4),
-                          child: GestureDetector(
-                            onTap: () => {
-                              Navigator.of(context).pushNamed(
-                                  ExtractResourceDetailScreen.routeName,
-                                  arguments: ResourceDetailArguments(
-                                      group: state
-                                          .resources[index].resourceGroup!.slug,
-                                      lang: state
-                                          .resources[index].language!.slug))
-                            },
-                            child: ResourceListTile(
-                              title: state.resources[index].title,
-                              resourceGroup:
-                                  state.resources[index].resourceGroup,
-                              description: state.resources[index].description,
-                              cover_photo: state.resources[index].coverPhoto,
-                            ),
-                          ),
-                        );
-                },
-              ),
-            ),
+            body: state.resources.isEmpty
+                ? ContentNotAvailable()
+                : Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: ListView.builder(
+                      itemCount: state.resources.length,
+                      controller: _scrollController,
+                      itemBuilder: (BuildContext context, int index) {
+                        return index >= state.resources.length
+                            ? BottomLoader()
+                            : Container(
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: GestureDetector(
+                                  onTap: () => {
+                                    print('click'),
+                                    Navigator.of(context).pushNamed(
+                                        ExtractResourceDetailScreen.routeName,
+                                        arguments: ResourceDetailArguments(
+                                            group: state.resources[index]
+                                                .resourceGroup!.slug,
+                                            lang: state.resources[index]
+                                                .language!.slug))
+                                  },
+                                  child: ResourceListTile(
+                                    title: state.resources[index].title,
+                                    resourceGroup:
+                                        state.resources[index].resourceGroup,
+                                    description:
+                                        state.resources[index].description,
+                                    cover_photo:
+                                        state.resources[index].coverPhoto,
+                                  ),
+                                ),
+                              );
+                      },
+                    ),
+                  ),
           );
         }
 

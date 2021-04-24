@@ -1,4 +1,4 @@
-import 'package:bro/models/new_course.dart';
+import 'package:bro/models/course.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class CourseDetailState extends Equatable {
@@ -11,7 +11,7 @@ abstract class CourseDetailState extends Equatable {
 class Loading extends CourseDetailState {}
 
 class CourseState extends CourseDetailState {
-  final Courses course;
+  final Course course;
   final bool isQuiz;
   final bool isAnswer;
   final int? answerId;

@@ -1,4 +1,4 @@
-import 'package:bro/models/new_courses.dart';
+import 'package:bro/models/courses.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class CourseListState extends Equatable {
@@ -8,7 +8,7 @@ abstract class CourseListState extends Equatable {
   List<Object> get props => [];
 }
 
-class Initial extends CourseListState {}
+class InitialCourseList extends CourseListState {}
 
 class Loading extends CourseListState {}
 
@@ -30,7 +30,7 @@ class Success extends CourseListState {
 
   @override
   String toString() =>
-      'Success { courses: $courses, hasReachedMax: $hasReachedMax }';
+      'Success { courses: ${courses}, hasReachedMax: $hasReachedMax }';
 }
 
 class Failed extends CourseListState {}

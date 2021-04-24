@@ -1,4 +1,4 @@
-import 'package:bro/models/new_courses.dart';
+import 'package:bro/models/courses.dart';
 
 int id = 0;
 String title = 'Et kult kurs!';

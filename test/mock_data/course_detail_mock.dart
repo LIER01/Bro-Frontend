@@ -40,19 +40,19 @@ Course referenceCourse = Course(
           question: course_detail_mock['course']['questions'][0]['question'],
           alternatives: [
             Alternative(
-                name: course_detail_mock['course']['questions'][0]
+                image: course_detail_mock['course']['questions'][0]
+                    ['alternatives'][0]['image'],
+                alternativeText: course_detail_mock['course']['questions'][0]
                     ['alternatives'][0]['name'],
-                correct: course_detail_mock['course']['questions'][0]
-                    ['alternatives'][0]['correct'],
-                image: course_detail_mock['course']['questions'][0]
-                    ['alternatives'][0]['image']),
+                isCorrect: course_detail_mock['course']['questions'][0]
+                    ['alternatives'][0]['correct']),
             Alternative(
-                name: course_detail_mock['course']['questions'][0]
-                    ['alternatives'][1]['name'],
-                correct: course_detail_mock['course']['questions'][0]
-                    ['alternatives'][1]['correct'],
                 image: course_detail_mock['course']['questions'][0]
-                    ['alternatives'][1]['image'])
+                    ['alternatives'][1]['image'],
+                alternativeText: course_detail_mock['course']['questions'][0]
+                    ['alternatives'][1]['name'],
+                isCorrect: course_detail_mock['course']['questions'][0]
+                    ['alternatives'][1]['correct']),
           ],
           clarification: course_detail_mock['course']['questions'][0]
               ['clarification'])
@@ -61,11 +61,12 @@ Course referenceCourse = Course(
       Slide(
           title: course_detail_mock['course']['slides'][0]['title'],
           description: course_detail_mock['course']['slides'][0]['description'],
-          image: SlideImage(
+          media: Media(
               url: course_detail_mock['course']['slides'][0]['image']['url'])),
       Slide(
           title: course_detail_mock['course']['slides'][1]['title'],
           description: course_detail_mock['course']['slides'][1]['description'],
-          image: SlideImage(
+          media: Media(
               url: course_detail_mock['course']['slides'][1]['image']['url']))
-    ]);
+    ],
+    isRecommended: false);

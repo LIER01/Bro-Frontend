@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import '../mock_data/new_course_mock.dart';
 
 class MockCourseDetailBloc
@@ -28,13 +27,9 @@ void main() {
 
 void mainTest() {
   group('CourseDetailView', () {
-    CourseRepository courseRepository;
     late CourseDetailBloc courseDetailBloc;
 
     setUp(() {
-      courseRepository = MockCourseRepository();
-      when(() => courseRepository.getCourse(any())).thenAnswer((_) =>
-          Future.value(QueryResult(source: null, data: new_new_mock_course)));
       courseDetailBloc = MockCourseDetailBloc();
     });
 

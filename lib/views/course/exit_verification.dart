@@ -20,7 +20,6 @@ Widget ExitVerification(context, data) {
                         onTap: () => {
                           // We pop twice, once to remove the alertbox. Once more to pop the context
                           Navigator.of(context, rootNavigator: true).pop(),
-                          Navigator.of(context).pop(),
                         },
                       ),
                     ),
