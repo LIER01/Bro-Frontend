@@ -138,7 +138,10 @@ class _HomeTabState extends State<HomeTab> {
                         client: _client(),
                         preferredLanguageBloc: _preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
-                    return ExtractCourseDetailScreen(client: _client());
+                    return ExtractCourseDetailScreen(
+                      client: _client(),
+                      preferredLanguageBloc: _preferredLanguageBloc,
+                    );
                   case ExtractResourceDetailScreen.routeName:
                     return ExtractResourceDetailScreen(client: _client());
                   default:
@@ -186,7 +189,9 @@ class _CourseTabState extends State<CourseTab> {
                         client: _client(),
                         preferredLanguageBloc: _preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
-                    return ExtractCourseDetailScreen(client: _client());
+                    return ExtractCourseDetailScreen(
+                        client: _client(),
+                        preferredLanguageBloc: _preferredLanguageBloc);
                   default:
                     return ExtractCourseListScreen(
                         client: _client(),

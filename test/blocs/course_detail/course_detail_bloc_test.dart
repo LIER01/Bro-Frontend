@@ -1,4 +1,6 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
+import 'package:bro/data/preferred_language_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -10,6 +12,9 @@ import 'test_helpers.dart';
 import '../../mock_data/new_course_mock.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}
+
+class MockPreferredLanguageRepository extends Mock
+    implements PreferredLanguageRepository {}
 
 void main() {
   setUpAll(() {
@@ -23,13 +28,20 @@ void mainBloc() {
   group('CourseDetailBloc', () {
     late CourseRepository courseRepository;
     late CourseDetailBloc courseDetailBloc;
+    late PreferredLanguageBloc preferredLanguageBloc;
+    late PreferredLanguageRepository preferredLanguageRepository;
 
     setUp(() {
       courseRepository = MockCourseRepository();
+      preferredLanguageRepository = MockPreferredLanguageRepository();
+      preferredLanguageBloc =
+          PreferredLanguageBloc(repository: preferredLanguageRepository);
       when(() => courseRepository.getCourseQuery(any(), any())).thenAnswer(
           (_) => Future.value(
               QueryResult(source: null, data: course_detail_mock)));
-      courseDetailBloc = CourseDetailBloc(repository: courseRepository);
+      courseDetailBloc = CourseDetailBloc(
+          repository: courseRepository,
+          preferredLanguageBloc: preferredLanguageBloc);
     });
 
     tearDown(() {
@@ -65,7 +77,7 @@ void mainBloc() {
               isAnswer: false,
               answerId: 1)),
       expect: () => [
-        Loading(),
+        CourseDetailLoading(),
         isInstanceOf<Failed>(),
       ],
     );
@@ -81,8 +93,8 @@ void mainBloc() {
               isAnswer: false,
               answerId: 1)),
       expect: () => [
-        Loading(),
-        isA<CourseState>(),
+        CourseDetailLoading(),
+        isA<CourseDetailSuccess>(),
       ],
     );
 
@@ -99,8 +111,8 @@ void mainBloc() {
               isAnswer: false,
               answerId: 1)),
       expect: () => [
-        Loading(),
-        isA<CourseState>(),
+        CourseDetailLoading(),
+        isA<CourseDetailSuccess>(),
       ],
     );
   });

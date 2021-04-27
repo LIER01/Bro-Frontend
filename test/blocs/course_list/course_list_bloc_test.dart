@@ -41,7 +41,8 @@ void main() {
             .thenThrow(Exception('Woops'));
         return courseListBloc;
       },
-      act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh('NO')),
+      act: (CourseListBloc bloc) async =>
+          bloc.add(CourseListRefresh(preferredLang: 'NO')),
       expect: () => <CourseListState>[Failed()],
     );
 
@@ -62,7 +63,8 @@ void main() {
                 source: null, data: non_lang_courses_mock['data'])));
         return courseListBloc;
       },
-      act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh('NO')),
+      act: (CourseListBloc bloc) async =>
+          bloc.add(CourseListRefresh(preferredLang: 'NO')),
       expect: () => [
         isA<Success>(),
       ],
@@ -82,7 +84,7 @@ void main() {
         return courseListBloc;
       },
       act: (CourseListBloc bloc) async {
-        bloc.add(CourseListRefresh('NO'));
+        bloc.add(CourseListRefresh(preferredLang: 'NO'));
         bloc.add(CourseListRequested());
       },
       expect: () => [

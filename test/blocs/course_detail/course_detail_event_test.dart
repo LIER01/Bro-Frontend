@@ -17,25 +17,26 @@ void mainState() {
     test('should succeed when inserting course and isAnswer:false', () {
       expect(
           // ignore: missing_required_param
-          CourseState(course: referenceCourses, isQuiz: true, isAnswer: false),
-          isInstanceOf<CourseState>());
+          CourseDetailSuccess(
+              course: referenceCourses, isQuiz: true, isAnswer: false),
+          isInstanceOf<CourseDetailSuccess>());
     });
 
     test('should succeed when inserting everything correctly', () {
       expect(
-          CourseState(
+          CourseDetailSuccess(
               course: referenceCourses,
               isQuiz: true,
               isAnswer: true,
               answerId: 1),
-          isInstanceOf<CourseState>());
+          isInstanceOf<CourseDetailSuccess>());
     });
 
     test(
         'should throw assertionerror when inserting isAnswer:true and no answerId',
         () {
       expect(
-          () => CourseState(
+          () => CourseDetailSuccess(
               course: referenceCourses, isQuiz: true, isAnswer: true),
           throwsAssertionError);
     });

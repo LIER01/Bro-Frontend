@@ -39,7 +39,7 @@ void mainTest() {
 
     testWidgets('renders properly with inserted data',
         (WidgetTester tester) async {
-      when(() => courseDetailBloc.state).thenAnswer((_) => CourseState(
+      when(() => courseDetailBloc.state).thenAnswer((_) => CourseDetailSuccess(
           course: referenceCourses, isQuiz: false, isAnswer: false));
       tester.binding.window.physicalSizeTestValue = Size(600, 1920);
       await tester.pumpWidget(
@@ -63,7 +63,7 @@ void mainTest() {
     });
     testWidgets('navigation arrows and start quiz appears on last slide',
         (WidgetTester tester) async {
-      when(() => courseDetailBloc.state).thenAnswer((_) => CourseState(
+      when(() => courseDetailBloc.state).thenAnswer((_) => CourseDetailSuccess(
           course: referenceCourses, isQuiz: false, isAnswer: false));
       await tester.pumpWidget(
         BlocProvider.value(

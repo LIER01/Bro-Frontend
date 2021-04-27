@@ -58,7 +58,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
     return BlocBuilder<CourseDetailBloc, CourseDetailState>(
       builder: (context, state) {
         //log(state.toString());
-        if (state is Loading) {
+        if (state is CourseDetailLoading) {
           return Scaffold(
             appBar: AppBar(title: Text('Loading')),
             body: LinearProgressIndicator(),
@@ -69,7 +69,7 @@ class _CourseDetailViewState extends State<CourseDetailView> {
           return _failureState(context, state.err);
         }
 
-        if (state is CourseState) {
+        if (state is CourseDetailSuccess) {
           data = state.course;
           if (state.isQuiz == false) {
             return Scaffold(

@@ -66,7 +66,6 @@ void mainTest() {
         ),
       );
       await tester.pump();
-      debugPrint(mockedLangCourseList[0].title);
 
       expect(find.byType(LinearProgressIndicator), findsNothing);
 

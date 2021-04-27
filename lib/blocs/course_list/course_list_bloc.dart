@@ -24,7 +24,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
       if (state is LanguageChanged) {
-        add(CourseListRefresh(state.preferredLang));
+        add(CourseListRefresh(preferredLang: state.preferredLang));
       }
     });
   }
