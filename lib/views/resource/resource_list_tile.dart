@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bro/models/resource.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +54,12 @@ class ResourceListTile extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   image: DecorationImage(
-                      fit: BoxFit.cover, image: NetworkImage(cover_photo.url))),
+                    fit: BoxFit.cover,
+                    image: NetworkImage(cover_photo.url),
+                    onError: (exception, stackTrace) {
+                      log(exception.toString());
+                    },
+                  )),
             ),
           ],
         ),
