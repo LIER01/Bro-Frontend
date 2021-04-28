@@ -31,7 +31,7 @@ class CourseDetailRequested extends CourseDetailEvent {
     required this.isQuiz,
     required this.isAnswer,
     this.answerId,
-    // Either you need to provide a course_id or you need to provide a course
+    // Either one need to provide a course_id or you need to provide a course
   })  : assert(courseGroupSlug != null || course != null),
         // If "isAnswer", you also need to provide an answerId
         assert(isAnswer == false || (isAnswer == true && answerId != null));

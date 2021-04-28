@@ -12,17 +12,18 @@ class InitialCourseList extends CourseListState {}
 
 class Loading extends CourseListState {}
 
-class Success extends CourseListState {
+class CourseListSuccess extends CourseListState {
   final List<LangCourse> courses;
   final bool hasReachedMax;
 
-  Success({required this.courses, required this.hasReachedMax});
+  CourseListSuccess({required this.courses, required this.hasReachedMax});
 
-  Success copyWith({
+  CourseListSuccess copyWith({
     required List<LangCourse> courses,
     bool? hasReachedMax,
   }) {
-    return Success(courses: courses, hasReachedMax: hasReachedMax ?? false);
+    return CourseListSuccess(
+        courses: courses, hasReachedMax: hasReachedMax ?? false);
   }
 
   @override
@@ -33,4 +34,4 @@ class Success extends CourseListState {
       'Success { courses: ${courses}, hasReachedMax: $hasReachedMax }';
 }
 
-class Failed extends CourseListState {}
+class CourseListFailed extends CourseListState {}

@@ -30,6 +30,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
 
   @override
   Stream<ResourceListState> mapEventToState(ResourceListEvent event) async* {
+    // If the event is ResourceListRequested, then it re-requests the resources to fetch the list with the corrent language.
     if (event is ResourceListRequested) {
       try {
         previousCategoryId = event.category_id;
@@ -38,7 +39,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
         log(e.toString());
         log(stackTrace.toString());
 
-        yield Failed(err: 'Error, bad request.');
+        yield ResourceListFailed(err: 'Error, bad request.');
       }
     }
   }
@@ -46,56 +47,32 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
   Future<ResourceListState> _retrieveResources(
     ResourceListRequested event,
     int curr_len,
-    //Fiks så den loader mer
   ) async {
     var langSlug = event.lang;
     try {
+      // Sends the request, deserializes into models and returns a state of ResourceListSuccess
       return await repository
           .getLangResources(langSlug, event.category_id)
           .then((res) async {
-        if (res.data!.isEmpty) {
-          final fallbackResourceResult =
-              await repository.getLangResources(langSlug, event.category_id);
+        var resourceList = ResourceList.takeList(
+                List<Map<String, dynamic>>.from(res.data!['resources']))
+            .resources
+            //Checks that all relations not used in the query are included
+            .where((element) {
+          return (element.publisher != null && element.resourceGroup != null);
+        }).toList();
 
-          var fallbackResource = ResourceList.takeList(
-                  List<Map<String, dynamic>>.from(
-                      fallbackResourceResult.data!['resources']))
-              .resources
-              //Checks that all relations not used in the query are included
-              .where((element) {
-            return (element.publisher != null && element.resourceGroup != null);
-          }).toList();
-
-          return Success(resources: fallbackResource);
-        } else if (res.data!.isNotEmpty) {
-          try {
-            final returnResource = ResourceList.takeList(
-                    List<Map<String, dynamic>>.from(res.data!['resources']))
-                .resources
-                .where((element) {
-              return (element.publisher != null &&
-                  element.resourceGroup != null);
-            }).toList();
-
-            return Success(resources: returnResource);
-          } catch (e, stackTrace) {
-            log(e.toString());
-            log(stackTrace.toString());
-            return Failed(err: 'Error, bad request');
-          }
-        } else {
-          return Failed(err: 'Error, bad request');
-        }
+        return ResourceListSuccess(resources: resourceList);
       });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
-      return Failed(err: 'Error, failed to contact server');
+      return ResourceListFailed(err: 'Error, failed to contact server');
     } catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
 
-      return Failed(err: 'Error, bad request');
+      return ResourceListFailed(err: 'Error, bad request');
     }
   }
 }

@@ -11,7 +11,7 @@ class HomeRepository {
 
   // Course type should be made in a models/ directory
   Future<QueryResult> getRecommendedCourses(
-      String lang_slug, int start, int limit) async {
+      int start, int limit, String lang_slug) async {
     final _options = WatchQueryOptions(
       document: parseString(getRecommendedCoursesQuery),
       fetchResults: true,

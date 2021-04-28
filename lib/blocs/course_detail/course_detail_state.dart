@@ -32,9 +32,9 @@ class CourseDetailSuccess extends CourseDetailState {
   List<Object> get props => [course, isQuiz, isAnswer];
 }
 
-class Failed extends CourseDetailState {
+class CourseDetailFailed extends CourseDetailState {
   final String err;
-  Failed({required this.err});
+  CourseDetailFailed({required this.err});
 
   @override
   List<Object> get props => [err];

@@ -17,7 +17,7 @@ class MockCourseRepository extends Mock implements CourseRepository {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<CourseDetailState>(Failed(err: 'Failed'));
+    registerFallbackValue<CourseDetailState>(CourseDetailFailed(err: 'Failed'));
     registerFallbackValue<CourseDetailEvent>(CourseDetailRequested(
         courseGroupSlug: 'k1', isAnswer: false, isQuiz: false));
   });

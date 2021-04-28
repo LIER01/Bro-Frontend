@@ -18,7 +18,8 @@ class MockPreferredLanguageRepository extends Mock
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<CourseDetailState>(Failed(err: 'This is an error'));
+    registerFallbackValue<CourseDetailState>(
+        CourseDetailFailed(err: 'This is an error'));
   });
 
   mainBloc();
@@ -59,7 +60,7 @@ void mainBloc() {
               isAnswer: true,
               answerId: 1)),
       expect: () => [
-        isInstanceOf<Failed>(),
+        isInstanceOf<CourseDetailFailed>(),
       ],
     );
 
@@ -78,7 +79,7 @@ void mainBloc() {
               answerId: 1)),
       expect: () => [
         CourseDetailLoading(),
-        isInstanceOf<Failed>(),
+        isInstanceOf<CourseDetailFailed>(),
       ],
     );
 

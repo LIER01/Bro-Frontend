@@ -43,14 +43,14 @@ class _CourseListViewState extends State<CourseListView> {
           );
         }
 
-        if (state is Failed) {
+        if (state is CourseListFailed) {
           return Scaffold(
             appBar: _buildAppBar(),
             body: Center(child: Text('Det har skjedd en feil')),
           );
         }
 
-        if (state is Success) {
+        if (state is CourseListSuccess) {
           return Scaffold(
             appBar: _buildAppBar(),
             body: state.courses.isEmpty

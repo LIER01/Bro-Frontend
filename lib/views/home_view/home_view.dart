@@ -45,13 +45,13 @@ class _HomeViewState extends State<HomeView> {
         );
       }
 
-      if (state is Failed) {
+      if (state is HomeFailed) {
         return Scaffold(
           appBar: _buildAppBar(),
           body: Center(child: Text('Det har skjedd en feil')),
         );
       }
-      if (state is Success) {
+      if (state is HomeSuccess) {
         var courses = state.courses;
         var resources = state.resources;
         return Scaffold(
@@ -75,7 +75,7 @@ class _HomeViewState extends State<HomeView> {
                                     .subtitle1!
                                     .copyWith(color: Colors.teal))),
                     body: resources.isEmpty
-                        ? SizedBox(height:170,child:ContentNotAvailable())
+                        ? SizedBox(height: 170, child: ContentNotAvailable())
                         : SingleChildScrollView(
                             controller: _scrollController,
                             child: Column(
@@ -109,7 +109,7 @@ class _HomeViewState extends State<HomeView> {
                                     .subtitle1!
                                     .copyWith(color: Colors.teal))),
                     body: resources.isEmpty
-                        ? SizedBox(height:170,child:ContentNotAvailable())
+                        ? SizedBox(height: 170, child: ContentNotAvailable())
                         : SingleChildScrollView(
                             controller: _scrollController,
                             child: Column(

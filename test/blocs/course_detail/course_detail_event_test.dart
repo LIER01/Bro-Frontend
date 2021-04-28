@@ -6,7 +6,7 @@ import '../../mock_data/new_course_mock.dart';
 void main() {
   setUpAll(() {
     registerFallbackValue<CourseDetailState>(
-        Failed(err: 'This is a failurestate'));
+        CourseDetailFailed(err: 'This is a failurestate'));
   });
 
   mainState();
