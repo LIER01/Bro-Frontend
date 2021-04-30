@@ -45,6 +45,10 @@ dependencies:
     cupertino_icons: ^1.0.2
     webview_flutter: ^2.0.4
 
+    #video
+    video_player: ^2.1.1
+    chewie: ^1.0.0
+
 dev_dependencies:
     #effective_dart: ^1.3.0
     pedantic: ^1.11.0
