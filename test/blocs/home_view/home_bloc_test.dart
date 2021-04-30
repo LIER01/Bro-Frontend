@@ -27,7 +27,7 @@ void main() {
           (_) =>
               Future.value(QueryResult(source: null, data: mockedCourseMap)));
       homeBloc = HomeBloc(
-          repository: homeRepository,
+          homeRepository: homeRepository,
           preferredLanguageBloc: preferredLanguageBloc);
     });
 

@@ -5,7 +5,6 @@ import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/data/resource_repository.dart';
 import 'package:bro/models/resource.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -15,16 +14,18 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
   PreferredLanguageBloc preferredLanguageBloc;
   late StreamSubscription preferredLanguageSubscription;
   late PreferredLanguageRepository preferredLanguageRepository;
-
+  late bool recommended;
   ResourceListBloc(
-      {required this.repository, required this.preferredLanguageBloc})
+      {required this.repository,
+      required this.preferredLanguageBloc,
+      recommended})
       : super(Loading()) {
     preferredLanguageRepository = preferredLanguageBloc.repository;
+    this.recommended = recommended ?? false;
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
       if (state is LanguageChanged) {
-        add(ResourceListRequested(
-            lang: state.preferredLang, category_id: previousCategoryId));
+        add(ResourceListRefresh(preferredLang: state.preferredLang));
       }
     });
   }
@@ -43,6 +44,27 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
         yield Failed(err: 'Error, bad request.');
       }
     }
+    if (event is ResourceListRefresh) {
+      try {
+        yield await _retrieveRecommendedResources(event);
+      } catch (e) {
+        log(e.toString());
+        yield Failed(err: 'Error refresh failed, bad request.');
+      }
+    }
+  }
+
+  Future<ResourceListState> _retrieveRecommendedResources(
+      ResourceListRefresh event) async {
+    var langSlug = event.preferredLang;
+    var categoryId;
+    recommended ? categoryId = '' : categoryId = previousCategoryId;
+    var resourcesQueryResult =
+        await repository.getLangResources(langSlug, categoryId, recommended);
+    var resourcesJson = List<Map<String, dynamic>>.from(
+        resourcesQueryResult.data!['LangResource']);
+    var resources = ResourceList.takeList(resourcesJson).resources;
+    return Success(resources: resources);
   }
 
   Future<ResourceListState> _retrieveResources(
@@ -51,13 +73,14 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
     //Fiks så den loader mer
   ) async {
     var langSlug = event.lang;
+
     try {
       return await repository
-          .getLangResources(langSlug, event.category_id)
+          .getLangResources(langSlug, event.category_id, recommended)
           .then((res) async {
         if (res.data!.isEmpty) {
-          final fallbackResourceResult =
-              await repository.getLangResources(langSlug, event.category_id);
+          final fallbackResourceResult = await repository.getLangResources(
+              langSlug, event.category_id, recommended);
 
           var fallbackResource = ResourceList.takeList(
                   List<Map<String, dynamic>>.from(

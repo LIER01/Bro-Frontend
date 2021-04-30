@@ -17,9 +17,13 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   PreferredLanguageBloc preferredLanguageBloc;
   late StreamSubscription preferredLanguageSubscription;
   late PreferredLanguageRepository preferredLanguageRepository;
+  late bool recommended;
   CourseListBloc(
-      {required this.repository, required this.preferredLanguageBloc})
+      {required this.repository,
+      required this.preferredLanguageBloc,
+      recommended})
       : super(InitialCourseList()) {
+    this.recommended = recommended ?? false;
     preferredLanguageRepository = preferredLanguageBloc.repository;
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
@@ -72,7 +76,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
           ? langSlug = event.preferredLang
           : langSlug = await preferredLanguageRepository.getPreferredLangSlug();
       return await repository
-          .getLangCourses(langSlug, curr_len, 10)
+          .getLangCourses(langSlug, curr_len, 10, recommended)
           .then((res) {
         var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse']);
         final returnCourse = LangCourseList.takeList(res_list).langCourses;

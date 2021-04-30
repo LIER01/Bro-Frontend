@@ -1,3 +1,4 @@
+import 'package:bro/data/queries/home_view_queries.dart';
 import 'package:bro/data/queries/resource_queries.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -18,8 +19,18 @@ class ResourceRepository {
   }
 
   Future<QueryResult> getLangResources(
-      String lang_slug, String category /* , int start, int limit */) async {
-    final _options = WatchQueryOptions(
+      String lang_slug, String category,bool recommended) async {
+    final _options;
+    recommended ? _options = WatchQueryOptions(
+      document: parseString(getRecommendedLangResourcesQuery),
+      fetchResults: true,
+      variables: <String, dynamic>{
+        'lang': lang_slug
+        'start': 0,
+        'limit': 3
+      },
+    ) :
+    _options = WatchQueryOptions(
       document: parseString(getLangResourcesQuery),
       fetchResults: true,
       variables: <String, dynamic>{

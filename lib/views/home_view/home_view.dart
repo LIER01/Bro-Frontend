@@ -1,5 +1,5 @@
 import 'package:bro/blocs/course_list/course_list_bloc.dart';
-import 'package:bro/blocs/course_list/course_list_state.dart' as ck;
+import 'package:bro/blocs/course_list/course_list_state.dart' as course_list;
 import 'package:bro/blocs/home/home_bloc.dart';
 import 'package:bro/blocs/home/home_event.dart';
 import 'package:bro/blocs/home/home_state.dart';
@@ -24,8 +24,6 @@ class _HomeViewState extends State<HomeView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   late HomeBloc _homeBloc;
-  late CourseListBloc _courseListBloc;
-  late ResourceListBloc _resourceListBloc;
   @override
   void initState() {
     super.initState();
@@ -71,9 +69,9 @@ class _HomeViewState extends State<HomeView> {
                             .textTheme
                             .subtitle1!
                             .copyWith(color: Colors.teal))),
-                body: BlocBuilder<CourseListBloc, ck.CourseListState>(
+                body: BlocBuilder<CourseListBloc, course_list.CourseListState>(
                     builder: (context, state) {
-                  if (state is ck.Success) {
+                  if (state is course_list.Success) {
                     var courses = state.courses;
                     return courses.isEmpty
                         ? SizedBox(height: 170, child: ContentNotAvailable())

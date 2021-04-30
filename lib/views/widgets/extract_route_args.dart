@@ -158,15 +158,16 @@ class ExtractHomeScreen extends StatelessWidget {
               client: client,
             ),
             preferredLanguageBloc: preferredLanguageBloc,
+            recommended: true,
           ),
         ),
         BlocProvider(
             create: (context) => ResourceListBloc(
-                  repository: ResourceRepository(
-                    client: client,
-                  ),
-                  preferredLanguageBloc: preferredLanguageBloc,
-                )),
+                repository: ResourceRepository(
+                  client: client,
+                ),
+                preferredLanguageBloc: preferredLanguageBloc,
+                recommended: true)),
         BlocProvider(
             create: (context) => HomeBloc(
                   homeRepository: HomeRepository(

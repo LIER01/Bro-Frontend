@@ -16,3 +16,12 @@ class ResourceListRequested extends ResourceListEvent {
   @override
   List get props => [lang];
 }
+
+class ResourceListRefresh extends ResourceListEvent {
+  final String preferredLang;
+
+  ResourceListRefresh({required this.preferredLang});
+
+  @override
+  List get props => [preferredLang];
+}
