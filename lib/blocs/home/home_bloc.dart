@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:bro/blocs/course_list/course_list_bloc.dart';
 import 'package:bro/blocs/home/home_bucket.dart';
 import 'package:bro/blocs/home/home_state.dart';
-import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
+import 'package:bro/blocs/resource_list/resource_list_bloc.dart';
 import 'package:bro/data/home_repository.dart';
-import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/models/courses.dart';
 import 'package:bro/models/home.dart';
 import 'package:bro/models/resource.dart';
@@ -14,21 +15,9 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 /// Homerequested contains home, recommended courses and recommended resources.
 /// Listens to changes in PreferredLanguageState and updates based on changes.
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  PreferredLanguageBloc preferredLanguageBloc;
-  late StreamSubscription preferredLanguageSubscription;
-  late PreferredLanguageRepository preferredLanguageRepository;
-  HomeRepository repository;
+  HomeRepository homeRepository;
 
-  HomeBloc({required this.repository, required this.preferredLanguageBloc})
-      : super(Loading()) {
-    preferredLanguageRepository = preferredLanguageBloc.repository;
-    preferredLanguageSubscription =
-        preferredLanguageBloc.stream.listen((state) {
-      if (state is LanguageChanged) {
-        add(HomeRequested());
-      }
-    });
-  }
+  HomeBloc({required this.homeRepository}) : super(HomeLoading());
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
@@ -41,26 +30,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<HomeState> _retrieveCourses(
       HomeRequested event, int currLength) async {
     try {
-      var home = await repository.getHome();
+      var home = await homeRepository.getHome();
       var returnHome = Home.fromJson(home.data!['home']);
-      var returnLength = 3;
-      var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
-
-      var returnCourses = await repository
-          .getRecommendedCourses(langSlug, currLength, returnLength)
-          .then((res) {
-        var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse'])
-          ..addAll(List.from(res.data!['nonLangCourse']));
-        var returnCourse = LangCourseList.takeList(res_list).langCourses;
-        return returnCourse;
-      });
-      var resourcesQueryResult = await repository.getRecommendedLangResources(
-          0, returnLength, langSlug);
-      var resourcesJson = List<Map<String, dynamic>>.from(
-          resourcesQueryResult.data!['LangResource']);
-      var resources = ResourceList.takeList(resourcesJson).resources;
-      return Success(
-          courses: returnCourses, home: returnHome, resources: resources);
+      return HomeSuccess(home: returnHome);
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());

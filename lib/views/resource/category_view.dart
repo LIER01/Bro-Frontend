@@ -73,7 +73,6 @@ class _CategoryViewState extends State<CategoryView> {
 
         if (state is Success) {
           categories = state.categories;
-
           if (categories.isEmpty) {
             return Scaffold(
               body: Center(

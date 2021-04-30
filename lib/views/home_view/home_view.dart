@@ -1,6 +1,10 @@
+import 'package:bro/blocs/course_list/course_list_bloc.dart';
+import 'package:bro/blocs/course_list/course_list_state.dart' as ck;
 import 'package:bro/blocs/home/home_bloc.dart';
 import 'package:bro/blocs/home/home_event.dart';
 import 'package:bro/blocs/home/home_state.dart';
+import 'package:bro/blocs/resource_list/resource_list_bloc.dart';
+import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/views/course/course_list_tile.dart';
 import 'package:bro/views/resource/resource_list_tile.dart';
 import 'package:bro/views/widgets/contentNotAvailable.dart';
@@ -20,12 +24,16 @@ class _HomeViewState extends State<HomeView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   late HomeBloc _homeBloc;
+  late CourseListBloc _courseListBloc;
+  late ResourceListBloc _resourceListBloc;
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    //_homeBloc.add(HomeRequested());
+    _resourceListBloc = BlocProvider.of<ResourceListBloc>(context);
+    _courseListBloc = BlocProvider.of<CourseListBloc>(context);
+    _homeBloc.add(HomeRequested());
   }
 
   AppBar _buildAppBar() {
@@ -34,52 +42,45 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-        // ignore: missing_return
-        builder: (context, state) {
-      //log(state.toString());
-      if (state is Loading) {
-        return Scaffold(
-          appBar: _buildAppBar(),
-          body: LinearProgressIndicator(),
-        );
-      }
-
-      if (state is Failed) {
-        return Scaffold(
-          appBar: _buildAppBar(),
-          body: Center(child: Text('Det har skjedd en feil')),
-        );
-      }
-      if (state is Success) {
-        var courses = state.courses;
-        var resources = state.resources;
-        return Scaffold(
-            appBar: AppBar(
-              title: Text(state.home.header),
-            ),
-            body: Column(children: [
-              Column(children: [
-                ListTile(title: Text(state.home.introduction)),
-                const SizedBox(height: 20)
-              ]),
-              ExpansionPanelList.radio(children: [
-                ExpansionPanelRadio(
-                    canTapOnHeader: true,
-                    value: 'anbefalte_kurs',
-                    headerBuilder: (context, isExpanded) => ListTile(
-                        title: Text('Anbefalte Kurs',
-                            style:
-                                Theme.of(context)
-                                    .textTheme
-                                    .subtitle1!
-                                    .copyWith(color: Colors.teal))),
-                    body: resources.isEmpty
-                        ? SizedBox(height:170,child:ContentNotAvailable())
+    return Scaffold(
+        appBar: _buildAppBar(),
+        body: Column(children: [
+          BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              if (state is HomeSuccess) {
+                var home = state.home;
+                return Column(children: [
+                  ListTile(title: Text(home.introduction)),
+                  const SizedBox(height: 20)
+                ]);
+              }
+              if (state is HomeLoading) {
+                return LinearProgressIndicator();
+              } else {
+                return SizedBox(height: 170, child: ContentNotAvailable());
+              }
+            },
+          ),
+          ExpansionPanelList.radio(children: [
+            ExpansionPanelRadio(
+                canTapOnHeader: true,
+                value: 'anbefalte_kurs',
+                headerBuilder: (context, isExpanded) => ListTile(
+                    title: Text('Anbefalte Kurs',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(color: Colors.teal))),
+                body: BlocBuilder<CourseListBloc, ck.CourseListState>(
+                    builder: (context, state) {
+                  if (state is ck.Success) {
+                    var courses = state.courses;
+                    return courses.isEmpty
+                        ? SizedBox(height: 170, child: ContentNotAvailable())
                         : SingleChildScrollView(
                             controller: _scrollController,
                             child: Column(
-                                children: state.resources
+                                children: courses
                                     .asMap()
                                     .keys
                                     .toList()
@@ -95,21 +96,28 @@ class _HomeViewState extends State<HomeView> {
                                                                 .courseGroup!
                                                                 .slug)),
                                         child: CourseListTile(
-                                          course: state.courses[index],
+                                          course: courses[index],
                                         )))
-                                    .toList()))),
-                ExpansionPanelRadio(
-                    canTapOnHeader: true,
-                    value: 'Anbefalte Ressurser',
-                    headerBuilder: (context, isExpanded) => ListTile(
-                        title: Text('Anbefalte Ressurser',
-                            style:
-                                Theme.of(context)
-                                    .textTheme
-                                    .subtitle1!
-                                    .copyWith(color: Colors.teal))),
-                    body: resources.isEmpty
-                        ? SizedBox(height:170,child:ContentNotAvailable())
+                                    .toList()));
+                  } else {
+                    return SizedBox(height: 170, child: ContentNotAvailable());
+                  }
+                })),
+            ExpansionPanelRadio(
+                canTapOnHeader: true,
+                value: 'Anbefalte Ressurser',
+                headerBuilder: (context, isExpanded) => ListTile(
+                    title: Text('Anbefalte Ressurser',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(color: Colors.teal))),
+                body: BlocBuilder<ResourceListBloc, ResourceListState>(
+                    builder: (context, state) {
+                  if (state is Success) {
+                    var resources = state.resources;
+                    return resources.isEmpty
+                        ? SizedBox(height: 170, child: ContentNotAvailable())
                         : SingleChildScrollView(
                             controller: _scrollController,
                             child: Column(
@@ -138,16 +146,13 @@ class _HomeViewState extends State<HomeView> {
                                           resourceGroup:
                                               resources[index].resourceGroup,
                                         )))
-                                    .toList()))),
-              ])
-            ]));
-      }
-      ;
-      return Scaffold(
-        appBar: _buildAppBar(),
-        body: Center(child: Text('Det har skjedd en feil')),
-      );
-    });
+                                    .toList()));
+                  } else {
+                    return SizedBox(height: 170, child: ContentNotAvailable());
+                  }
+                })),
+          ])
+        ]));
   }
 
   @override

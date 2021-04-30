@@ -14,32 +14,25 @@ abstract class HomeState extends Equatable {
 /// Change Home to the correct type and add Resources
 class Initial extends HomeState {}
 
-class Loading extends HomeState {}
+class HomeLoading extends HomeState {}
 
-class Success extends HomeState {
-  final List<LangCourse> courses;
-  final List<Resources> resources;
+class HomeSuccess extends HomeState {
   final Home home;
-  Success({required this.courses, required this.home, required this.resources});
+  HomeSuccess({required this.home});
 
-  Success copyWith({
-    required List<LangCourse> courses,
-    required List<Resources> resources,
+  HomeSuccess copyWith({
     required Home home,
   }) {
-    return Success(
-      courses: courses,
-      resources: resources,
+    return HomeSuccess(
       home: home,
     );
   }
 
   @override
-  List<Object> get props => [home, courses, resources];
+  List<Object> get props => [home];
 
   @override
-  String toString() =>
-      'Success { courses: ${courses}, home: $home, resources: $resources}';
+  String toString() => 'Success {home: $home}';
 }
 
 class Failed extends HomeState {}

@@ -5,6 +5,7 @@ import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/data/resource_repository.dart';
 import 'package:bro/models/resource.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -33,6 +34,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
     if (event is ResourceListRequested) {
       try {
         previousCategoryId = event.category_id;
+        log(previousCategoryId);
         yield await _retrieveResources(event, 0);
       } catch (e, stackTrace) {
         log(e.toString());

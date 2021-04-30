@@ -150,13 +150,30 @@ class ExtractHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeBloc(
-        repository: HomeRepository(
-          client: client,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CourseListBloc(
+            repository: CourseRepository(
+              client: client,
+            ),
+            preferredLanguageBloc: preferredLanguageBloc,
+          ),
         ),
-        preferredLanguageBloc: preferredLanguageBloc,
-      ),
+        BlocProvider(
+            create: (context) => ResourceListBloc(
+                  repository: ResourceRepository(
+                    client: client,
+                  ),
+                  preferredLanguageBloc: preferredLanguageBloc,
+                )),
+        BlocProvider(
+            create: (context) => HomeBloc(
+                  homeRepository: HomeRepository(
+                    client: client,
+                  ),
+                )),
+      ],
       child: HomeView(),
     );
   }
