@@ -27,8 +27,9 @@ void main() {
       preferredLanguageBloc =
           PreferredLanguageBloc(repository: preferredLanguageRepository);
 
-      when(() => courseRepository.getLangCourses('NO', 0, 10,false)).thenAnswer(
-          (_) => Future.value(QueryResult(source: null, data: mockedResult)));
+      when(() => courseRepository.getLangCourses('NO', 0, 10, false))
+          .thenAnswer((_) =>
+              Future.value(QueryResult(source: null, data: mockedResult)));
       courseListBloc = CourseListBloc(
           repository: courseRepository,
           preferredLanguageBloc: preferredLanguageBloc);
@@ -57,7 +58,7 @@ void main() {
         when(() => courseRepository.getNonLangCourses(any(), 10)).thenAnswer(
             (_) => Future.value(QueryResult(
                 source: null, data: non_lang_courses_mock['data'])));
-        when(() => courseRepository.getLangCourses(any(), any(), any(),false))
+        when(() => courseRepository.getLangCourses(any(), any(), any(), false))
             .thenAnswer((_) => Future.value(QueryResult(
                 source: null, data: non_lang_courses_mock['data'])));
         return courseListBloc;
@@ -74,7 +75,7 @@ void main() {
         when(() => courseRepository.getNonLangCourses(any(), 10)).thenAnswer(
             (_) => Future.value(QueryResult(
                 source: null, data: non_lang_courses_mock['data'])));
-        when(() => courseRepository.getLangCourses(any(), any(), 10,false))
+        when(() => courseRepository.getLangCourses(any(), any(), 10, false))
             .thenAnswer((_) => Future.value(QueryResult(
                 source: null, data: non_lang_courses_mock['data'])));
         when(() => preferredLanguageRepository.getPreferredLangSlug())
