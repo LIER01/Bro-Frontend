@@ -1,3 +1,4 @@
+import 'package:auto_direction/auto_direction.dart';
 import 'package:bro/blocs/resource_detail/resource_detail_bucket.dart';
 import 'package:bro/models/resource.dart';
 import 'package:bro/views/resource/resource_detail/pdf_viewer.dart';
@@ -100,17 +101,19 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    resource.description,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(color: Colors.black),
-                    textAlign: TextAlign.left,
+                AutoDirection(
+                  text: resource.description,
+                  child: Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                    //alignment: Alignment.topLeft,
+                    child: Text(
+                      resource.description,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2!
+                          .copyWith(color: Colors.black),
+                    ),
                   ),
                 ),
                 Container(
