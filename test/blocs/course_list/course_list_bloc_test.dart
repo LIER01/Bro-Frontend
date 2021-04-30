@@ -3,7 +3,6 @@ import 'package:bro/blocs/course_list/course_list_bucket.dart';
 import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/preferred_language_repository.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mocktail/mocktail.dart';

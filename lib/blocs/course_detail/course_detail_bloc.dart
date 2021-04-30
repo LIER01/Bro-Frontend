@@ -6,7 +6,6 @@ import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/models/course.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 

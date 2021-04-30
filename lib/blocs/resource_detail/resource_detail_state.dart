@@ -10,6 +10,8 @@ abstract class ResourceDetailState extends Equatable {
 
 class Loading extends ResourceDetailState {}
 
+class InitialDetailList extends ResourceDetailState {}
+
 class Success extends ResourceDetailState {
   final Resources resource;
 

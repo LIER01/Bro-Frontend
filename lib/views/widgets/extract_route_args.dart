@@ -27,7 +27,9 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class ExtractResourceDetailScreen extends StatelessWidget {
   static const routeName = '/resourceDetail';
   final GraphQLClient client;
-  ExtractResourceDetailScreen({required this.client});
+  final PreferredLanguageBloc preferredLanguageBloc;
+  ExtractResourceDetailScreen(
+      {required this.client, required this.preferredLanguageBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class ExtractResourceDetailScreen extends StatelessWidget {
         repository: ResourceRepository(
           client: client,
         ),
+        preferredLanguageBloc: preferredLanguageBloc,
       ),
       child: ResourceDetailView(lang: args.lang, group: args.group),
     );

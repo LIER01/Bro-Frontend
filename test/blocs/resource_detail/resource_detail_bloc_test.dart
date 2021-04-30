@@ -1,5 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/blocs/resource_detail/resource_detail_bucket.dart';
+import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/data/resource_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -8,6 +10,9 @@ import 'package:mocktail/mocktail.dart';
 import '../../mock_data/resource_detail_mock.dart';
 
 class MockResourceRepository extends Mock implements ResourceRepository {}
+
+class MockPreferredLanguageRepository extends Mock
+    implements PreferredLanguageRepository {}
 
 void main() {
   setUpAll(() {
@@ -21,9 +26,14 @@ void mainBloc() {
   group('ResourceDetailBloc', () {
     late ResourceRepository resourceRepository;
     late ResourceDetailBloc resourceDetailBloc;
+    late PreferredLanguageBloc preferredLanguageBloc;
+    late PreferredLanguageRepository preferredLanguageRepository;
 
     setUp(() {
       resourceRepository = MockResourceRepository();
+      preferredLanguageRepository = MockPreferredLanguageRepository();
+      preferredLanguageBloc =
+          PreferredLanguageBloc(repository: preferredLanguageRepository);
       when(
         () => resourceRepository.getResource(
           any(), // lang
@@ -37,7 +47,9 @@ void mainBloc() {
           ),
         ),
       );
-      resourceDetailBloc = ResourceDetailBloc(repository: resourceRepository);
+      resourceDetailBloc = ResourceDetailBloc(
+          repository: resourceRepository,
+          preferredLanguageBloc: preferredLanguageBloc);
     });
 
     tearDown(() {

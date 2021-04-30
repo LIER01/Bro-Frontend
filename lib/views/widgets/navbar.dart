@@ -143,7 +143,10 @@ class _HomeTabState extends State<HomeTab> {
                       preferredLanguageBloc: _preferredLanguageBloc,
                     );
                   case ExtractResourceDetailScreen.routeName:
-                    return ExtractResourceDetailScreen(client: _client());
+                    return ExtractResourceDetailScreen(
+                      client: _client(),
+                      preferredLanguageBloc: _preferredLanguageBloc,
+                    );
                   default:
                     throw Exception('Invalid route: ${settings.name}');
                 }
@@ -242,7 +245,10 @@ class _ResourceTabState extends State<ResourceTab> {
                       preferredLanguageBloc: _preferredLanguageBloc,
                     );
                   case ExtractResourceDetailScreen.routeName:
-                    return ExtractResourceDetailScreen(client: _client());
+                    return ExtractResourceDetailScreen(
+                      client: _client(),
+                      preferredLanguageBloc: _preferredLanguageBloc,
+                    );
                   case ExtractResourseDetailWebViewScreen.routeName:
                     return ExtractResourseDetailWebViewScreen();
                   default:
