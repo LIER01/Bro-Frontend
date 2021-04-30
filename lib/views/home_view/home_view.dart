@@ -29,8 +29,6 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     _scrollController.addListener(_onScroll);
     _homeBloc = BlocProvider.of<HomeBloc>(context);
-    _resourceListBloc = BlocProvider.of<ResourceListBloc>(context);
-    _courseListBloc = BlocProvider.of<CourseListBloc>(context);
     _homeBloc.add(HomeRequested());
   }
 

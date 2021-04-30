@@ -30,8 +30,8 @@ class _ResourceListViewState extends State<ResourceListView> {
     super.initState();
     _scrollController.addListener(_onScroll);
     _resourceListBloc = BlocProvider.of<ResourceListBloc>(context);
-    _resourceListBloc.add(
-        ResourceListRequested(lang: 'NO', category_id: widget.category_id));
+    _resourceListBloc
+        .add(ResourceListRequested(category_id: widget.category_id));
   }
 
   AppBar _buildAppBar(categoryName) {
@@ -126,8 +126,8 @@ class _ResourceListViewState extends State<ResourceListView> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      _resourceListBloc.add(
-          ResourceListRequested(lang: 'NO', category_id: widget.category_id));
+      _resourceListBloc
+          .add(ResourceListRequested(category_id: widget.category_id));
     }
   }
 }
