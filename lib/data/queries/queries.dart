@@ -153,3 +153,73 @@ query getNewCourseQuery ($group_slug: String!, $lang_slug: String!){
     }
 }
 ''';
+
+final String getRecommendedCoursesQuery = r'''
+query langCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
+    LangCourse: courses (start: $start, limit: $limit,where:{
+      _where:[
+        {language:{slug:$lang_slug}}
+        {is_recommended:true}
+        ]
+    }){
+    id
+        questions{
+          id
+        }
+        slides{
+          id
+        }
+    title
+    description
+    publisher{
+      name
+      avatar{
+        url
+      }
+    }
+    category{
+      cover_photo{
+        url
+      }
+      category_name
+    }
+    is_recommended
+    course_group{
+      slug
+    }
+  }
+  
+  nonLangCourse: courses (start: $start, limit: $limit,where:{
+      _where:[
+        {language:{slug_ne:$lang_slug}}
+        {is_recommended:true}
+        ]
+    }){
+    id
+        questions{
+          id
+        }
+        slides{
+          id
+        }
+    title
+    description
+    publisher{
+      name
+      avatar{
+        url
+      }
+    }
+    category{
+      cover_photo{
+        url
+      }
+      category_name
+    }
+    is_recommended
+    course_group{
+      slug
+    }
+    }
+}
+''';

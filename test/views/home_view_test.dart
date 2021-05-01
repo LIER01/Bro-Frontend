@@ -38,10 +38,9 @@ void mainTest() {
 
     testWidgets('renders properly without courses,resources and home',
         (WidgetTester tester) async {
-      when(() => homeViewBloc.state).thenReturn(Success(
-          courses: [],
-          home: Home(header: '', introduction: ''),
-          resources: []));
+      when(() => homeViewBloc.state).thenReturn(HomeSuccess(
+        home: Home(header: '', introduction: ''),
+      ));
       await tester.pumpWidget(
         BlocProvider.value(
           value: homeViewBloc,
@@ -62,10 +61,9 @@ void mainTest() {
           ResourceList.takeList([resourceDetailMockJSON['resources'][0]])
               .resources;
       when(() => homeViewBloc.state).thenReturn(
-        Success(
-            courses: [successCourses],
-            home: mockedHome,
-            resources: successResources),
+        HomeSuccess(
+          home: mockedHome,
+        ),
       );
       await tester.pumpWidget(
         BlocProvider.value(

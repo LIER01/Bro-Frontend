@@ -46,7 +46,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
     }
     if (event is ResourceListRefresh) {
       try {
-        yield await _retrieveRecommendedResources(event);
+        yield await _retrieveResourcesOnRefresh(event);
       } catch (e) {
         log(e.toString());
         yield Failed(err: 'Error refresh failed, bad request.');
@@ -54,7 +54,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
     }
   }
 
-  Future<ResourceListState> _retrieveRecommendedResources(
+  Future<ResourceListState> _retrieveResourcesOnRefresh(
       ResourceListRefresh event) async {
     var langSlug = event.preferredLang;
     var categoryId;
@@ -75,10 +75,10 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
     var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
     try {
       return await repository
-          .getLangResources(langSlug, event.category_id, recommended)
+          .getFalseLangResources(langSlug, event.category_id, recommended)
           .then((res) async {
         if (res.data!.isEmpty) {
-          final fallbackResourceResult = await repository.getLangResources(
+          final fallbackResourceResult = await repository.getFalseLangResources(
               langSlug, event.category_id, recommended);
 
           var fallbackResource = ResourceList.takeList(

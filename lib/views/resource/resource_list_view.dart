@@ -1,3 +1,4 @@
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/models/resource.dart';
 import 'package:bro/views/widgets/bottom_loader.dart';
@@ -24,11 +25,13 @@ class _ResourceListViewState extends State<ResourceListView> {
   final _scrollThreshold = 200.0;
   late ResourceListBloc _resourceListBloc;
   late List<Resources> resources;
-
+  late PreferredLanguageBloc _preferredLanguageBloc;
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
+    _preferredLanguageBloc.add(PreferredLanguageRequested());
     _resourceListBloc = BlocProvider.of<ResourceListBloc>(context);
     _resourceListBloc
         .add(ResourceListRequested(category_id: widget.category_id));
