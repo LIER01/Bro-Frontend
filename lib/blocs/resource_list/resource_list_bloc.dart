@@ -58,6 +58,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
       ResourceListRefresh event) async {
     var langSlug = event.preferredLang;
     var categoryId;
+    log(previousCategoryId);
     recommended ? categoryId = '' : categoryId = previousCategoryId;
     var resourcesQueryResult =
         await repository.getLangResources(langSlug, categoryId, recommended);
