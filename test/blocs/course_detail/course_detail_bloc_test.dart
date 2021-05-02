@@ -1,4 +1,6 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
+import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
+import 'package:bro/data/preferred_language_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -11,9 +13,13 @@ import '../../mock_data/new_course_mock.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}
 
+class MockPreferredLanguageRepository extends Mock
+    implements PreferredLanguageRepository {}
+
 void main() {
   setUpAll(() {
-    registerFallbackValue<CourseDetailState>(Failed(err: 'This is an error'));
+    registerFallbackValue<CourseDetailState>(
+        CourseDetailFailed(err: 'This is an error'));
   });
 
   mainBloc();
@@ -23,13 +29,20 @@ void mainBloc() {
   group('CourseDetailBloc', () {
     late CourseRepository courseRepository;
     late CourseDetailBloc courseDetailBloc;
+    late PreferredLanguageBloc preferredLanguageBloc;
+    late PreferredLanguageRepository preferredLanguageRepository;
 
     setUp(() {
       courseRepository = MockCourseRepository();
+      preferredLanguageRepository = MockPreferredLanguageRepository();
+      preferredLanguageBloc =
+          PreferredLanguageBloc(repository: preferredLanguageRepository);
       when(() => courseRepository.getCourseQuery(any(), any())).thenAnswer(
           (_) => Future.value(
               QueryResult(source: null, data: course_detail_mock)));
-      courseDetailBloc = CourseDetailBloc(repository: courseRepository);
+      courseDetailBloc = CourseDetailBloc(
+          repository: courseRepository,
+          preferredLanguageBloc: preferredLanguageBloc);
     });
 
     tearDown(() {
@@ -47,7 +60,7 @@ void mainBloc() {
               isAnswer: true,
               answerId: 1)),
       expect: () => [
-        isInstanceOf<Failed>(),
+        isInstanceOf<CourseDetailFailed>(),
       ],
     );
 
@@ -65,8 +78,8 @@ void mainBloc() {
               isAnswer: false,
               answerId: 1)),
       expect: () => [
-        Loading(),
-        isInstanceOf<Failed>(),
+        CourseDetailLoading(),
+        isInstanceOf<CourseDetailFailed>(),
       ],
     );
 
@@ -81,8 +94,8 @@ void mainBloc() {
               isAnswer: false,
               answerId: 1)),
       expect: () => [
-        Loading(),
-        isA<CourseState>(),
+        CourseDetailLoading(),
+        isA<CourseDetailSuccess>(),
       ],
     );
 
@@ -99,8 +112,8 @@ void mainBloc() {
               isAnswer: false,
               answerId: 1)),
       expect: () => [
-        Loading(),
-        isA<CourseState>(),
+        CourseDetailLoading(),
+        isA<CourseDetailSuccess>(),
       ],
     );
   });

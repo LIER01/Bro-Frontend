@@ -18,7 +18,7 @@ class MockResourceRepository extends Mock implements ResourceRepository {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<ResourceDetailState>(Failed(
+    registerFallbackValue<ResourceDetailState>(ResourceDetailFailed(
       err: 'Failed.',
     ));
     registerFallbackValue<ResourceDetailEvent>(ResourceDetailRequested(
@@ -57,9 +57,10 @@ void mainTest() {
 
     testWidgets('renders properly with inserted data',
         (WidgetTester tester) async {
-      when(() => resourceDetailBloc.state).thenAnswer((_) => Success(
-            resource: resourceDetailMock,
-          ));
+      when(() => resourceDetailBloc.state)
+          .thenAnswer((_) => ResourceDetailSuccess(
+                resource: resourceDetailMock,
+              ));
       tester.binding.window.physicalSizeTestValue = Size(600, 1920);
       await tester.pumpWidget(
         BlocProvider.value(

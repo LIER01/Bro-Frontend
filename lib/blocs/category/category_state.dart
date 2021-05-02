@@ -8,12 +8,12 @@ abstract class CategoryState extends Equatable {
   List<Object> get props => [];
 }
 
-class Loading extends CategoryState {}
+class CategoryLoading extends CategoryState {}
 
-class Success extends CategoryState {
+class CategorySuccess extends CategoryState {
   final List<Category> categories;
 
-  Success({required this.categories});
+  CategorySuccess({required this.categories});
 
   @override
   List<Object> get props => [categories];
@@ -22,4 +22,4 @@ class Success extends CategoryState {
   String toString() => 'Success { categories: $categories }';
 }
 
-class Failed extends CategoryState {}
+class CategoryFailed extends CategoryState {}

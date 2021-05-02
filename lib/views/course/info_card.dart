@@ -93,6 +93,7 @@ class _InfoCardContentState extends State<InfoCardContent> {
       child: widget.image != null
           ? CachedNetworkImage(
               imageUrl: widget.image!.url,
+              placeholder: (context, url) => CircularProgressIndicator(),
               imageBuilder: (context, imageProvider) => _generateInfoCard(
                 widget.active,
                 widget.title,

@@ -39,20 +39,20 @@ class _HomeViewState extends State<HomeView> {
         // ignore: missing_return
         builder: (context, state) {
       //log(state.toString());
-      if (state is Loading) {
+      if (state is HomeLoading) {
         return Scaffold(
           appBar: _buildAppBar(),
           body: LinearProgressIndicator(),
         );
       }
 
-      if (state is Failed) {
+      if (state is HomeFailed) {
         return Scaffold(
           appBar: _buildAppBar(),
           body: Center(child: Text('Det har skjedd en feil')),
         );
       }
-      if (state is Success) {
+      if (state is HomeSuccess) {
         var courses = state.courses;
         var resources = state.resources;
         return Scaffold(

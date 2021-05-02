@@ -17,7 +17,7 @@ class MockHomeView extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<HomeState>(Failed());
+    registerFallbackValue<HomeState>(HomeFailed());
     registerFallbackValue<HomeEvent>(HomeRequested());
   });
 
@@ -38,7 +38,7 @@ void mainTest() {
 
     testWidgets('renders properly without courses,resources and home',
         (WidgetTester tester) async {
-      when(() => homeViewBloc.state).thenReturn(Success(
+      when(() => homeViewBloc.state).thenReturn(HomeSuccess(
           courses: [],
           home: Home(header: '', introduction: ''),
           resources: []));
@@ -62,7 +62,7 @@ void mainTest() {
           ResourceList.takeList([resourceDetailMockJSON['resources'][0]])
               .resources;
       when(() => homeViewBloc.state).thenReturn(
-        Success(
+        HomeSuccess(
             courses: [successCourses],
             home: mockedHome,
             resources: successResources),
@@ -78,7 +78,6 @@ void mainTest() {
         ),
       );
       await tester.pumpAndSettle();
-      debugPrint(tester.toString());
       expect(find.text(mockedHome.header), findsOneWidget);
       expect(find.text(mockedHome.introduction), findsOneWidget);
       await tester.tap(find.text('Anbefalte Ressurser'));

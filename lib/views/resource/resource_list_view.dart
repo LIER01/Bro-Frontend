@@ -54,7 +54,7 @@ class _ResourceListViewState extends State<ResourceListView> {
           );
         }
 
-        if (state is Failed) {
+        if (state is ResourceListFailed) {
           return Scaffold(
             appBar: _buildAppBar(''),
             body: Center(
@@ -63,9 +63,9 @@ class _ResourceListViewState extends State<ResourceListView> {
           );
         }
 
-        if (state is Success) {
+        if (state is ResourceListSuccess) {
           resources = state.resources;
-          //print(resources);
+
           return Scaffold(
             appBar: _buildAppBar(widget.category),
             body: state.resources.isEmpty
@@ -82,7 +82,6 @@ class _ResourceListViewState extends State<ResourceListView> {
                                 padding: EdgeInsets.symmetric(vertical: 4),
                                 child: GestureDetector(
                                   onTap: () => {
-                                    print('click'),
                                     Navigator.of(context).pushNamed(
                                         ExtractResourceDetailScreen.routeName,
                                         arguments: ResourceDetailArguments(

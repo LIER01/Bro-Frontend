@@ -16,7 +16,7 @@ void main() {
 
     group('HomeLoading', () {
       test('toString returns correct value', () {
-        expect(Loading().toString(), 'Loading()');
+        expect(HomeLoading().toString(), 'HomeLoading()');
       });
     });
     group('HomeViewSuccess', () {
@@ -28,7 +28,7 @@ void main() {
           ResourceList.takeList([resourceDetailMockJSON]).resources;
       test('toString returns correct value', () {
         expect(
-            Success(
+            HomeSuccess(
                     courses: successCourse,
                     home: home,
                     resources: successResources)
@@ -38,7 +38,7 @@ void main() {
     });
     group('HomeFailed', () {
       test('toString returns correct value', () {
-        expect(Failed().toString(), 'Failed()');
+        expect(HomeFailed().toString(), 'HomeFailed()');
       });
     });
   });

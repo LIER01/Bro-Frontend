@@ -13,7 +13,7 @@ class MockCategoryView extends MockBloc<CategoryEvent, CategoryState>
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<CategoryState>(Failed());
+    registerFallbackValue<CategoryState>(CategoryFailed());
     registerFallbackValue<CategoryEvent>((CategoriesRequested()));
   });
 
@@ -35,7 +35,7 @@ void mainTest() {
     testWidgets('renders properly without categories',
         (WidgetTester tester) async {
       when(() => categoryBloc.state).thenReturn(
-        Success(
+        CategorySuccess(
           categories: [],
         ),
       );
@@ -56,7 +56,7 @@ void mainTest() {
     testWidgets('renders properly with categories',
         (WidgetTester tester) async {
       when(() => categoryBloc.state).thenReturn(
-        Success(
+        CategorySuccess(
           categories: [
             Category(
                 cover_photo: CoverPhoto(url: '/image.url.png'),

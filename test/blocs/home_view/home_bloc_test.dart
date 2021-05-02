@@ -23,7 +23,7 @@ void main() {
         PreferredLanguageBloc(repository: MockPreferredLanguageRepository());
     setUp(() {
       homeRepository = MockHomeRepository();
-      when(() => homeRepository.getRecommendedCourses('NO', 0, 10)).thenAnswer(
+      when(() => homeRepository.getRecommendedCourses(0, 10, 'NO')).thenAnswer(
           (_) =>
               Future.value(QueryResult(source: null, data: mockedCourseMap)));
       homeBloc = HomeBloc(
@@ -34,13 +34,13 @@ void main() {
     blocTest(
       'should emit Failed if repository throws',
       build: () {
-        when(() => homeRepository.getRecommendedCourses('NO', 0, 10))
+        when(() => homeRepository.getRecommendedCourses(0, 10, 'NO'))
             .thenThrow(Exception('Woops'));
         when(() => homeRepository.getHome()).thenThrow(Exception('Woops'));
         return homeBloc;
       },
       act: (HomeBloc bloc) async => bloc.add(HomeRequested()),
-      expect: () => <HomeState>[Failed()],
+      expect: () => <HomeState>[HomeFailed()],
     );
 
     blocTest(
