@@ -47,11 +47,12 @@ class ResourceDetailBloc
         yield Failed(err: 'Error, bad request.');
       }
     }
-
+    // If the event is an instance of ResourceDetailreresh, then we need to refetch the ResourceDetail with the correct language
     if (event is ResourceDetailRefresh) {
       // We need to make a snapshot of the state, as the state may change during the execution.
       var currentState = state;
 
+      // If the currentState is success, then we refetch a new resourceDetail by adding a new event of type ResourceDetailRequested into the stream.
       if (currentState is Success) {
         add(ResourceDetailRequested(
             group: currentState.resource.resourceGroup.toString(),
@@ -72,13 +73,7 @@ class ResourceDetailBloc
           .getResource(pref_lang_slug, event.group)
           .then((res) async {
         if (res.data!.isEmpty) {
-          final fallbackResourseResult =
-              await repository.getResource(pref_lang_slug, event.group);
-
-          final fallbackResource =
-              Resources.fromJson(fallbackResourseResult.data!['resources'][0]);
-
-          return Success(resource: fallbackResource);
+          return Failed(err: 'Article does not exist in requested langauge');
         } else if (res.data!.isNotEmpty) {
           try {
             final returnResource =
