@@ -64,7 +64,6 @@ class _VideoPlayerCourseState extends State<VideoPlayerCourse> {
             }
             // I get "LateInitializationError: Field '_chewieController@171470877' has not been initialized." whenever i return to a previous video
             if(snapshot.hasError){
-              _future;
               return Center(
                   child: Text('Something went wrong'));;
             }
