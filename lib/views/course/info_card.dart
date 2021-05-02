@@ -1,10 +1,12 @@
 import 'dart:ui';
 
 import 'package:bro/models/course.dart';
+import 'package:bro/views/course/video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:video_player/video_player.dart';
 
 class InfoCard extends StatefulWidget {
   InfoCard(
@@ -87,29 +89,55 @@ class InfoCardContent extends StatefulWidget {
 class _InfoCardContentState extends State<InfoCardContent> {
   @override
   Widget build(BuildContext context) {
+    String fileType = widget.image!.url.substring(widget.image!.url.length - 3);
     return Scaffold(
         body: Center(
       //Allows for animated color transition when card is clicked
       child: widget.image != null
-          ? CachedNetworkImage(
-              imageUrl: widget.image!.url,
-              imageBuilder: (context, imageProvider) => _generateInfoCard(
-                widget.active,
-                widget.title,
-                widget.description,
-                context,
-                imageProvider,
-              ),
-              errorWidget: (context, url, error) =>
-                  Image.asset('assets/images/placeholder.png'),
-            )
+          ? fileType == 'mp4' ||
+                  fileType == 'mkv' ||
+                  fileType == 'mov' ||
+                  fileType == 'flv' ||
+                  fileType == 'avi' ||
+                  fileType == 'webm' ||
+                  fileType == 'wmv'
+              ? _generateVideoInfoCard(
+                  context,
+                  widget.title,
+                  widget.image!.url,
+                )
+              : CachedNetworkImage(
+                  imageUrl: widget.image!.url,
+                  imageBuilder: (context, imageProvider) => _generateInfoCard(
+                    widget.active,
+                    widget.title,
+                    widget.description,
+                    context,
+                    imageProvider,
+                  ),
+                  errorWidget: (context, url, error) =>
+                      Image.asset('assets/images/placeholder.png'),
+                )
           : _generateInfoCard(widget.active, widget.title, widget.description,
               context, AssetImage('assets/images/placeholder.png')),
     ));
   }
 
+  Widget _generateVideoInfoCard(
+      BuildContext context, String title, String url) {
+    return Card(
+        semanticContainer: false,
+        child: Container(
+            width: (MediaQuery.of(context).size.width) * 0.9,
+            child: VideoPlayerCourse(
+                videoPlayerController: VideoPlayerController.network(
+                  url,
+                ),
+                looping: false)));
+  }
+
   Widget _generateInfoCard(bool active, String title, String description,
-      BuildContext context, ImageProvider imageProvider) {
+      BuildContext context, ImageProvider? imageProvider) {
     return Card(
         semanticContainer: false,
         // Uses antialias to avoid artifacts when overlaying the information textbox onto the image
@@ -118,11 +146,10 @@ class _InfoCardContentState extends State<InfoCardContent> {
           height: double.infinity,
           // Defines height and width based on the size of the container context
           width: (MediaQuery.of(context).size.width) * 0.9,
-
           // Adds the image in the background of the container
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: imageProvider,
+            image: imageProvider!,
             // This says that the image should be as small as possible while still covering the size of the box
             fit: BoxFit.cover,
 

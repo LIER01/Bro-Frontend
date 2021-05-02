@@ -11,7 +11,6 @@ import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'video_player.dart';
 
-
 class CardContainerView extends StatefulWidget {
   CardContainerView({
     Key? key,
@@ -63,11 +62,9 @@ class _CardContainerViewState extends State<CardContainerView> {
   @override
   Widget build(BuildContext context) {
     if (list.isNotEmpty) {
+      debugPrint('\ns\nPRINTED\ns\n' + list.toString());
       return Column(
-        children:[
-          VideoPlayerCourse(videoPlayerController: VideoPlayerController.network(
-              'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-          ), looping: true),
+        children: [
           Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.5,
