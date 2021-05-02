@@ -89,18 +89,18 @@ class InfoCardContent extends StatefulWidget {
 class _InfoCardContentState extends State<InfoCardContent> {
   @override
   Widget build(BuildContext context) {
-    String fileType = widget.image!.url.substring(widget.image!.url.length - 3);
+    String fileType = widget.image!.url.substring(widget.image!.url.length - 4);
     return Scaffold(
         body: Center(
       //Allows for animated color transition when card is clicked
       child: widget.image != null
-          ? fileType == 'mp4' ||
-                  fileType == 'mkv' ||
-                  fileType == 'mov' ||
-                  fileType == 'flv' ||
-                  fileType == 'avi' ||
+          ? fileType == '.mp4' ||
+                  fileType == '.mkv' ||
+                  fileType == '.mov' ||
+                  fileType == '.flv' ||
+                  fileType == '.avi' ||
                   fileType == 'webm' ||
-                  fileType == 'wmv'
+                  fileType == '.wmv'
               ? _generateVideoInfoCard(
                   context,
                   widget.title,
@@ -134,7 +134,7 @@ class _InfoCardContentState extends State<InfoCardContent> {
                   url,
                 ),
                 looping: false)
-        )
+        ),
     );
   }
 

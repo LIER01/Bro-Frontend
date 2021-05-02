@@ -43,9 +43,9 @@ class _VideoPlayerCourseState extends State<VideoPlayerCourse> {
             },
           placeholder: PlaceholderImage(),
           customControls: CupertinoControls(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.white70,
             iconColor: Colors.teal,
-          )
+          ),
       );
     });
   }
@@ -62,6 +62,12 @@ class _VideoPlayerCourseState extends State<VideoPlayerCourse> {
             if(snapshot.connectionState == ConnectionState.waiting) {
               return PlaceholderImage();
             }
+            // I get "LateInitializationError: Field '_chewieController@171470877' has not been initialized." whenever i return to a previous video
+            if(snapshot.hasError){
+              _future;
+              return Center(
+                  child: Text('Something went wrong'));;
+            }
 
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -71,6 +77,7 @@ class _VideoPlayerCourseState extends State<VideoPlayerCourse> {
             );
           });
     }
+
     @override
     void dispose() {
       super.dispose();
