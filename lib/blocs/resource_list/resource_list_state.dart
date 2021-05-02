@@ -10,10 +10,10 @@ abstract class ResourceListState extends Equatable {
 
 class Loading extends ResourceListState {}
 
-class Success extends ResourceListState {
+class ResourceListSuccess extends ResourceListState {
   final List<Resources> resources;
 
-  Success({required this.resources});
+  ResourceListSuccess({required this.resources});
 
   @override
   List<Object> get props => [resources];
@@ -22,9 +22,9 @@ class Success extends ResourceListState {
   String toString() => 'Success { data: $resources }';
 }
 
-class Failed extends ResourceListState {
+class ResourceListFailed extends ResourceListState {
   final String err;
-  Failed({required this.err});
+  ResourceListFailed({required this.err});
 
   @override
   List<Object> get props => [err];

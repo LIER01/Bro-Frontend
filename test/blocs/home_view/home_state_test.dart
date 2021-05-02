@@ -12,7 +12,7 @@ void main() {
 
     group('HomeLoading', () {
       test('toString returns correct value', () {
-        expect(HomeLoading().toString(), 'Loading()');
+        expect(HomeLoading().toString(), 'HomeLoading()');
       });
     });
     group('HomeViewSuccess', () {
@@ -27,7 +27,7 @@ void main() {
     });
     group('HomeFailed', () {
       test('toString returns correct value', () {
-        expect(Failed().toString(), 'Failed()');
+        expect(HomeFailed().toString(), 'HomeFailed()');
       });
     });
   });

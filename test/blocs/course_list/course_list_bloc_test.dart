@@ -42,8 +42,8 @@ void main() {
             .thenThrow(Exception('Woops'));
         return courseListBloc;
       },
-      act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh('NO')),
-      expect: () => <CourseListState>[Failed()],
+      act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh()),
+      expect: () => <CourseListState>[CourseListFailed()],
     );
 
     blocTest(
@@ -61,11 +61,13 @@ void main() {
         when(() => courseRepository.getLangCourses(any(), any(), any(), false))
             .thenAnswer((_) => Future.value(QueryResult(
                 source: null, data: non_lang_courses_mock['data'])));
+        when(() => preferredLanguageRepository.getPreferredLangSlug())
+            .thenAnswer((_) => Future.value('NO'));
         return courseListBloc;
       },
-      act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh('NO')),
+      act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh()),
       expect: () => [
-        isA<Success>(),
+        isA<CourseListSuccess>(),
       ],
     );
 
@@ -83,12 +85,12 @@ void main() {
         return courseListBloc;
       },
       act: (CourseListBloc bloc) async {
-        bloc.add(CourseListRefresh('NO'));
+        bloc.add(CourseListRefresh());
         bloc.add(CourseListRequested());
       },
       expect: () => [
-        isA<Success>(),
-        isA<Success>(),
+        isA<CourseListSuccess>(),
+        isA<CourseListSuccess>(),
       ],
     );
   });

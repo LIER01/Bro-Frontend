@@ -17,7 +17,7 @@ class MockHomeView extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<HomeState>(Failed());
+    registerFallbackValue<HomeState>(HomeFailed());
     registerFallbackValue<HomeEvent>(HomeRequested());
   });
 
@@ -76,7 +76,6 @@ void mainTest() {
         ),
       );
       await tester.pumpAndSettle();
-      debugPrint(tester.toString());
       expect(find.text(mockedHome.header), findsOneWidget);
       expect(find.text(mockedHome.introduction), findsOneWidget);
       await tester.tap(find.text('Anbefalte Ressurser'));

@@ -44,7 +44,8 @@ void main() {
       },
       act: (ResourceListBloc bloc) async =>
           bloc.add(ResourceListRequested(category_id: '1')),
-      expect: () => <ResourceListState>[Failed(err: 'Error, bad request')],
+      expect: () =>
+          <ResourceListState>[ResourceListFailed(err: 'Error, bad request')],
     );
 
     blocTest(
@@ -64,7 +65,7 @@ void main() {
       act: (ResourceListBloc bloc) async =>
           bloc.add(ResourceListRequested(category_id: '1')),
       expect: () => [
-        isA<Success>(),
+        isA<ResourceListSuccess>(),
       ],
     );
   });

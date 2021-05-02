@@ -20,6 +20,12 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
       required this.preferredLanguageBloc,
       recommended})
       : super(Loading()) {
+    // Uses the preferredLanguageBloc, and listens for states.
+    // If the state in the preferredLanguageRepository is set to "LanguageChanged",
+    // then it needs to refetch a version of the resourceList which is in the correct language.
+    // Upon a "LanguageChanged"-event in the preferrredLanguageBloc,
+    // it triggers a ResourceListRequested-event, which retrieves a new version of
+    // the current resourceList with the correct language.
     preferredLanguageRepository = preferredLanguageBloc.repository;
     this.recommended = recommended ?? false;
     preferredLanguageSubscription =
@@ -32,6 +38,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
 
   @override
   Stream<ResourceListState> mapEventToState(ResourceListEvent event) async* {
+    // If the event is ResourceListRequested, then it re-requests the resources to fetch the list with the corrent language.
     if (event is ResourceListRequested) {
       try {
         previousCategoryId = event.category_id;
@@ -41,7 +48,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
         log(e.toString());
         log(stackTrace.toString());
 
-        yield Failed(err: 'Error, bad request.');
+        yield ResourceListFailed(err: 'Error, bad request.');
       }
     }
     if (event is ResourceListRefresh) {
@@ -49,7 +56,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
         yield await _retrieveResourcesOnRefresh(event);
       } catch (e) {
         log(e.toString());
-        yield Failed(err: 'Error refresh failed, bad request.');
+        yield ResourceListFailed(err: 'Error refresh failed, bad request.');
       }
     }
   }
@@ -65,62 +72,38 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
     var resourcesJson = List<Map<String, dynamic>>.from(
         resourcesQueryResult.data!['LangResource']);
     var resources = ResourceList.takeList(resourcesJson).resources;
-    return Success(resources: resources);
+    return ResourceListSuccess(resources: resources);
   }
 
   Future<ResourceListState> _retrieveResources(
     ResourceListRequested event,
     int curr_len,
-    //Fiks så den loader mer
   ) async {
     var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
     try {
+      // Sends the request, deserializes into models and returns a state of ResourceListSuccess
       return await repository
           .getFalseLangResources(langSlug, event.category_id, recommended)
           .then((res) async {
         if (res.data!.isEmpty) {
           final fallbackResourceResult = await repository.getFalseLangResources(
               langSlug, event.category_id, recommended);
-
-          var fallbackResource = ResourceList.takeList(
-                  List<Map<String, dynamic>>.from(
-                      fallbackResourceResult.data!['resources']))
-              .resources
-              //Checks that all relations not used in the query are included
-              .where((element) {
-            return (element.publisher != null && element.resourceGroup != null);
-          }).toList();
-
-          return Success(resources: fallbackResource);
-        } else if (res.data!.isNotEmpty) {
-          try {
-            final returnResource = ResourceList.takeList(
-                    List<Map<String, dynamic>>.from(res.data!['resources']))
-                .resources
-                .where((element) {
-              return (element.publisher != null &&
-                  element.resourceGroup != null);
-            }).toList();
-
-            return Success(resources: returnResource);
-          } catch (e, stackTrace) {
-            log(e.toString());
-            log(stackTrace.toString());
-            return Failed(err: 'Error, bad request');
+          if (fallbackResourceResult.data!.isEmpty) {
+            return ResourceListFailed(err: 'Error, bad request');
           }
-        } else {
-          return Failed(err: 'Error, bad request');
         }
+        return ResourceListSuccess(
+            resources: ResourceList.takeList(res.data!['resources']).resources);
       });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
-      return Failed(err: 'Error, failed to contact server');
+      return ResourceListFailed(err: 'Error, failed to contact server');
     } catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
 
-      return Failed(err: 'Error, bad request');
+      return ResourceListFailed(err: 'Error, bad request');
     }
   }
 }

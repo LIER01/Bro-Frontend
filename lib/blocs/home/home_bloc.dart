@@ -14,18 +14,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is HomeRequested) {
-      yield await _retrieveCourses(event, 0);
+      yield await _retrieveRecommended(event, 0);
     }
   }
 
-  Future<HomeState> _retrieveCourses(
+  /// Retrieves the Home and 3 instances of ReducedCourse and ReducedResource
+  /// and deserializes them into models
+  /// May either return a State of HomeSuccess containing these models or
+  /// HomeFailed
+  Future<HomeState> _retrieveRecommended(
       HomeRequested event, int currLength) async {
     try {
       var home = await homeRepository.getHome();
       var returnHome = Home.fromJson(home.data!['home']);
       return HomeSuccess(home: returnHome);
     } catch (e) {
-      return Failed();
+      return HomeFailed();
     }
   }
 }

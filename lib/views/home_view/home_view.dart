@@ -88,7 +88,7 @@ class _HomeViewState extends State<HomeView> {
                             .copyWith(color: Colors.teal))),
                 body: BlocBuilder<CourseListBloc, course_list.CourseListState>(
                     builder: (context, state) {
-                  if (state is course_list.Success) {
+                  if (state is course_list.CourseListSuccess) {
                     var courses = state.courses;
                     return courses.isEmpty
                         ? SizedBox(height: 170, child: ContentNotAvailable())
@@ -129,7 +129,7 @@ class _HomeViewState extends State<HomeView> {
                             .copyWith(color: Colors.teal))),
                 body: BlocBuilder<ResourceListBloc, ResourceListState>(
                     builder: (context, state) {
-                  if (state is Success) {
+                  if (state is ResourceListSuccess) {
                     var resources = state.resources;
                     return resources.isEmpty
                         ? SizedBox(height: 170, child: ContentNotAvailable())

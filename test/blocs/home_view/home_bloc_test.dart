@@ -24,6 +24,16 @@ void main() {
     });
 
     blocTest(
+      'should emit Failed if repository throws',
+      build: () {
+        when(() => homeRepository.getHome()).thenThrow(Exception('Woops'));
+        return homeBloc;
+      },
+      act: (HomeBloc bloc) async => bloc.add(HomeRequested()),
+      expect: () => <HomeState>[HomeFailed()],
+    );
+
+    blocTest(
       'initial state is correct',
       build: () => homeBloc,
       expect: () => <HomeState>[],

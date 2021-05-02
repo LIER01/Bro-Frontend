@@ -22,9 +22,8 @@ class RecommendedCoursesRequested extends CourseListEvent {
 }
 
 class CourseListRefresh extends CourseListEvent {
-  final String preferredLang;
-  CourseListRefresh(preferredLang) : preferredLang = preferredLang ?? '';
+  CourseListRefresh();
 
   @override
-  List get props => [preferredLang];
+  List get props => [];
 }

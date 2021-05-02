@@ -13,7 +13,7 @@ class MockCourseListView extends MockBloc<CourseListEvent, CourseListState>
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<CourseListState>(Failed());
+    registerFallbackValue<CourseListState>(CourseListFailed());
     registerFallbackValue<CourseListEvent>(CourseListRequested());
   });
 
@@ -35,7 +35,7 @@ void mainTest() {
     testWidgets('renders properly without courses',
         (WidgetTester tester) async {
       when(() => courseListBloc.state)
-          .thenReturn(Success(courses: [], hasReachedMax: true));
+          .thenReturn(CourseListSuccess(courses: [], hasReachedMax: true));
       await tester.pumpWidget(
         BlocProvider.value(
           value: courseListBloc,
@@ -53,8 +53,8 @@ void mainTest() {
       mockedCourseList.forEach((element) {
         mockedLangCourseList.add(LangCourse.fromJson(element));
       });
-      when(() => courseListBloc.state).thenReturn(
-          Success(courses: mockedLangCourseList, hasReachedMax: true));
+      when(() => courseListBloc.state).thenReturn(CourseListSuccess(
+          courses: mockedLangCourseList, hasReachedMax: true));
       await tester.pumpWidget(
         BlocProvider.value(
           value: courseListBloc,
@@ -66,7 +66,6 @@ void mainTest() {
         ),
       );
       await tester.pump();
-      debugPrint(mockedLangCourseList[0].title);
 
       expect(find.byType(LinearProgressIndicator), findsNothing);
 

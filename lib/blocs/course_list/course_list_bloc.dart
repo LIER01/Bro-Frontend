@@ -8,9 +8,11 @@ import 'package:bro/data/course_repository.dart';
 import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/models/courses.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 /// CourseListBloc is in charge of pulling courses from the backend.
 /// It listens to PreferredLanguage State and will refresh the courses when the state is changed.
+/// The bloc will only return courses in the preferred language
 class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   CourseRepository repository;
   PreferredLanguageBloc preferredLanguageBloc;
@@ -23,65 +25,106 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       recommended})
       : super(InitialCourseList()) {
     this.recommended = recommended ?? false;
+    // Uses the preferredLanguageBloc, and listens for states.
+    // If the state in the preferredLanguageRepository is set to "LanguageChanged",
+    // then it needs to refetch a version of the courseList which is in the correct language.
+    // Upon a "LanguageChanged"-event in the preferrredLanguageBloc,
+    // it triggers a CourseListRefresh-event, which retrieves a new version of
+    // the current courseList with the correct language.
     preferredLanguageRepository = preferredLanguageBloc.repository;
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
       if (state is LanguageChanged) {
-        add(CourseListRefresh(state.preferredLang));
+        add(CourseListRefresh());
       }
     });
   }
 
   @override
   Stream<CourseListState> mapEventToState(CourseListEvent event) async* {
-    // Not able to access state methods without this. Do not know why.
+    // It creates a snapshot of the current state, as the function runs asynchronously,
+    // and a state change is theoretically possible during the runtime of the code.
     final currentState = state;
     if (event is CourseListRefresh) {
-      try {
-        yield await _retrieveCourses(event, 0);
-      } catch (e) {
-        yield Failed();
-      }
+      // If the event is CourseListRefresh, then it needs to reset the list and retrieve it again with the new language.
+      yield await _retrieveCourses(event, 0);
+      return;
     }
-    if (event is CourseListRequested && !_hasReachedMax(currentState)) {
+
+    // If the event is CourseListRequested and it has not reached the max length, then it is an initial state.
+    // It then needs to retrieve the database.
+    else if (event is CourseListRequested &&
+        !_listHasReachedMax(currentState)) {
       try {
-        if (currentState is Success) {
+        // If the current state is CourseListSuccess, then the application has scrolled to the bottom and requests more courses.
+        if (currentState is CourseListSuccess) {
           final result =
               await _retrieveCourses(event, currentState.courses.length);
-          if (result is Success && currentState.courses.isNotEmpty) {
-            yield Success(
+
+          // If the result returns CourseListSuccess and it is not empty, then it adds these new courses to the current state
+          if (result is CourseListSuccess && currentState.courses.isNotEmpty) {
+            yield CourseListSuccess(
                 courses: currentState.courses + result.courses,
                 hasReachedMax: false);
-          } else if (result is Failed) {
+
+            return;
+          } else if (result is CourseListFailed) {
+            // If the request fails, then it just displays the failed state.
             yield result;
+            return;
           } else {
-            yield Failed();
+            yield CourseListFailed();
+            return;
           }
         }
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
-        yield Failed();
+        yield CourseListFailed();
+        return;
       }
+    } else {
+      yield CourseListFailed();
+      return;
     }
+    yield CourseListFailed();
+    return;
   }
 
-  /// Returns all courses in the preferredLanguage appended with courses in Norwegian.
+  /// The function takes in a CourseListEvent and the current length.
+  /// Following this, it uses the language
   Future<CourseListState> _retrieveCourses(
       CourseListEvent event, int curr_len) async {
-    var langSlug;
-    event is CourseListRefresh
-        ? langSlug = event.preferredLang
-        : langSlug = await preferredLanguageRepository.getPreferredLangSlug();
-    return await repository
-        .getLangCourses(langSlug, curr_len, 10, recommended)
-        .then((res) {
-      var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-      final returnCourse = LangCourseList.takeList(res_list).langCourses;
-      return Success(courses: returnCourse, hasReachedMax: false);
-    });
+    try {
+      // It retrieves the preferred language.
+
+      var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
+
+      return await repository
+          .getLangCourses(langSlug, curr_len, 10, recommended)
+          .then((res) {
+        // Retrieves the list of Serialized ReducedCourses from the response.
+
+        var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse']);
+
+        // Deserializes the response, creates models and returns a List<LangCourse>
+
+        final returnCourse = LangCourseList.takeList(res_list).langCourses;
+
+        return CourseListSuccess(courses: returnCourse, hasReachedMax: false);
+      });
+    } on NetworkException catch (e, stackTrace) {
+      log(e.toString());
+      log(stackTrace.toString());
+      return CourseListFailed();
+    } catch (e, stackTrace) {
+      log(e.toString());
+      log(stackTrace.toString());
+      return CourseListFailed();
+    }
   }
 }
 
-bool _hasReachedMax(CourseListState state) =>
-    state is Success && state.hasReachedMax;
+/// Checks if the list has reached the bottom of the screen.
+bool _listHasReachedMax(CourseListState state) =>
+    state is CourseListSuccess && state.hasReachedMax;

@@ -10,7 +10,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final SettingsRepository repository;
 
-  SettingsBloc({required this.repository}) : super(Loading());
+  SettingsBloc({required this.repository}) : super(SettingsLoading());
 
   @override
   Stream<SettingsState> mapEventToState(SettingsEvent event) async* {
@@ -24,17 +24,17 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       if (event is LanguagesRequested) {
         final res = await repository.getLanguages();
         final languages = Languages.fromJson(res.data!);
-        return Success(languages: languages);
+        return SettingsSuccess(languages: languages);
       }
-      return Failed();
+      return SettingsFailed();
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
-      return Failed();
+      return SettingsFailed();
     } catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
-      return Failed();
+      return SettingsFailed();
     }
   }
 }

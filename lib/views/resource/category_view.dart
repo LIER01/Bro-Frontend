@@ -55,7 +55,7 @@ class _CategoryViewState extends State<CategoryView> {
     return BlocBuilder<CategoryBloc, CategoryState>(
       // ignore: missing_return
       builder: (context, state) {
-        if (state is Loading) {
+        if (state is CategoryLoading) {
           return Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
@@ -63,7 +63,7 @@ class _CategoryViewState extends State<CategoryView> {
           );
         }
 
-        if (state is Failed) {
+        if (state is CategoryFailed) {
           return Scaffold(
             body: Center(
               child: Text('ERROR'),
@@ -71,7 +71,7 @@ class _CategoryViewState extends State<CategoryView> {
           );
         }
 
-        if (state is Success) {
+        if (state is CategorySuccess) {
           categories = state.categories;
           if (categories.isEmpty) {
             return Scaffold(

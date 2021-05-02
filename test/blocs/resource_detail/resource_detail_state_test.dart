@@ -7,7 +7,7 @@ import '../../mock_data/resource_detail_mock.dart';
 void main() {
   setUpAll(() {
     registerFallbackValue<ResourceDetailState>(
-        Failed(err: 'This is a failurestate'));
+        ResourceDetailFailed(err: 'This is a failurestate'));
   });
 
   mainState();
@@ -17,8 +17,8 @@ void mainState() {
   group('ResourceDetailState', () {
     test('should succeed when inserting resources', () {
       expect(
-        Success(resource: resourceDetailMock),
-        isInstanceOf<Success>(),
+        ResourceDetailSuccess(resource: resourceDetailMock),
+        isInstanceOf<ResourceDetailSuccess>(),
       );
     });
 

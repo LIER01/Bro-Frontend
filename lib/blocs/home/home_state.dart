@@ -8,8 +8,6 @@ abstract class HomeState extends Equatable {
   List<Object> get props => [];
 }
 
-/// TODO
-/// Change Home to the correct type and add Resources
 class Initial extends HomeState {}
 
 class HomeLoading extends HomeState {}
@@ -33,4 +31,4 @@ class HomeSuccess extends HomeState {
   String toString() => 'Success {home: $home}';
 }
 
-class Failed extends HomeState {}
+class HomeFailed extends HomeState {}
