@@ -22,7 +22,6 @@ class _CourseDetailViewState extends State<CourseDetailView> {
   late Course data;
   late CourseDetailBloc _courseDetailBloc;
   void testFunc(BuildContext context) {
-    print('poppppppp');
     Navigator.pushReplacementNamed(context, '/resourceList');
   }
 
