@@ -32,7 +32,7 @@ class _VideoPlayerCourseState extends State<VideoPlayerCourse> {
       _chewieController = ChewieController(
           videoPlayerController: widget.videoPlayerController,
           looping: widget.looping,
-          allowFullScreen: false,
+          allowFullScreen: true,
           allowMuting: false,
           allowPlaybackSpeedChanging: false,
           allowedScreenSleep: false,
