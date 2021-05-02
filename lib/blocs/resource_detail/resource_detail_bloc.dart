@@ -37,6 +37,7 @@ class ResourceDetailBloc
   @override
   Stream<ResourceDetailState> mapEventToState(
       ResourceDetailEvent event) async* {
+    yield ResourceDetailLoading();
     if (event is ResourceDetailRequested) {
       try {
         yield await _retrieveResource(event, event.lang);
@@ -44,7 +45,7 @@ class ResourceDetailBloc
         log(e.toString());
         log(stackTrace.toString());
 
-        yield Failed(err: 'Error, bad request.');
+        yield ResourceDetailFailed(err: 'Error, bad request.');
       }
     }
     // If the event is an instance of ResourceDetailreresh, then we need to refetch the ResourceDetail with the correct language
@@ -53,12 +54,13 @@ class ResourceDetailBloc
       var currentState = state;
 
       // If the currentState is success, then we refetch a new resourceDetail by adding a new event of type ResourceDetailRequested into the stream.
-      if (currentState is Success) {
+      if (currentState is ResourceDetailSuccess) {
         add(ResourceDetailRequested(
             group: currentState.resource.resourceGroup.toString(),
             lang: event.preferredLang));
       } else {
-        yield Failed(err: 'Failed to refresh list with languages');
+        yield ResourceDetailFailed(
+            err: 'Failed to refresh list with languages');
         return;
       }
     }
@@ -73,31 +75,32 @@ class ResourceDetailBloc
           .getResource(pref_lang_slug, event.group)
           .then((res) async {
         if (res.data!.isEmpty) {
-          return Failed(err: 'Article does not exist in requested langauge');
+          return ResourceDetailFailed(
+              err: 'Article does not exist in requested langauge');
         } else if (res.data!.isNotEmpty) {
           try {
             final returnResource =
                 Resources.fromJson(res.data!['resources'][0]);
 
-            return Success(resource: returnResource);
+            return ResourceDetailSuccess(resource: returnResource);
           } catch (e, stackTrace) {
             log(e.toString());
             log(stackTrace.toString());
-            return Failed(err: 'Error, bad request');
+            return ResourceDetailFailed(err: 'Error, bad request');
           }
         } else {
-          return Failed(err: 'Error, bad request');
+          return ResourceDetailFailed(err: 'Error, bad request');
         }
       });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
-      return Failed(err: 'Error, failed to contact server');
+      return ResourceDetailFailed(err: 'Error, failed to contact server');
     } catch (e, stackTrace) {
       log(e.toString());
       log(stackTrace.toString());
 
-      return Failed(err: 'Error, bad request');
+      return ResourceDetailFailed(err: 'Error, bad request');
     }
   }
 }

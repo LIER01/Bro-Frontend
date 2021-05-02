@@ -45,7 +45,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
     return BlocBuilder<ResourceDetailBloc, ResourceDetailState>(
       // ignore: missing_return
       builder: (context, state) {
-        if (state is Loading) {
+        if (state is ResourceDetailLoading) {
           return Scaffold(
             appBar: _buildAppBar(''),
             body: Center(
@@ -54,7 +54,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
           );
         }
 
-        if (state is Failed) {
+        if (state is ResourceDetailFailed) {
           return Scaffold(
             appBar: _buildAppBar('Error'),
             body: Center(
@@ -63,7 +63,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
           );
         }
 
-        if (state is Success) {
+        if (state is ResourceDetailSuccess) {
           resource = state.resource;
 
           return Scaffold(

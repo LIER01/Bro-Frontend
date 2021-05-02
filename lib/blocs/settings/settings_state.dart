@@ -10,17 +10,17 @@ abstract class SettingsState extends Equatable {
 
 class Initial extends SettingsState {}
 
-class Loading extends SettingsState {}
+class SettingsLoading extends SettingsState {}
 
-class Success extends SettingsState {
+class SettingsSuccess extends SettingsState {
   final Languages languages;
-  Success({required this.languages});
-  Success copyWith({required Languages languages}) {
-    return Success(languages: languages);
+  SettingsSuccess({required this.languages});
+  SettingsSuccess copyWith({required Languages languages}) {
+    return SettingsSuccess(languages: languages);
   }
 
   @override
   List<Object> get props => [languages];
 }
 
-class Failed extends SettingsState {}
+class SettingsFailed extends SettingsState {}

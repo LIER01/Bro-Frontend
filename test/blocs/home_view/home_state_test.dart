@@ -16,7 +16,7 @@ void main() {
 
     group('HomeLoading', () {
       test('toString returns correct value', () {
-        expect(Loading().toString(), 'Loading()');
+        expect(HomeLoading().toString(), 'HomeLoading()');
       });
     });
     group('HomeViewSuccess', () {

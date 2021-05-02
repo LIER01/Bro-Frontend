@@ -10,7 +10,7 @@ abstract class CourseListState extends Equatable {
 
 class InitialCourseList extends CourseListState {}
 
-class Loading extends CourseListState {}
+class CourseListLoading extends CourseListState {}
 
 class CourseListSuccess extends CourseListState {
   final List<LangCourse> courses;

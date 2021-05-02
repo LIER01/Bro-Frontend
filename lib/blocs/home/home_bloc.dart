@@ -20,7 +20,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeRepository repository;
 
   HomeBloc({required this.repository, required this.preferredLanguageBloc})
-      : super(Loading()) {
+      : super(HomeLoading()) {
     // Uses the preferredLanguageBloc, and listens for states.
     // If the state in the preferredLanguageRepository is set to "LanguageChanged",
     // then it needs to refetch a version of the courseList which is in the correct language.

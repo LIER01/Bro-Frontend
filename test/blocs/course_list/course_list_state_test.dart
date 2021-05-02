@@ -11,7 +11,7 @@ void main() {
 
     group('CourseListLoading', () {
       test('toString returns correct value', () {
-        expect(Loading().toString(), 'Loading()');
+        expect(CourseListLoading().toString(), 'CourseListLoading()');
       });
     });
     group('CourseListFailed', () {

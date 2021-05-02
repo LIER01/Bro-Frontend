@@ -18,6 +18,12 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
   ResourceListBloc(
       {required this.repository, required this.preferredLanguageBloc})
       : super(Loading()) {
+    // Uses the preferredLanguageBloc, and listens for states.
+    // If the state in the preferredLanguageRepository is set to "LanguageChanged",
+    // then it needs to refetch a version of the resourceList which is in the correct language.
+    // Upon a "LanguageChanged"-event in the preferrredLanguageBloc,
+    // it triggers a ResourceListRequested-event, which retrieves a new version of
+    // the current resourceList with the correct language.
     preferredLanguageRepository = preferredLanguageBloc.repository;
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {

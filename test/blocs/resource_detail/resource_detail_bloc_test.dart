@@ -16,7 +16,8 @@ class MockPreferredLanguageRepository extends Mock
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<ResourceDetailState>(Failed(err: 'This is an error'));
+    registerFallbackValue<ResourceDetailState>(
+        ResourceDetailFailed(err: 'This is an error'));
   });
 
   mainBloc();
@@ -75,7 +76,7 @@ void mainBloc() {
         ),
       ),
       expect: () => [
-        isInstanceOf<Failed>(),
+        isInstanceOf<ResourceDetailFailed>(),
       ],
     );
 
@@ -87,7 +88,7 @@ void mainBloc() {
         ResourceDetailRequested(lang: 'NO', group: 'resepter'),
       ),
       expect: () => [
-        isInstanceOf<Success>(),
+        isInstanceOf<ResourceDetailSuccess>(),
       ],
     );
   });

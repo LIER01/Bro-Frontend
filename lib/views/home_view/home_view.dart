@@ -38,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
         // ignore: missing_return
         builder: (context, state) {
       //log(state.toString());
-      if (state is Loading) {
+      if (state is HomeLoading) {
         return Scaffold(
           appBar: _buildAppBar(),
           body: LinearProgressIndicator(),

@@ -36,7 +36,7 @@ class _CourseListViewState extends State<CourseListView> {
     return BlocBuilder<CourseListBloc, CourseListState>(
       // ignore: missing_return
       builder: (context, state) {
-        if (state is Loading) {
+        if (state is CourseListLoading) {
           return Scaffold(
             appBar: _buildAppBar(),
             body: LinearProgressIndicator(),

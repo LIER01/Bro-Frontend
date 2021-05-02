@@ -10,11 +10,9 @@ abstract class HomeState extends Equatable {
   List<Object> get props => [];
 }
 
-/// TODO
-/// Change Home to the correct type and add Resources
 class Initial extends HomeState {}
 
-class Loading extends HomeState {}
+class HomeLoading extends HomeState {}
 
 class HomeSuccess extends HomeState {
   final List<LangCourse> courses;
