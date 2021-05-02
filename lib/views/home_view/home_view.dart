@@ -24,6 +24,7 @@ class _HomeViewState extends State<HomeView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   late HomeBloc _homeBloc;
+  var readMore = true;
   @override
   void initState() {
     super.initState();
@@ -40,15 +41,33 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: _buildAppBar(),
-        body: Column(children: [
+        body: ListView(children: [
           BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               if (state is HomeSuccess) {
-                var home = state.home;
-                return Column(children: [
-                  ListTile(title: Text(home.introduction)),
-                  const SizedBox(height: 20)
-                ]);
+                GestureDetector(
+                  child: Column(children: [
+                    ListTile(
+                        title: Text(readMore &&
+                                state.home.introduction.length > 270
+                            ? state.home.introduction.substring(0, 270) + '...'
+                            : state.home.introduction)),
+                    state.home.introduction.length > 270
+                        ? Container(
+                            child: Text(readMore ? 'Les mer' : 'Les mindre',
+                                style: TextStyle(color: Colors.teal)),
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.only(
+                                right: MediaQuery.of(context).size.width * 0.1))
+                        : Container(),
+                    const SizedBox(height: 20),
+                  ]),
+                  onTap: () => {
+                    setState(() {
+                      readMore = !readMore;
+                    })
+                  },
+                );
               }
               if (state is HomeLoading) {
                 return LinearProgressIndicator();
