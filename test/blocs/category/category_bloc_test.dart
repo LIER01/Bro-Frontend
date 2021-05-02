@@ -12,7 +12,7 @@ class MockCategoryRepository extends Mock implements CategoryRepository {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<CategoryState>(Failed());
+    registerFallbackValue<CategoryState>(CategoryFailed());
     registerFallbackValue<CategoryEvent>(CategoriesRequested());
   });
 
@@ -41,7 +41,7 @@ void mainTest() async {
         return categoryBloc;
       },
       act: (CategoryBloc bloc) async => bloc.add(CategoriesRequested()),
-      expect: () => <CategoryState>[Failed()],
+      expect: () => <CategoryState>[CategoryFailed()],
     );
 
     blocTest(
@@ -55,7 +55,7 @@ void mainTest() async {
       build: () => categoryBloc,
       act: (CategoryBloc bloc) async => bloc.add(CategoriesRequested()),
       expect: () => [
-        isA<Success>(),
+        isA<CategorySuccess>(),
       ],
     );
   });

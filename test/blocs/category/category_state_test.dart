@@ -6,7 +6,7 @@ void main() {
   group('CategoryState', () {
     group('CategoryLoading', () {
       test('toString returns correct value', () {
-        expect(Loading().toString(), 'Loading()');
+        expect(CategoryLoading().toString(), 'CategoryLoading()');
       });
     });
 
@@ -19,14 +19,14 @@ void main() {
       );
 
       test('toString returns correct value', () {
-        expect(Success(categories: [category]).toString(),
+        expect(CategorySuccess(categories: [category]).toString(),
             'Success { categories: [$category] }');
       });
     });
 
     group('CategoryFailed', () {
       test('toString returns correct value', () {
-        expect(Failed().toString(), 'Failed()');
+        expect(CategoryFailed().toString(), 'CategoryFailed()');
       });
     });
   });

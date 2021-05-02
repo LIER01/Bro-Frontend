@@ -15,7 +15,7 @@ class MockResourceListView
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<ResourceListState>(Failed(err: 'WRONG'));
+    registerFallbackValue<ResourceListState>(ResourceListFailed(err: 'WRONG'));
     registerFallbackValue<ResourceListEvent>(
         ResourceListRequested(category_id: '1', lang: 'NO'));
   });
@@ -37,7 +37,8 @@ void mainTest() {
 
     testWidgets('renders properly without resources',
         (WidgetTester tester) async {
-      when(() => resourceListBloc.state).thenReturn(Success(resources: []));
+      when(() => resourceListBloc.state)
+          .thenReturn(ResourceListSuccess(resources: []));
       await tester.pumpWidget(
         BlocProvider.value(
           value: resourceListBloc,
@@ -59,7 +60,7 @@ void mainTest() {
         listMock.add(e);
       });
       when(() => resourceListBloc.state)
-          .thenReturn(Success(resources: listMock));
+          .thenReturn(ResourceListSuccess(resources: listMock));
       await tester.pumpWidget(
         BlocProvider.value(
           value: resourceListBloc,

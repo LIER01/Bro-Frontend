@@ -138,9 +138,15 @@ class _HomeTabState extends State<HomeTab> {
                         client: _client(),
                         preferredLanguageBloc: _preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
-                    return ExtractCourseDetailScreen(client: _client());
+                    return ExtractCourseDetailScreen(
+                      client: _client(),
+                      preferredLanguageBloc: _preferredLanguageBloc,
+                    );
                   case ExtractResourceDetailScreen.routeName:
-                    return ExtractResourceDetailScreen(client: _client());
+                    return ExtractResourceDetailScreen(
+                      client: _client(),
+                      preferredLanguageBloc: _preferredLanguageBloc,
+                    );
                   default:
                     throw Exception('Invalid route: ${settings.name}');
                 }
@@ -186,7 +192,9 @@ class _CourseTabState extends State<CourseTab> {
                         client: _client(),
                         preferredLanguageBloc: _preferredLanguageBloc);
                   case ExtractCourseDetailScreen.routeName:
-                    return ExtractCourseDetailScreen(client: _client());
+                    return ExtractCourseDetailScreen(
+                        client: _client(),
+                        preferredLanguageBloc: _preferredLanguageBloc);
                   default:
                     return ExtractCourseListScreen(
                         client: _client(),
@@ -237,7 +245,10 @@ class _ResourceTabState extends State<ResourceTab> {
                       preferredLanguageBloc: _preferredLanguageBloc,
                     );
                   case ExtractResourceDetailScreen.routeName:
-                    return ExtractResourceDetailScreen(client: _client());
+                    return ExtractResourceDetailScreen(
+                      client: _client(),
+                      preferredLanguageBloc: _preferredLanguageBloc,
+                    );
                   case ExtractResourseDetailWebViewScreen.routeName:
                     return ExtractResourseDetailWebViewScreen();
                   default:

@@ -38,38 +38,22 @@ class _CourseDetailViewState extends State<CourseDetailView> {
     ));
   }
 
-/*   Future<dynamic> _onBackPressed() {
-  return showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text('Are you sure?'),
-      actions: <Widget>[
-        GestureDetector(
-          onTap: () => Navigator.of(context).pop(false),
-          child: Text('NO'),
-        ),]
-    ),
-  ) ??
-      Future<dynamic>.value(false); 
-}*/
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CourseDetailBloc, CourseDetailState>(
       builder: (context, state) {
-        //log(state.toString());
-        if (state is Loading) {
+        if (state is CourseDetailLoading) {
           return Scaffold(
             appBar: AppBar(title: Text('Loading')),
             body: LinearProgressIndicator(),
           );
         }
 
-        if (state is Failed) {
+        if (state is CourseDetailFailed) {
           return _failureState(context, state.err);
         }
 
-        if (state is CourseState) {
+        if (state is CourseDetailSuccess) {
           data = state.course;
           if (state.isQuiz == false) {
             return Scaffold(

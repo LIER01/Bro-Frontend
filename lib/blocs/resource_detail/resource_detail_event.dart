@@ -7,6 +7,14 @@ abstract class ResourceDetailEvent extends Equatable {
   List get props => [];
 }
 
+class ResourceDetailRefresh extends ResourceDetailEvent {
+  final String preferredLang;
+  ResourceDetailRefresh({required this.preferredLang});
+
+  @override
+  List get props => [preferredLang];
+}
+
 class ResourceDetailRequested extends ResourceDetailEvent {
   final String lang;
   final String group;

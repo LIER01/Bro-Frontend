@@ -54,7 +54,7 @@ class _ResourceListViewState extends State<ResourceListView> {
           );
         }
 
-        if (state is Failed) {
+        if (state is ResourceListFailed) {
           return Scaffold(
             appBar: _buildAppBar(''),
             body: Center(
@@ -63,7 +63,7 @@ class _ResourceListViewState extends State<ResourceListView> {
           );
         }
 
-        if (state is Success) {
+        if (state is ResourceListSuccess) {
           resources = state.resources;
           //print(resources);
           return Scaffold(

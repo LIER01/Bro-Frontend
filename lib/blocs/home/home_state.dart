@@ -10,24 +10,23 @@ abstract class HomeState extends Equatable {
   List<Object> get props => [];
 }
 
-/// TODO
-/// Change Home to the correct type and add Resources
 class Initial extends HomeState {}
 
-class Loading extends HomeState {}
+class HomeLoading extends HomeState {}
 
-class Success extends HomeState {
+class HomeSuccess extends HomeState {
   final List<LangCourse> courses;
   final List<Resources> resources;
   final Home home;
-  Success({required this.courses, required this.home, required this.resources});
+  HomeSuccess(
+      {required this.courses, required this.home, required this.resources});
 
-  Success copyWith({
+  HomeSuccess copyWith({
     required List<LangCourse> courses,
     required List<Resources> resources,
     required Home home,
   }) {
-    return Success(
+    return HomeSuccess(
       courses: courses,
       resources: resources,
       home: home,
@@ -42,4 +41,4 @@ class Success extends HomeState {
       'Success { courses: ${courses}, home: $home, resources: $resources}';
 }
 
-class Failed extends HomeState {}
+class HomeFailed extends HomeState {}

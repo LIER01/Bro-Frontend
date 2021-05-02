@@ -40,21 +40,21 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
-        if (state is Loading) {
+        if (state is SettingsLoading) {
           return Scaffold(
             appBar: _buildAppBar(),
             body: LinearProgressIndicator(),
           );
         }
 
-        if (state is Failed) {
+        if (state is SettingsFailed) {
           return Scaffold(
             appBar: _buildAppBar(),
             body: Center(child: Text('Det har skjedd en feil')),
           );
         }
 
-        if (state is Success) {
+        if (state is SettingsSuccess) {
           var languages = state.languages.languages;
           return Scaffold(
               appBar: _buildAppBar(),
