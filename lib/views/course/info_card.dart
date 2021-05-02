@@ -133,7 +133,9 @@ class _InfoCardContentState extends State<InfoCardContent> {
                 videoPlayerController: VideoPlayerController.network(
                   url,
                 ),
-                looping: false)));
+                looping: false)
+        )
+    );
   }
 
   Widget _generateInfoCard(bool active, String title, String description,
