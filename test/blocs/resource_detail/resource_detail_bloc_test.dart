@@ -76,6 +76,7 @@ void mainBloc() {
         ),
       ),
       expect: () => [
+        isInstanceOf<ResourceDetailLoading>(),
         isInstanceOf<ResourceDetailFailed>(),
       ],
     );
@@ -88,6 +89,7 @@ void mainBloc() {
         ResourceDetailRequested(lang: 'NO', group: 'resepter'),
       ),
       expect: () => [
+        isInstanceOf<ResourceDetailLoading>(),
         isInstanceOf<ResourceDetailSuccess>(),
       ],
     );
