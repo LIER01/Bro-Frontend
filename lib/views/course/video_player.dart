@@ -49,7 +49,7 @@ class _VideoPlayerCourseState extends State<VideoPlayerCourse> {
       );
     });
   }
-  PlaceholderImage(){
+  Center PlaceholderImage(){
     return Center(
         child: CircularProgressIndicator()
     );

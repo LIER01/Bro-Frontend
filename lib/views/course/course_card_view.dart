@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/foundation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:video_player/video_player.dart';
 import 'info_card.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'video_player.dart';
 
 class CardContainerView extends StatefulWidget {
   CardContainerView({

@@ -89,7 +89,7 @@ class InfoCardContent extends StatefulWidget {
 class _InfoCardContentState extends State<InfoCardContent> {
   @override
   Widget build(BuildContext context) {
-    String fileType = widget.image!.url.substring(widget.image!.url.length - 4);
+    var fileType = widget.image!.url.substring(widget.image!.url.length - 4);
     return Scaffold(
         body: Center(
       //Allows for animated color transition when card is clicked
