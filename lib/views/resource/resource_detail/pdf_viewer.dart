@@ -1,3 +1,4 @@
+import 'package:auto_direction/auto_direction.dart';
 import 'package:bro/models/resource.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,6 @@ class PDFCard extends StatelessWidget {
           horizontal: MediaQuery.of(context).size.height * 0.01),
       child: GestureDetector(
         onTap: () => {
-          print('quepasa'),
           launch(pdfPath),
         },
         child: Column(
@@ -82,13 +82,16 @@ class PDFCard extends StatelessWidget {
                     )
                   ],
                 )),
-            Container(
-              width: MediaQuery.of(context).size.height * 0.10,
-              child: Text(
-                pdfName,
-                style: Theme.of(context).textTheme.caption,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+            AutoDirection(
+              text: pdfName,
+              child: Container(
+                width: MediaQuery.of(context).size.height * 0.10,
+                child: Text(
+                  pdfName,
+                  style: Theme.of(context).textTheme.caption,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           ],

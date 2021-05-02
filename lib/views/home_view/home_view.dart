@@ -20,6 +20,7 @@ class _HomeViewState extends State<HomeView> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   late HomeBloc _homeBloc;
+  var readMore = true;
   @override
   void initState() {
     super.initState();
@@ -58,11 +59,30 @@ class _HomeViewState extends State<HomeView> {
             appBar: AppBar(
               title: Text(state.home.header),
             ),
-            body: Column(children: [
-              Column(children: [
-                ListTile(title: Text(state.home.introduction)),
-                const SizedBox(height: 20)
-              ]),
+            body: ListView(children: [
+              GestureDetector(
+                child: Column(children: [
+                  ListTile(
+                      title: Text(readMore &&
+                              state.home.introduction.length > 270
+                          ? state.home.introduction.substring(0, 270) + '...'
+                          : state.home.introduction)),
+                  state.home.introduction.length > 270
+                      ? Container(
+                          child: Text(readMore ? 'Les mer' : 'Les mindre',
+                              style: TextStyle(color: Colors.teal)),
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.only(
+                              right: MediaQuery.of(context).size.width * 0.1))
+                      : Container(),
+                  const SizedBox(height: 20),
+                ]),
+                onTap: () => {
+                  setState(() {
+                    readMore = !readMore;
+                  })
+                },
+              ),
               ExpansionPanelList.radio(children: [
                 ExpansionPanelRadio(
                     canTapOnHeader: true,
@@ -75,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
                                     .subtitle1!
                                     .copyWith(color: Colors.teal))),
                     body: resources.isEmpty
-                        ? SizedBox(height:170,child:ContentNotAvailable())
+                        ? SizedBox(height: 170, child: ContentNotAvailable())
                         : SingleChildScrollView(
                             controller: _scrollController,
                             child: Column(
@@ -109,7 +129,7 @@ class _HomeViewState extends State<HomeView> {
                                     .subtitle1!
                                     .copyWith(color: Colors.teal))),
                     body: resources.isEmpty
-                        ? SizedBox(height:170,child:ContentNotAvailable())
+                        ? SizedBox(height: 170, child: ContentNotAvailable())
                         : SingleChildScrollView(
                             controller: _scrollController,
                             child: Column(

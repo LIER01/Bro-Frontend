@@ -78,6 +78,7 @@ void mainTest() {
         ),
       );
       await tester.pumpAndSettle();
+      debugPrint(tester.toString());
       expect(find.text(mockedHome.header), findsOneWidget);
       expect(find.text(mockedHome.introduction), findsOneWidget);
       await tester.tap(find.text('Anbefalte Ressurser'));

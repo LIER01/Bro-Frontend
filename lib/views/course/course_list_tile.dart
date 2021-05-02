@@ -1,3 +1,4 @@
+import 'package:auto_direction/auto_direction.dart';
 import 'package:bro/models/courses.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -56,15 +57,24 @@ class _CourseDescription extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(8, 4, 4, 4),
-              child: Text(title, style: Theme.of(context).textTheme.headline6),
+            AutoDirection(
+              text: title,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.fromLTRB(8, 0, 8, 4),
+                child:
+                    Text(title, style: Theme.of(context).textTheme.headline6),
+              ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(8, 0, 4, 4),
-              child: Text(
-                description,
-                style: Theme.of(context).textTheme.subtitle2,
+            AutoDirection(
+              text: description,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.fromLTRB(8, 0, 8, 4),
+                child: Text(
+                  description,
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
               ),
             ),
             Container(

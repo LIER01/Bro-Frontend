@@ -1,3 +1,4 @@
+import 'package:auto_direction/auto_direction.dart';
 import 'package:bro/models/course.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,10 +73,13 @@ class _CardContainerViewState extends State<CardContainerView> {
                   physics: PageScrollPhysics(),
                   itemCount: list.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return InfoCard(
-                        title: list[index].title,
-                        description: list[index].description,
-                        image: list[index].media);
+                    return AutoDirection(
+                      text: list[index].description,
+                      child: InfoCard(
+                          title: list[index].title,
+                          description: list[index].description,
+                          image: list[index].media),
+                    );
                   })),
           //Shows which page the user is on
           DotsIndicator(
