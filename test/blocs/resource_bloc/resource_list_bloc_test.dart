@@ -44,8 +44,10 @@ void main() {
       },
       act: (ResourceListBloc bloc) async =>
           bloc.add(ResourceListRequested(category_id: '1')),
-      expect: () =>
-          <ResourceListState>[ResourceListFailed(err: 'Error, bad request')],
+      expect: () => <ResourceListState>[
+        ResourceListLoading(),
+        ResourceListFailed(err: 'Error, bad request')
+      ],
     );
 
     blocTest(
@@ -57,14 +59,18 @@ void main() {
     blocTest(
       'should load items with correct input',
       build: () {
-        when(() => resourceRepository.getLangResources('NO', '1', false))
-            .thenAnswer((_) => Future.value(QueryResult(
-                source: null, data: mockedResourceListRaw['data'])));
+        when(() => preferredLanguageRepository.getPreferredLangSlug())
+            .thenAnswer((_) => Future.value('NO'));
+        when(() =>
+            resourceRepository.getFalseLangResources(
+                any(), any(), false)).thenAnswer((_) => Future.value(
+            QueryResult(source: null, data: mockedResourceListRaw['data'])));
         return resourceListBloc;
       },
       act: (ResourceListBloc bloc) async =>
           bloc.add(ResourceListRequested(category_id: '1')),
       expect: () => [
+        isA<ResourceListLoading>(),
         isA<ResourceListSuccess>(),
       ],
     );

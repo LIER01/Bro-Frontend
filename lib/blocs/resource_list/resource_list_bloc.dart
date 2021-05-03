@@ -19,7 +19,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
       {required this.repository,
       required this.preferredLanguageBloc,
       recommended})
-      : super(Loading()) {
+      : super(InitialResourceList()) {
     // Uses the preferredLanguageBloc, and listens for states.
     // If the state in the preferredLanguageRepository is set to "LanguageChanged",
     // then it needs to refetch a version of the resourceList which is in the correct language.
@@ -38,17 +38,17 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
 
   @override
   Stream<ResourceListState> mapEventToState(ResourceListEvent event) async* {
+    yield ResourceListLoading();
     // If the event is ResourceListRequested, then it re-requests the resources to fetch the list with the corrent language.
     if (event is ResourceListRequested) {
       try {
         previousCategoryId = event.category_id;
-        log(previousCategoryId);
         yield await _retrieveResources(event, 0);
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
 
-        yield ResourceListFailed(err: 'Error, bad request.');
+        yield ResourceListFailed(err: 'Error, bad request');
       }
     }
     if (event is ResourceListRefresh) {
@@ -56,7 +56,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
         yield await _retrieveResourcesOnRefresh(event);
       } catch (e) {
         log(e.toString());
-        yield ResourceListFailed(err: 'Error refresh failed, bad request.');
+        yield ResourceListFailed(err: 'Error refresh failed, bad request');
       }
     }
   }
@@ -65,7 +65,6 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
       ResourceListRefresh event) async {
     var langSlug = event.preferredLang;
     var categoryId;
-    log(previousCategoryId);
     recommended ? categoryId = '' : categoryId = previousCategoryId;
     var resourcesQueryResult =
         await repository.getLangResources(langSlug, categoryId, recommended);
@@ -86,14 +85,15 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
           .getFalseLangResources(langSlug, event.category_id, recommended)
           .then((res) async {
         if (res.data!.isEmpty) {
-          final fallbackResourceResult = await repository.getFalseLangResources(
-              langSlug, event.category_id, recommended);
-          if (fallbackResourceResult.data!.isEmpty) {
-            return ResourceListFailed(err: 'Error, bad request');
-          }
+          return ResourceListFailed(err: 'Error, bad request');
         }
         return ResourceListSuccess(
-            resources: ResourceList.takeList(res.data!['resources']).resources);
+            resources: ResourceList.takeList(
+                    List<Map<String, dynamic>>.from(res.data!['resources']))
+                .resources
+                .where((element) {
+          return (element.publisher != null && element.resourceGroup != null);
+        }).toList());
       });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());

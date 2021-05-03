@@ -8,7 +8,9 @@ abstract class ResourceListState extends Equatable {
   List<Object> get props => [];
 }
 
-class Loading extends ResourceListState {}
+class InitialResourceList extends ResourceListState {}
+
+class ResourceListLoading extends ResourceListState {}
 
 class ResourceListSuccess extends ResourceListState {
   final List<Resources> resources;

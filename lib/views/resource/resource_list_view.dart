@@ -48,7 +48,7 @@ class _ResourceListViewState extends State<ResourceListView> {
     return BlocBuilder<ResourceListBloc, ResourceListState>(
       // ignore: missing_return
       builder: (context, state) {
-        if (state is Loading) {
+        if (state is ResourceListLoading) {
           return Scaffold(
             appBar: _buildAppBar(''),
             body: Center(

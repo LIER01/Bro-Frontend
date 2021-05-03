@@ -157,7 +157,7 @@ class ExtractHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
+        BlocProvider<CourseListBloc>(
           create: (context) => CourseListBloc(
             repository: CourseRepository(
               client: client,
@@ -166,14 +166,14 @@ class ExtractHomeScreen extends StatelessWidget {
             recommended: true,
           ),
         ),
-        BlocProvider(
+        BlocProvider<ResourceListBloc>(
             create: (context) => ResourceListBloc(
                 repository: ResourceRepository(
                   client: client,
                 ),
                 preferredLanguageBloc: preferredLanguageBloc,
                 recommended: true)),
-        BlocProvider(
+        BlocProvider<HomeBloc>(
             create: (context) => HomeBloc(
                   homeRepository: HomeRepository(
                     client: client,

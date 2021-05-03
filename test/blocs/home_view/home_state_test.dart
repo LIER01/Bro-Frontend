@@ -22,7 +22,7 @@ void main() {
             HomeSuccess(
               home: home,
             ).toString(),
-            'Success { home: $home}');
+            'HomeSuccess {home: $home}');
       });
     });
     group('HomeFailed', () {

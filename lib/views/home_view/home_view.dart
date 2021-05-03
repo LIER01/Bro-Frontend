@@ -1,5 +1,5 @@
 import 'package:bro/blocs/course_list/course_list_bloc.dart';
-import 'package:bro/blocs/course_list/course_list_state.dart' as course_list;
+import 'package:bro/blocs/course_list/course_list_state.dart';
 import 'package:bro/blocs/home/home_bloc.dart';
 import 'package:bro/blocs/home/home_event.dart';
 import 'package:bro/blocs/home/home_state.dart';
@@ -45,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
           BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               if (state is HomeSuccess) {
-                GestureDetector(
+                return GestureDetector(
                   child: Column(children: [
                     ListTile(
                         title: Text(readMore &&
@@ -68,8 +68,7 @@ class _HomeViewState extends State<HomeView> {
                     })
                   },
                 );
-              }
-              if (state is HomeLoading) {
+              } else if (state is HomeLoading) {
                 return LinearProgressIndicator();
               } else {
                 return SizedBox(height: 170, child: ContentNotAvailable());
@@ -86,34 +85,31 @@ class _HomeViewState extends State<HomeView> {
                             .textTheme
                             .subtitle1!
                             .copyWith(color: Colors.teal))),
-                body: BlocBuilder<CourseListBloc, course_list.CourseListState>(
+                body: BlocBuilder<CourseListBloc, CourseListState>(
                     builder: (context, state) {
-                  if (state is course_list.CourseListSuccess) {
-                    var courses = state.courses;
-                    return courses.isEmpty
-                        ? SizedBox(height: 170, child: ContentNotAvailable())
-                        : SingleChildScrollView(
-                            controller: _scrollController,
-                            child: Column(
-                                children: courses
-                                    .asMap()
-                                    .keys
-                                    .toList()
-                                    .map((index) => GestureDetector(
-                                        onTap: () => Navigator.of(context)
-                                            .pushNamed(
-                                                ExtractCourseDetailScreen
-                                                    .routeName,
-                                                arguments:
-                                                    CourseDetailArguments(
-                                                        courseGroup:
-                                                            courses[index]
-                                                                .courseGroup!
-                                                                .slug)),
-                                        child: CourseListTile(
-                                          course: courses[index],
-                                        )))
-                                    .toList()));
+                  if (state is CourseListFailed) {
+                    return SizedBox(height: 170, child: ContentNotAvailable());
+                  } else if (state is CourseListSuccess) {
+                    return SingleChildScrollView(
+                        controller: _scrollController,
+                        child: Column(
+                            children: state.courses
+                                .asMap()
+                                .keys
+                                .toList()
+                                .map((index) => GestureDetector(
+                                    onTap: () => Navigator.of(context)
+                                        .pushNamed(
+                                            ExtractCourseDetailScreen.routeName,
+                                            arguments: CourseDetailArguments(
+                                                courseGroup: state
+                                                    .courses[index]
+                                                    .courseGroup!
+                                                    .slug)),
+                                    child: CourseListTile(
+                                      course: state.courses[index],
+                                    )))
+                                .toList()));
                   } else {
                     return SizedBox(height: 170, child: ContentNotAvailable());
                   }
@@ -129,8 +125,10 @@ class _HomeViewState extends State<HomeView> {
                             .copyWith(color: Colors.teal))),
                 body: BlocBuilder<ResourceListBloc, ResourceListState>(
                     builder: (context, state) {
+                  debugPrint(state.toString());
                   if (state is ResourceListSuccess) {
                     var resources = state.resources;
+
                     return resources.isEmpty
                         ? SizedBox(height: 170, child: ContentNotAvailable())
                         : SingleChildScrollView(

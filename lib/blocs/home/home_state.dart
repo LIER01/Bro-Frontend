@@ -28,7 +28,7 @@ class HomeSuccess extends HomeState {
   List<Object> get props => [home];
 
   @override
-  String toString() => 'Success {home: $home}';
+  String toString() => 'HomeSuccess {home: $home}';
 }
 
 class HomeFailed extends HomeState {}

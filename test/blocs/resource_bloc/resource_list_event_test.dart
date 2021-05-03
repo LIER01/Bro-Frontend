@@ -7,7 +7,7 @@ void main() {
     group('ResourceListRequested', () {
       test('toString returns correct value', () {
         expect(ResourceListRequested(category_id: '1').toString(),
-            'ResourceListRequested(NO)');
+            'ResourceListRequested(1)');
       });
     });
   });

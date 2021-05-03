@@ -43,7 +43,7 @@ void main() {
         return courseListBloc;
       },
       act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh()),
-      expect: () => <CourseListState>[CourseListFailed()],
+      expect: () => <CourseListState>[CourseListLoading(), CourseListFailed()],
     );
 
     blocTest(
@@ -67,6 +67,7 @@ void main() {
       },
       act: (CourseListBloc bloc) async => bloc.add(CourseListRefresh()),
       expect: () => [
+        isA<CourseListLoading>(),
         isA<CourseListSuccess>(),
       ],
     );
@@ -89,7 +90,9 @@ void main() {
         bloc.add(CourseListRequested());
       },
       expect: () => [
+        isA<CourseListLoading>(),
         isA<CourseListSuccess>(),
+        isA<CourseListLoading>(),
         isA<CourseListSuccess>(),
       ],
     );
