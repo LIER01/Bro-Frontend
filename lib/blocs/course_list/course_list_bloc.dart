@@ -105,17 +105,12 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
           .then((res) {
         // Retrieves the list of Serialized ReducedCourses from the response.
 
-        var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-
         // Deserializes the response, creates models and returns a List<LangCourse>
+        //
+        final returnCourses = ReducedCourse.generateList(
+            List<Map<String, dynamic>>.from(res.data!['LangCourse']));
 
-        final returnCourse =
-            LangCourseList.takeList(res_list).langCourses.where((element) {
-          return (element.publisher != null && element.courseGroup != null);
-        }).toList();
-        ;
-
-        return CourseListSuccess(courses: returnCourse, hasReachedMax: false);
+        return CourseListSuccess(courses: returnCourses, hasReachedMax: false);
       });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());

@@ -4,7 +4,6 @@ query getCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
       _where:[{language:{slug:$lang_slug}}
         ]
     }){
-    id
         questions{
           id
         }
@@ -96,7 +95,6 @@ query getRecommendedCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int
         {is_recommended:true}
         ]
     }){
-    id
         questions{
           id
         }

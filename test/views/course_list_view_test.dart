@@ -47,11 +47,11 @@ void mainTest() {
         ),
       );
     });
-    List<LangCourse> mockedLangCourseList;
+    List<ReducedCourse> mockedLangCourseList;
     testWidgets('renders properly with courses', (WidgetTester tester) async {
       mockedLangCourseList = [];
       mockCourseList.forEach((element) {
-        mockedLangCourseList.add(LangCourse.fromJson(element));
+        mockedLangCourseList.add(ReducedCourse.fromJson(element));
       });
       when(() => courseListBloc.state).thenReturn(CourseListSuccess(
           courses: mockedLangCourseList, hasReachedMax: true));

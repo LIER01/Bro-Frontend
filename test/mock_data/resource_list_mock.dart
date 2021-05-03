@@ -95,6 +95,6 @@ List<Map<String, dynamic>> mockResourceList = [
   }
 ];
 
-ResourceList mockedResourceList = ResourceList.takeList(mockResourceList);
+List<Resources> mockedResourceList = Resources.generateList(mockResourceList);
 
 Map<String, dynamic> mockResourceMap = {'LangResource': mockResourceList};

@@ -13,13 +13,13 @@ class InitialCourseList extends CourseListState {}
 class CourseListLoading extends CourseListState {}
 
 class CourseListSuccess extends CourseListState {
-  final List<LangCourse> courses;
+  final List<ReducedCourse> courses;
   final bool hasReachedMax;
 
   CourseListSuccess({required this.courses, required this.hasReachedMax});
 
   CourseListSuccess copyWith({
-    required List<LangCourse> courses,
+    required List<ReducedCourse> courses,
     bool? hasReachedMax,
   }) {
     return CourseListSuccess(

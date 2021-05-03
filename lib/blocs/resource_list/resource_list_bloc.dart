@@ -66,12 +66,16 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
     var langSlug = event.preferredLang;
     var categoryId = recommended ? '' : previousCategoryId;
 
-    var resourcesQueryResult =
-        await repository.getResources(langSlug, categoryId, recommended);
-    var resourcesJson = List<Map<String, dynamic>>.from(
-        resourcesQueryResult.data!['LangResource']);
-    var resources = ResourceList.takeList(resourcesJson).resources;
-    return ResourceListSuccess(resources: resources);
+    return await repository
+        .getResources(langSlug, categoryId, recommended)
+        .then((res) async {
+      if (res.data!.isEmpty) {
+        return ResourceListSuccess(resources: []);
+      }
+      return ResourceListSuccess(
+          resources: Resources.generateList(
+              List<Map<String, dynamic>>.from(res.data!['LangResource'])));
+    });
   }
 
   Future<ResourceListState> _retrieveResources(
@@ -85,12 +89,11 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
           .getResources(langSlug, event.category_id, recommended)
           .then((res) async {
         if (res.data!.isEmpty) {
-          return ResourceListFailed(err: 'Error, bad request');
+          return ResourceListSuccess(resources: []);
         }
-        return ResourceListSuccess(
-            resources: ResourceList.takeList(
-                    List<Map<String, dynamic>>.from(res.data!['LangResource']))
-                .resources);
+        var returnList = Resources.generateList(
+            List<Map<String, dynamic>>.from(res.data!['LangResource']));
+        return ResourceListSuccess(resources: returnList);
       });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());

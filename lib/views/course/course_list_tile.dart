@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class CourseListTile extends StatelessWidget {
   CourseListTile({Key? key, required this.course}) : super(key: key);
 
-  final LangCourse course;
+  final ReducedCourse course;
 
   @override
   Widget build(BuildContext context) {

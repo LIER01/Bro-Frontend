@@ -158,4 +158,5 @@ List<Map<String, dynamic>> mockCourseList = [
 
 Map<String, dynamic> mockCourseMap = {'LangCourse': mockCourseList};
 
-LangCourseList referenceCourseList = LangCourseList.takeList(mockCourseList);
+List<ReducedCourse> referenceCourseList =
+    ReducedCourse.generateList(mockCourseList);
