@@ -1,73 +1,7 @@
-final String langCoursesQuery = r'''
-query langCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
+final String getCoursesQuery = r'''
+query getCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
     LangCourse: courses (start: $start, limit: $limit,where:{
       _where:[{language:{slug:$lang_slug}}
-        ]
-    }){
-    id
-        questions{
-          id
-        }
-        slides{
-          id
-        }
-    title
-    description
-    publisher{
-      name
-      avatar{
-        url
-      }
-    }
-    category{
-      cover_photo{
-        url
-      }
-      category_name
-    }
-    is_recommended
-    course_group{
-      slug
-    }
-  }
-  
-  nonLangCourse: courses (start: $start, limit: $limit,where:{
-      _where:[{language:{slug_ne:$lang_slug}}
-        ]
-    }){
-    id
-        questions{
-          id
-        }
-        slides{
-          id
-        }
-    title
-    description
-    publisher{
-      name
-      avatar{
-        url
-      }
-    }
-    category{
-      cover_photo{
-        url
-      }
-      category_name
-    }
-    is_recommended
-    course_group{
-      slug
-    }
-    }
-}
-''';
-
-final String nonLangCoursesQuery = r'''
-query nonLangCoursesQuery ($start: Int!, $limit: Int!){
-    LangCourse: courses (start: $start, limit: $limit,where:{
-      _where:[{language:{slug:"NO"}}
         ]
     }){
     id
@@ -100,7 +34,7 @@ query nonLangCoursesQuery ($start: Int!, $limit: Int!){
 ''';
 
 final String getCourse = r'''
-query getNewCourseQuery ($group_slug: String!, $lang_slug: String!){
+query getCourseQuery ($group_slug: String!, $lang_slug: String!){
     courses (where:{
       _where:[{
         language:{slug:$lang_slug}
@@ -155,7 +89,7 @@ query getNewCourseQuery ($group_slug: String!, $lang_slug: String!){
 ''';
 
 final String getRecommendedCoursesQuery = r'''
-query langCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
+query getRecommendedCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
     LangCourse: courses (start: $start, limit: $limit,where:{
       _where:[
         {language:{slug:$lang_slug}}
@@ -188,38 +122,5 @@ query langCoursesQuery ($lang_slug: String!, $start: Int!, $limit: Int!){
       slug
     }
   }
-  
-  nonLangCourse: courses (start: $start, limit: $limit,where:{
-      _where:[
-        {language:{slug_ne:$lang_slug}}
-        {is_recommended:true}
-        ]
-    }){
-    id
-        questions{
-          id
-        }
-        slides{
-          id
-        }
-    title
-    description
-    publisher{
-      name
-      avatar{
-        url
-      }
-    }
-    category{
-      cover_photo{
-        url
-      }
-      category_name
-    }
-    is_recommended
-    course_group{
-      slug
-    }
-    }
 }
 ''';

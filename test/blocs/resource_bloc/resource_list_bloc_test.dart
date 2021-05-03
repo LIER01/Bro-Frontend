@@ -6,8 +6,6 @@ import 'package:bro/data/resource_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mocktail/mocktail.dart';
-
-import '../../mock_data/course_mock.dart';
 import '../../mock_data/resource_list_mock.dart';
 
 class MockResourceRepository extends Mock implements ResourceRepository {}
@@ -27,9 +25,9 @@ void main() {
       preferredLanguageRepository = MockPreferredLanguageRepository();
       preferredLanguageBloc =
           PreferredLanguageBloc(repository: preferredLanguageRepository);
-      when(() => resourceRepository.getLangResources('NO', '1', false))
-          .thenAnswer((_) =>
-              Future.value(QueryResult(source: null, data: mockedCourseMap)));
+      when(() => resourceRepository.getResources('NO', '1', false)).thenAnswer(
+          (_) =>
+              Future.value(QueryResult(source: null, data: mockResourceMap)));
       resourceListBloc = ResourceListBloc(
           repository: resourceRepository,
           preferredLanguageBloc: preferredLanguageBloc);
@@ -61,10 +59,9 @@ void main() {
       build: () {
         when(() => preferredLanguageRepository.getPreferredLangSlug())
             .thenAnswer((_) => Future.value('NO'));
-        when(() =>
-            resourceRepository.getFalseLangResources(
-                any(), any(), false)).thenAnswer((_) => Future.value(
-            QueryResult(source: null, data: mockedResourceListRaw['data'])));
+        when(() => resourceRepository.getResources(any(), any(), any()))
+            .thenAnswer((_) =>
+                Future.value(QueryResult(source: null, data: mockResourceMap)));
         return resourceListBloc;
       },
       act: (ResourceListBloc bloc) async =>

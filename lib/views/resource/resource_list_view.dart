@@ -2,7 +2,7 @@ import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/models/resource.dart';
 import 'package:bro/views/widgets/bottom_loader.dart';
-import 'package:bro/views/widgets/contentNotAvailable.dart';
+import 'package:bro/views/widgets/content_not_available.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -101,7 +101,7 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
 
       return await repository
-          .getLangCourses(langSlug, curr_len, 10, recommended)
+          .getCourses(langSlug, curr_len, 10, recommended)
           .then((res) {
         // Retrieves the list of Serialized ReducedCourses from the response.
 

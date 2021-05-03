@@ -64,19 +64,13 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
   Future<ResourceListState> _retrieveResourcesOnRefresh(
       ResourceListRefresh event) async {
     var langSlug = event.preferredLang;
-    var categoryId;
-    recommended ? categoryId = '' : categoryId = previousCategoryId;
+    var categoryId = recommended ? '' : previousCategoryId;
+
     var resourcesQueryResult =
-        await repository.getLangResources(langSlug, categoryId, recommended);
+        await repository.getResources(langSlug, categoryId, recommended);
     var resourcesJson = List<Map<String, dynamic>>.from(
         resourcesQueryResult.data!['LangResource']);
-    var resources =
-        ResourceList.takeList(resourcesJson).resources.where((element) {
-      return (element.publisher != null &&
-          element.resourceGroup != null &&
-          element.language != null);
-    }).toList();
-    ;
+    var resources = ResourceList.takeList(resourcesJson).resources;
     return ResourceListSuccess(resources: resources);
   }
 
@@ -88,21 +82,15 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
     try {
       // Sends the request, deserializes into models and returns a state of ResourceListSuccess
       return await repository
-          .getFalseLangResources(langSlug, event.category_id, recommended)
+          .getResources(langSlug, event.category_id, recommended)
           .then((res) async {
         if (res.data!.isEmpty) {
           return ResourceListFailed(err: 'Error, bad request');
         }
-
         return ResourceListSuccess(
             resources: ResourceList.takeList(
-                    List<Map<String, dynamic>>.from(res.data!['resources']))
-                .resources
-                .where((element) {
-          return (element.publisher != null &&
-              element.resourceGroup != null &&
-              element.language != null);
-        }).toList());
+                    List<Map<String, dynamic>>.from(res.data!['LangResource']))
+                .resources);
       });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());

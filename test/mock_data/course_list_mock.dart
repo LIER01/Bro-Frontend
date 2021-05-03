@@ -4,7 +4,7 @@ int id = 0;
 String title = 'Et kult kurs!';
 String description = 'Dette kurset er veldig kult.';
 
-List<Map<String, dynamic>> mockedCourseList = [
+List<Map<String, dynamic>> mockCourseList = [
   {
     'id': '1',
     'questions': [
@@ -156,6 +156,6 @@ List<Map<String, dynamic>> mockedCourseList = [
   }
 ];
 
-Map<String, dynamic> mockedCourseMap = {'data': mockedCourseList};
+Map<String, dynamic> mockCourseMap = {'LangCourse': mockCourseList};
 
-LangCourseList referenceCourseList = LangCourseList.takeList(mockedCourseList);
+LangCourseList referenceCourseList = LangCourseList.takeList(mockCourseList);

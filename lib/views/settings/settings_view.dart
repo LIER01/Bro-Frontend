@@ -25,7 +25,6 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _settingsBloc = BlocProvider.of<SettingsBloc>(context);
     _settingsBloc.add(LanguagesRequested());

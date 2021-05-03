@@ -41,7 +41,9 @@ class ResourceList {
   factory ResourceList.takeList(List<Map<String, dynamic>> list) {
     var returnList = <Resources>[];
     for (final item in list) {
-      if (item['resource_group'] != null) {
+      if (item['resource_group'] != null &&
+          item['publisher'] != null &&
+          item['language'] != null) {
         returnList.add(Resources.fromJson(item));
       }
     }

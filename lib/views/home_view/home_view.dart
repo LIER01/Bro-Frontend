@@ -7,7 +7,7 @@ import 'package:bro/blocs/resource_list/resource_list_bloc.dart';
 import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/views/course/course_list_tile.dart';
 import 'package:bro/views/resource/resource_list_tile.dart';
-import 'package:bro/views/widgets/contentNotAvailable.dart';
+import 'package:bro/views/widgets/content_not_available.dart';
 import 'package:bro/views/widgets/extract_route_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

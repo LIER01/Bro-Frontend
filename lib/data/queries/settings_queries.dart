@@ -4,12 +4,3 @@ query {
   slug}
 }
 ''';
-
-final String getPublishersQuery = r'''
-    query {
-      publishers{
-        name,
-        avatar
-      }
-    }
-''';

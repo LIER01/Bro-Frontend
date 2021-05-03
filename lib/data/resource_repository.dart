@@ -17,17 +17,15 @@ class ResourceRepository {
     return await client.query(_options);
   }
 
-  Future<QueryResult> getLangResources(
+  Future<QueryResult> getResources(
       String lang_slug, String category, bool recommended) async {
     WatchQueryOptions _options;
     recommended
         ? _options = WatchQueryOptions(
-            document: parseString(getRecommendedLangResourcesQuery),
+            document: parseString(getRecommendedResourcesQuery),
             fetchResults: true,
             variables: <String, dynamic>{
               'lang': lang_slug,
-              'start': 0,
-              'limit': 3
             },
           )
         : _options = WatchQueryOptions(
@@ -38,39 +36,6 @@ class ResourceRepository {
               'category': int.parse(category),
             },
           );
-
-    return await client.query(_options);
-  }
-
-  Future<QueryResult> getFalseLangResources(
-      String lang_slug, String category, bool recommended) async {
-    WatchQueryOptions _options;
-    recommended
-        ? _options = WatchQueryOptions(
-            document: parseString(getRecommendedLangResourcesQuery),
-            fetchResults: true,
-            variables: <String, dynamic>{
-              'lang': lang_slug,
-            },
-          )
-        : _options = WatchQueryOptions(
-            document: parseString(getLangResourcesQuery),
-            fetchResults: true,
-            variables: <String, dynamic>{
-              'lang': lang_slug,
-              'category': int.parse(category),
-            },
-          );
-
-    return await client.query(_options);
-  }
-
-  Future<QueryResult> getNonLangResources(int start, int limit) async {
-    final _options = WatchQueryOptions(
-      document: parseString(getNonLangResourcesQuery),
-      fetchResults: true,
-      variables: <String, dynamic>{'start': start, 'limit': limit},
-    );
 
     return await client.query(_options);
   }
