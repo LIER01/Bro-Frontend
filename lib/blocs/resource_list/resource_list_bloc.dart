@@ -5,6 +5,7 @@ import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/data/resource_repository.dart';
 import 'package:bro/models/resource.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -87,6 +88,16 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
         if (res.data!.isEmpty) {
           return ResourceListFailed(err: 'Error, bad request');
         }
+        debugPrint('\nRESOURCELIST\n');
+        debugPrint(ResourceListSuccess(
+                resources: ResourceList.takeList(
+                        List<Map<String, dynamic>>.from(res.data!['resources']))
+                    .resources
+                    .where((element) {
+          return (element.publisher != null && element.resourceGroup != null);
+        }).toList())
+            .toString());
+        debugPrint('\nRESOURCELIST\n');
         return ResourceListSuccess(
             resources: ResourceList.takeList(
                     List<Map<String, dynamic>>.from(res.data!['resources']))

@@ -13,7 +13,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../mock_data/resource_list_mock.dart';
 
-class MockResourceListView
+class MockResourceListBloc
     extends MockBloc<ResourceListEvent, ResourceListState>
     implements ResourceListBloc {}
 
@@ -22,6 +22,8 @@ class MockResourceRepository extends Mock implements ResourceRepository {}
 class MockPreferredLanguageRepository extends Mock
     implements PreferredLanguageRepository {}
 
+class FakeBuildContext extends Fake implements BuildContext {}
+
 void main() {
   setUpAll(() {
     registerFallbackValue<ResourceListState>(ResourceListFailed(err: 'WRONG'));
@@ -29,6 +31,7 @@ void main() {
         ResourceListRequested(category_id: '1'));
     registerFallbackValue<PreferredLanguageState>(
         LanguageChanged(preferredLang: 'NO'));
+    registerFallbackValue<BuildContext>(FakeBuildContext());
   });
 
   mainTest();
@@ -42,7 +45,7 @@ void mainTest() {
     late PreferredLanguageRepository preferredLanguageRepository;
 
     setUp(() {
-      resourceListBloc = MockResourceListView();
+      resourceListBloc = MockResourceListBloc();
       resourceRepository = MockResourceRepository();
       preferredLanguageRepository = MockPreferredLanguageRepository();
       preferredLanguageBloc =
@@ -58,19 +61,20 @@ void mainTest() {
 
     testWidgets('renders properly without resources',
         (WidgetTester tester) async {
-      await tester.pumpWidget(
-        BlocProvider.value(
-          value: resourceListBloc,
-          child: MaterialApp(
-            home: Scaffold(
-              body: ResourceListView(
-                category_id: '1',
-                category: 'familie',
-              ),
-            ),
-          ),
-        ),
-      );
+      when(() => preferredLanguageRepository.getPreferredLangSlug())
+          .thenAnswer((_) => Future.value('NO'));
+      await tester.pumpWidget(MultiBlocProvider(
+        providers: [
+          BlocProvider<ResourceListBloc>(create: (context) => resourceListBloc),
+          BlocProvider<PreferredLanguageBloc>(
+              create: (context) => preferredLanguageBloc),
+        ],
+        child: MaterialApp(
+            home: ResourceListView(
+          category_id: '1',
+          category: 'familie',
+        )),
+      ));
     });
     // ignore: omit_local_variable_types
     List<Resources> listMock = [];
@@ -79,31 +83,46 @@ void mainTest() {
         listMock.add(e);
       });
 
+      // when(() => preferredLanguageRepository.getPreferredLangSlug())
+      //     .thenAnswer((_) => Future.value('NO'));
+
       when(() => preferredLanguageRepository.getPreferredLangSlug())
           .thenAnswer((_) => Future.value('NO'));
 
-      when(() => resourceRepository.getFalseLangResources(any(), any(), any()))
-          .thenAnswer((_) => Future.value(
-              QueryResult(source: null, data: mockedResourceListRaw['data'])));
+      when(() => preferredLanguageRepository.getPreferredLangSlug())
+          .thenAnswer((_) => Future.value('NO'));
+
+      when(() => resourceListBloc.state)
+          .thenReturn(ResourceListSuccess(resources: listMock));
+      // when(() => BlocProvider.of<ResourceListBloc>(any()))
+      //     .thenAnswer((_) => resourceListBloc);
+
       await tester.pumpWidget(MultiBlocProvider(
-          providers: [
-            BlocProvider<PreferredLanguageBloc>(
-                create: (context) => preferredLanguageBloc),
-            BlocProvider(create: (context) => resourceListBloc),
-          ],
-          child: MaterialApp(
-              home: Scaffold(
-            body: ResourceListView(
-              category_id: '1',
-              category: 'familie',
-            ),
-          ))));
+        providers: [
+          BlocProvider<ResourceListBloc>(create: (context) => resourceListBloc),
+          BlocProvider<PreferredLanguageBloc>(
+              create: (context) => preferredLanguageBloc),
+        ],
+        child: MaterialApp(home: Builder(builder: (BuildContext context) {
+          return ResourceListView(category_id: '1', category: 'familie');
+        })),
+      ));
 
       await tester.pumpAndSettle();
+
+      debugPrint('\nMy test\n');
+
+      debugPrint(resourceListBloc.state.toString());
+
+      debugPrint('\nMy test\n');
+
+      debugPrint(ResourceListSuccess(resources: listMock).toString());
 
       expect(find.byType(LinearProgressIndicator), findsNothing);
 
       await tester.pumpAndSettle();
+
+      debugPrint(listMock.toString());
 
       expect(find.text(listMock[0].title), findsOneWidget);
       expect(find.text(listMock[0].description), findsWidgets);

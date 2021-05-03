@@ -30,11 +30,11 @@ class _ResourceListViewState extends State<ResourceListView> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _preferredLanguageBloc = BlocProvider.of<PreferredLanguageBloc>(context);
-    _preferredLanguageBloc.add(PreferredLanguageRequested());
     _resourceListBloc = BlocProvider.of<ResourceListBloc>(context);
     _resourceListBloc
         .add(ResourceListRequested(category_id: widget.category_id));
+    _preferredLanguageBloc = _resourceListBloc.preferredLanguageBloc;
+    _preferredLanguageBloc.add(PreferredLanguageRequested());
   }
 
   AppBar _buildAppBar(categoryName) {
@@ -46,8 +46,8 @@ class _ResourceListViewState extends State<ResourceListView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ResourceListBloc, ResourceListState>(
-      // ignore: missing_return
       builder: (context, state) {
+        debugPrint(state.toString());
         if (state is ResourceListLoading) {
           return Scaffold(
             appBar: _buildAppBar(''),
@@ -55,18 +55,14 @@ class _ResourceListViewState extends State<ResourceListView> {
               child: CircularProgressIndicator(),
             ),
           );
-        }
-
-        if (state is ResourceListFailed) {
+        } else if (state is ResourceListFailed) {
           return Scaffold(
             appBar: _buildAppBar(''),
             body: Center(
               child: Text('Error'),
             ),
           );
-        }
-
-        if (state is ResourceListSuccess) {
+        } else if (state is ResourceListSuccess) {
           resources = state.resources;
 
           return Scaffold(
@@ -108,12 +104,12 @@ class _ResourceListViewState extends State<ResourceListView> {
                     ),
                   ),
           );
+        } else {
+          return Scaffold(
+            appBar: _buildAppBar(''),
+            body: Center(child: Text('Det har skjedd en feil')),
+          );
         }
-
-        return Scaffold(
-          appBar: _buildAppBar(''),
-          body: Center(child: Text('Det har skjedd en feil')),
-        );
       },
     );
   }

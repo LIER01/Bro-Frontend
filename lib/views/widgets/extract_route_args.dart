@@ -133,7 +133,7 @@ class ExtractResourceListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as ResourceListArguments;
-    return BlocProvider(
+    return BlocProvider<ResourceListBloc>(
       create: (context) => ResourceListBloc(
         repository: ResourceRepository(
           client: client,
