@@ -126,8 +126,8 @@ query($lang: String, $category: Int) {
 }''';
 
 final String getRecommendedLangResourcesQuery = r'''
-query recommendedLangResourcesQuery ($start: Int!, $limit: Int!,$lang: String) {
-  LangResource: resources(start: $start, limit: $limit,
+query recommendedLangResourcesQuery ($lang: String) {
+  LangResource: resources(
     where: {
       _where: [
         { language: { slug: $lang } }

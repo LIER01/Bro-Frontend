@@ -88,16 +88,7 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
         if (res.data!.isEmpty) {
           return ResourceListFailed(err: 'Error, bad request');
         }
-        debugPrint('\nRESOURCELIST\n');
-        debugPrint(ResourceListSuccess(
-                resources: ResourceList.takeList(
-                        List<Map<String, dynamic>>.from(res.data!['resources']))
-                    .resources
-                    .where((element) {
-          return (element.publisher != null && element.resourceGroup != null);
-        }).toList())
-            .toString());
-        debugPrint('\nRESOURCELIST\n');
+
         return ResourceListSuccess(
             resources: ResourceList.takeList(
                     List<Map<String, dynamic>>.from(res.data!['resources']))

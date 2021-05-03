@@ -51,8 +51,6 @@ class ResourceRepository {
             fetchResults: true,
             variables: <String, dynamic>{
               'lang': lang_slug,
-              'start': 0,
-              'limit': 3
             },
           )
         : _options = WatchQueryOptions(

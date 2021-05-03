@@ -42,10 +42,9 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
 
   @override
   Stream<CourseListState> mapEventToState(CourseListEvent event) async* {
-    final currentState = state;
-    yield CourseListLoading();
     // It creates a snapshot of the current state, as the function runs asynchronously,
     // and a state change is theoretically possible during the runtime of the code.
+    final currentState = state;
     if (event is CourseListRefresh) {
       // If the event is CourseListRefresh, then it needs to reset the list and retrieve it again with the new language.
       yield await _retrieveCourses(event, 0);
@@ -104,9 +103,6 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       return await repository
           .getLangCourses(langSlug, curr_len, 10, recommended)
           .then((res) {
-        if (res.data!['LangCourse'].isEmpty) {
-          return CourseListFailed();
-        }
         // Retrieves the list of Serialized ReducedCourses from the response.
 
         var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse']);
