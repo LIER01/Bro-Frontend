@@ -47,7 +47,6 @@ class _ResourceListViewState extends State<ResourceListView> {
   Widget build(BuildContext context) {
     return BlocBuilder<ResourceListBloc, ResourceListState>(
       builder: (context, state) {
-        debugPrint(state.toString());
         if (state is ResourceListLoading) {
           return Scaffold(
             appBar: _buildAppBar(''),
@@ -84,10 +83,9 @@ class _ResourceListViewState extends State<ResourceListView> {
                                     Navigator.of(context).pushNamed(
                                         ExtractResourceDetailScreen.routeName,
                                         arguments: ResourceDetailArguments(
-                                            group: state.resources[index]
-                                                .resourceGroup!.slug,
-                                            lang: state.resources[index]
-                                                .language!.slug))
+                                          group: state.resources[index]
+                                              .resourceGroup!.slug,
+                                        ))
                                   },
                                   child: ResourceListTile(
                                     title: state.resources[index].title,

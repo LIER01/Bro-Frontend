@@ -125,7 +125,6 @@ class _HomeViewState extends State<HomeView> {
                             .copyWith(color: Colors.teal))),
                 body: BlocBuilder<ResourceListBloc, ResourceListState>(
                     builder: (context, state) {
-                  debugPrint(state.toString());
                   if (state is ResourceListSuccess) {
                     var resources = state.resources;
 
@@ -139,17 +138,15 @@ class _HomeViewState extends State<HomeView> {
                                     .keys
                                     .toList()
                                     .map((index) => GestureDetector(
-                                        onTap: () => Navigator.of(context)
+                                        onTap: () async => Navigator.of(context)
                                             .pushNamed(
                                                 ExtractResourceDetailScreen
                                                     .routeName,
                                                 arguments:
                                                     ResourceDetailArguments(
-                                                        group: state
-                                                            .resources[index]
-                                                            .resourceGroup!
-                                                            .slug,
-                                                        lang: 'NO')),
+                                                  group: state.resources[index]
+                                                      .resourceGroup!.slug,
+                                                )),
                                         child: ResourceListTile(
                                           cover_photo:
                                               resources[index].coverPhoto,

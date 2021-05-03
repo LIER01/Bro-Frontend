@@ -109,7 +109,11 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
 
         // Deserializes the response, creates models and returns a List<LangCourse>
 
-        final returnCourse = LangCourseList.takeList(res_list).langCourses;
+        final returnCourse =
+            LangCourseList.takeList(res_list).langCourses.where((element) {
+          return (element.publisher != null && element.courseGroup != null);
+        }).toList();
+        ;
 
         return CourseListSuccess(courses: returnCourse, hasReachedMax: false);
       });

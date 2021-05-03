@@ -43,7 +43,7 @@ class ExtractResourceDetailScreen extends StatelessWidget {
         ),
         preferredLanguageBloc: preferredLanguageBloc,
       ),
-      child: ResourceDetailView(lang: args.lang, group: args.group),
+      child: ResourceDetailView(group: args.group),
     );
   }
 }

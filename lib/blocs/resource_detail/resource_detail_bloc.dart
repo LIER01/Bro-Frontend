@@ -29,7 +29,7 @@ class ResourceDetailBloc
     preferredLanguageSubscription =
         preferredLanguageBloc.stream.listen((state) {
       if (state is LanguageChanged) {
-        add(ResourceDetailRefresh(preferredLang: state.preferredLang));
+        add(ResourceDetailRefresh());
       }
     });
   }
@@ -40,7 +40,7 @@ class ResourceDetailBloc
     yield ResourceDetailLoading();
     if (event is ResourceDetailRequested) {
       try {
-        yield await _retrieveResource(event, event.lang);
+        yield await _retrieveResource(event);
       } catch (e, stackTrace) {
         log(e.toString());
         log(stackTrace.toString());
@@ -56,8 +56,7 @@ class ResourceDetailBloc
       // If the currentState is success, then we refetch a new resourceDetail by adding a new event of type ResourceDetailRequested into the stream.
       if (currentState is ResourceDetailSuccess) {
         add(ResourceDetailRequested(
-            group: currentState.resource.resourceGroup.toString(),
-            lang: event.preferredLang));
+            group: currentState.resource.resourceGroup.toString()));
       } else {
         yield ResourceDetailFailed(
             err: 'Failed to refresh list with languages');
@@ -69,10 +68,11 @@ class ResourceDetailBloc
   //
 
   Future<ResourceDetailState> _retrieveResource(
-      ResourceDetailRequested event, String pref_lang_slug) async {
+      ResourceDetailRequested event) async {
     try {
+      var lang_slug = await preferredLanguageRepository.getPreferredLangSlug();
       return await repository
-          .getResource(pref_lang_slug, event.group)
+          .getResource(lang_slug, event.group)
           .then((res) async {
         if (res.data!.isEmpty) {
           return ResourceDetailFailed(

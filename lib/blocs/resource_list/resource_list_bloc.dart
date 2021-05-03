@@ -5,7 +5,6 @@ import 'package:bro/blocs/resource_list/resource_list_bucket.dart';
 import 'package:bro/data/preferred_language_repository.dart';
 import 'package:bro/data/resource_repository.dart';
 import 'package:bro/models/resource.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -71,7 +70,13 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
         await repository.getLangResources(langSlug, categoryId, recommended);
     var resourcesJson = List<Map<String, dynamic>>.from(
         resourcesQueryResult.data!['LangResource']);
-    var resources = ResourceList.takeList(resourcesJson).resources;
+    var resources =
+        ResourceList.takeList(resourcesJson).resources.where((element) {
+      return (element.publisher != null &&
+          element.resourceGroup != null &&
+          element.language != null);
+    }).toList();
+    ;
     return ResourceListSuccess(resources: resources);
   }
 
@@ -94,7 +99,9 @@ class ResourceListBloc extends Bloc<ResourceListEvent, ResourceListState> {
                     List<Map<String, dynamic>>.from(res.data!['resources']))
                 .resources
                 .where((element) {
-          return (element.publisher != null && element.resourceGroup != null);
+          return (element.publisher != null &&
+              element.resourceGroup != null &&
+              element.language != null);
         }).toList());
       });
     } on NetworkException catch (e, stackTrace) {

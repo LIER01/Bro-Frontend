@@ -7,7 +7,6 @@ void main() {
     () {
       registerFallbackValue<ResourceDetailEvent>(
         ResourceDetailRequested(
-          lang: 'NO',
           group: 'resepter',
         ),
       );
@@ -26,7 +25,6 @@ void mainEvent() {
         () {
           expect(
             ResourceDetailRequested(
-              lang: 'NO',
               group: 'resepter',
             ),
             isInstanceOf<ResourceDetailRequested>(),
