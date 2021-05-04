@@ -94,33 +94,43 @@ class _AlternativeState extends State<Alternative> {
                               ),
                             ),
                             Expanded(
-                              flex: widget.name.length >= 14 ? 5 : 2,
+                              flex: widget.name.length >= 14
+                                  ? 2 + 3 * ((widget.name.length - 14) ~/ 14)
+                                  : 2,
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: widget.isPressed
                                         ? validColor
                                         : Colors.teal),
                                 child: Center(
-                                    child: Text(widget.name,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 16,
-                                            color: widget.isPressed
-                                                ? Colors.white
-                                                : Colors.white))),
+                                    child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 2),
+                                  child: Text(widget.name,
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(color: Colors.white)),
+                                )),
                               ),
                             )
                           ],
                         )),
                       )
                     : Center(
+                        child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: Text(widget.name,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: widget.isPressed
-                                    ? validColor
-                                    : Colors.teal))),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2!
+                                .copyWith(
+                                    color: widget.isPressed
+                                        ? validColor
+                                        : Colors.teal)),
+                      )),
               ),
               Align(
                   alignment: Alignment.topRight,
