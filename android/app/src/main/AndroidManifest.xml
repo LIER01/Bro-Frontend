@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bro">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="bro"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Bro - Flyktninghjelp"
+        android:icon="@mipmap/ic_launcher"
+       android:allowBackup="true">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -38,4 +40,5 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    
 </manifest>

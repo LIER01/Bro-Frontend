@@ -8,11 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ResourceDetailView extends StatefulWidget {
-  final String lang;
   final String group;
 
-  ResourceDetailView({Key? key, required this.lang, required this.group})
-      : super(key: key);
+  ResourceDetailView({Key? key, required this.group}) : super(key: key);
 
   @override
   _ResourceDetailViewState createState() => _ResourceDetailViewState();
@@ -26,8 +24,7 @@ class _ResourceDetailViewState extends State<ResourceDetailView> {
   void initState() {
     super.initState();
     _resourceDetailBloc = BlocProvider.of<ResourceDetailBloc>(context);
-    _resourceDetailBloc
-        .add(ResourceDetailRequested(lang: widget.lang, group: widget.group));
+    _resourceDetailBloc.add(ResourceDetailRequested(group: widget.group));
   }
 
   @override

@@ -16,6 +16,11 @@ class CourseListRequested extends CourseListEvent {
   List get props => [];
 }
 
+class RecommendedCoursesRequested extends CourseListEvent {
+  // Sets 'NO' to default if no preferredLanguageSlug is defined
+  RecommendedCoursesRequested();
+}
+
 class CourseListRefresh extends CourseListEvent {
   CourseListRefresh();
 

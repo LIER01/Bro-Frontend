@@ -7,26 +7,9 @@ T? asT<T>(dynamic value) {
   return null;
 }
 
-class LangCourseList {
-  LangCourseList({
-    required this.langCourses,
-  });
-
-  final List<LangCourse> langCourses;
-
-  factory LangCourseList.takeList(List<Map<String, dynamic>> list) {
-    var returnList = <LangCourse>[];
-    for (final item in list) {
-      if (item['course_group'] != null && item['publisher'] != null) {
-        returnList.add(LangCourse.fromJson(item));
-      }
-    }
-    return LangCourseList(langCourses: returnList);
-  }
-}
-
-class LangCourse {
-  LangCourse({
+// This course is an instance of a Course, but having a reduced number of values to decrease querysize.
+class ReducedCourse {
+  ReducedCourse({
     required this.questions,
     required this.slides,
     required this.title,
@@ -37,7 +20,17 @@ class LangCourse {
     this.courseGroup,
   });
 
-  factory LangCourse.fromJson(Map<String, dynamic> jsonRes) {
+  static List<ReducedCourse> generateList(List<Map<String, dynamic>> list) {
+    var returnList = <ReducedCourse>[];
+    for (final item in list) {
+      if (item['course_group'] != null && item['publisher'] != null) {
+        returnList.add(ReducedCourse.fromJson(item));
+      }
+    }
+    return returnList;
+  }
+
+  factory ReducedCourse.fromJson(Map<String, dynamic> jsonRes) {
     final questions = jsonRes['questions'] is List ? <ReducedQuestion>[] : null;
     if (questions != null) {
       for (final dynamic item in jsonRes['questions']!) {
@@ -56,7 +49,7 @@ class LangCourse {
         }
       }
     }
-    return LangCourse(
+    return ReducedCourse(
       questions: questions!,
       slides: slides!,
       title: asT<String>(jsonRes['title'])!,
@@ -101,7 +94,7 @@ class LangCourse {
         'course_group': courseGroup,
       };
 
-  LangCourse clone() => LangCourse.fromJson(
+  ReducedCourse clone() => ReducedCourse.fromJson(
       asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 

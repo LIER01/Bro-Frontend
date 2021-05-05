@@ -17,14 +17,4 @@ class SettingsRepository {
     );
     return await client.query(_options);
   }
-
-  Future<QueryResult> getPublishers() async {
-    final _options = WatchQueryOptions(
-      document: parseString(getPublishersQuery),
-      variables: {},
-      fetchResults: true,
-    );
-
-    return await client.query(_options);
-  }
 }

@@ -5,7 +5,7 @@ void main() {
   group('ResourceListState', () {
     group('ResourceListLoading', () {
       test('toString returns correct value', () {
-        expect(Loading().toString(), 'Loading()');
+        expect(ResourceListLoading().toString(), 'ResourceListLoading()');
       });
     });
     group('ResourceListFailed', () {

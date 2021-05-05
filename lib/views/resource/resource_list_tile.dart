@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:auto_direction/auto_direction.dart';
 import 'package:bro/models/resource.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -48,21 +47,21 @@ class ResourceListTile extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 4, 4, 4),
-                width: 60,
-                height: 80,
-                alignment: Alignment.topRight,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(cover_photo.url),
-                      onError: (exception, stackTrace) {
-                        log(exception.toString());
-                      },
-                    )),
-              ),
+              CachedNetworkImage(
+                  imageUrl: cover_photo.url,
+                  imageBuilder: (context, imageProvider) => Container(
+                        margin: EdgeInsets.fromLTRB(0, 4, 4, 4),
+                        width: 60,
+                        height: 80,
+                        alignment: Alignment.topRight,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: imageProvider,
+                            )),
+                      ),
+                  errorWidget: (context, url, error) => Icon(Icons.error)),
             ],
           ),
         ),

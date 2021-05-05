@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../mock_data/Non_Lang_courses_list_mock.dart';
+import '../../mock_data/course_list_mock.dart';
 import '../../mock_data/category_mock.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}
@@ -27,7 +27,7 @@ void main() {
       preferredLanguageBloc =
           PreferredLanguageBloc(repository: preferredLanguageRepository);
 
-      when(() => courseRepository.getLangCourses('NO', 0, 10)).thenAnswer(
+      when(() => courseRepository.getCourses('NO', 0, 10, false)).thenAnswer(
           (_) => Future.value(QueryResult(source: null, data: mockedResult)));
       courseListBloc = CourseListBloc(
           repository: courseRepository,
@@ -37,7 +37,7 @@ void main() {
     blocTest(
       'should emit Failed if repository throws',
       build: () {
-        when(() => courseRepository.getNonLangCourses(0, 10))
+        when(() => courseRepository.getCourses(any(), any(), any(), any()))
             .thenThrow(Exception('Woops'));
         return courseListBloc;
       },
@@ -54,12 +54,9 @@ void main() {
     blocTest(
       'should load initial items on a CourseListRefresh',
       build: () {
-        when(() => courseRepository.getNonLangCourses(any(), 10)).thenAnswer(
-            (_) => Future.value(QueryResult(
-                source: null, data: non_lang_courses_mock['data'])));
-        when(() => courseRepository.getLangCourses(any(), any(), any()))
-            .thenAnswer((_) => Future.value(QueryResult(
-                source: null, data: non_lang_courses_mock['data'])));
+        when(() => courseRepository.getCourses(any(), any(), any(), false))
+            .thenAnswer((_) =>
+                Future.value(QueryResult(source: null, data: mockCourseMap)));
         when(() => preferredLanguageRepository.getPreferredLangSlug())
             .thenAnswer((_) => Future.value('NO'));
         return courseListBloc;
@@ -73,9 +70,9 @@ void main() {
     blocTest(
       'should load more items in response to an CourseListRequested event',
       build: () {
-        when(() => courseRepository.getLangCourses(any(), any(), any()))
-            .thenAnswer((_) => Future.value(QueryResult(
-                source: null, data: non_lang_courses_mock['data'])));
+        when(() => courseRepository.getCourses(any(), any(), 10, false))
+            .thenAnswer((_) =>
+                Future.value(QueryResult(source: null, data: mockCourseMap)));
         when(() => preferredLanguageRepository.getPreferredLangSlug())
             .thenAnswer((_) => Future.value('NO'));
         return courseListBloc;

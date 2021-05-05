@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:bro/data/queries/queries.dart';
+import 'package:bro/data/queries/course_queries.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -8,27 +8,28 @@ class CourseRepository {
 
   CourseRepository({required this.client});
 
-  Future<QueryResult> getLangCourses(
-      String lang_slug, int start, int limit) async {
-    final _options = WatchQueryOptions(
-      document: parseString(langCoursesQuery),
-      fetchResults: true,
-      variables: <String, dynamic>{
-        'lang_slug': lang_slug,
-        'start': start,
-        'limit': limit
-      },
-    );
-
-    return await client.query(_options);
-  }
-
-  Future<QueryResult> getNonLangCourses(int start, int limit) async {
-    final _options = WatchQueryOptions(
-      document: parseString(nonLangCoursesQuery),
-      fetchResults: true,
-      variables: <String, dynamic>{'start': start, 'limit': limit},
-    );
+  /// Returns recommended courses if recommended is true
+  Future<QueryResult> getCourses(
+      String lang_slug, int start, int limit, bool recommended) async {
+    var _options;
+    recommended
+        ? _options = WatchQueryOptions(
+            document: parseString(getRecommendedCoursesQuery),
+            fetchResults: true,
+            variables: <String, dynamic>{
+                'lang_slug': lang_slug,
+                'start': start,
+                'limit': limit
+              })
+        : _options = WatchQueryOptions(
+            document: parseString(getCoursesQuery),
+            fetchResults: true,
+            variables: <String, dynamic>{
+              'lang_slug': lang_slug,
+              'start': start,
+              'limit': limit
+            },
+          );
 
     return await client.query(_options);
   }

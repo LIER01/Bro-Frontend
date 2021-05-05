@@ -1,7 +1,7 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import '../../mock_data/new_course_mock.dart';
+import '../../mock_data/course_detail_mock.dart';
 
 void main() {
   setUpAll(() {
@@ -18,14 +18,14 @@ void mainState() {
       expect(
           // ignore: missing_required_param
           CourseDetailSuccess(
-              course: referenceCourses, isQuiz: true, isAnswer: false),
+              course: referenceCourse, isQuiz: true, isAnswer: false),
           isInstanceOf<CourseDetailSuccess>());
     });
 
     test('should succeed when inserting everything correctly', () {
       expect(
           CourseDetailSuccess(
-              course: referenceCourses,
+              course: referenceCourse,
               isQuiz: true,
               isAnswer: true,
               answerId: 1),
@@ -37,7 +37,7 @@ void mainState() {
         () {
       expect(
           () => CourseDetailSuccess(
-              course: referenceCourses, isQuiz: true, isAnswer: true),
+              course: referenceCourse, isQuiz: true, isAnswer: true),
           throwsAssertionError);
     });
   });

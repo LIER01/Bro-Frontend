@@ -8,11 +8,19 @@ abstract class ResourceListEvent extends Equatable {
 }
 
 class ResourceListRequested extends ResourceListEvent {
-  final String lang;
   final String category_id;
 
-  ResourceListRequested({required this.lang, required this.category_id});
+  ResourceListRequested({required this.category_id});
 
   @override
-  List get props => [lang];
+  List get props => [category_id];
+}
+
+class ResourceListRefresh extends ResourceListEvent {
+  final String preferredLang;
+
+  ResourceListRefresh({required this.preferredLang});
+
+  @override
+  List get props => [preferredLang];
 }

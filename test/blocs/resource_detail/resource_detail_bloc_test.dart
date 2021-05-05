@@ -72,7 +72,6 @@ void mainBloc() {
           resourceDetailBloc.add(
         ResourceDetailRequested(
           group: 'resepter',
-          lang: 'NO',
         ),
       ),
       expect: () => [
@@ -83,10 +82,14 @@ void mainBloc() {
 
     blocTest(
       'should emit Success when correct values are given',
-      build: () => resourceDetailBloc,
+      build: () {
+        when(() => preferredLanguageRepository.getPreferredLangSlug())
+            .thenAnswer(((_) => Future.value('NO')));
+        return resourceDetailBloc;
+      },
       act: (ResourceDetailBloc resourceDetailBloc) async =>
           resourceDetailBloc.add(
-        ResourceDetailRequested(lang: 'NO', group: 'resepter'),
+        ResourceDetailRequested(group: 'resepter'),
       ),
       expect: () => [
         isInstanceOf<ResourceDetailLoading>(),

@@ -31,15 +31,18 @@ query($lang: String, $group: String) {
 }
 ''';
 
-final String getNonLangResourcesQuery = r'''
-query nonLangResourcesQuery ($start: Int!, $limit: Int!){
-    LangResource: resources (start: $start, limit: $limit,where:{
-      _where:[{language:{slug:"NO"}}
-        ]
+final String getResourcesQuery = r'''
+query($lang: String, $category: Int) {
+  LangResource: resources(
+    where: {
+      _where: [
+        { language: { slug: $lang } }
+        { category: { id: $category } }
+      ]
     }
   ) {
     title
-
+    cover_photo {url}
     description
     language {slug}
     resource_group {slug}
@@ -58,16 +61,15 @@ query nonLangResourcesQuery ($start: Int!, $limit: Int!){
       document_file {url}
     }
   }
-}
-''';
+}''';
 
-final String getLangResourcesQuery = r'''
-query($lang: String, $category: Int) {
-  resources(
+final String getRecommendedResourcesQuery = r'''
+query recommendedLangResourcesQuery ($lang: String) {
+  LangResource: resources(
     where: {
       _where: [
         { language: { slug: $lang } }
-        { category: { id: $category } }
+        {is_recommended:true} 
       ]
     }
   ) {

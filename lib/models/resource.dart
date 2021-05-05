@@ -31,24 +31,6 @@ class Root {
       Root.fromJson(asT<Map<String, dynamic>>(jsonDecode(jsonEncode(this)))!);
 }
 
-class ResourceList {
-  ResourceList({
-    required this.resources,
-  });
-
-  final List<Resources> resources;
-
-  factory ResourceList.takeList(List<Map<String, dynamic>> list) {
-    var returnList = <Resources>[];
-    for (final item in list) {
-      if (item['resource_group'] != null) {
-        returnList.add(Resources.fromJson(item));
-      }
-    }
-    return ResourceList(resources: returnList);
-  }
-}
-
 class Data {
   Data({
     required this.resources,
@@ -98,6 +80,16 @@ class Resources {
     required this.references,
     this.documents,
   });
+
+  static List<Resources> generateList(List<Map<String, dynamic>> list) {
+    var returnList = <Resources>[];
+    for (final item in list) {
+      if (item['resource_group'] != null && item['publisher'] != null) {
+        returnList.add(Resources.fromJson(item));
+      }
+    }
+    return returnList;
+  }
 
   factory Resources.fromJson(Map<String, dynamic> jsonRes) {
     // ignore: omit_local_variable_types

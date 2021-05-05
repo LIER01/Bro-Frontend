@@ -18,9 +18,13 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
   PreferredLanguageBloc preferredLanguageBloc;
   late StreamSubscription preferredLanguageSubscription;
   late PreferredLanguageRepository preferredLanguageRepository;
+  late bool recommended;
   CourseListBloc(
-      {required this.repository, required this.preferredLanguageBloc})
+      {required this.repository,
+      required this.preferredLanguageBloc,
+      recommended})
       : super(InitialCourseList()) {
+    this.recommended = recommended ?? false;
     // Uses the preferredLanguageBloc, and listens for states.
     // If the state in the preferredLanguageRepository is set to "LanguageChanged",
     // then it needs to refetch a version of the courseList which is in the correct language.
@@ -97,17 +101,16 @@ class CourseListBloc extends Bloc<CourseListEvent, CourseListState> {
       var langSlug = await preferredLanguageRepository.getPreferredLangSlug();
 
       return await repository
-          .getLangCourses(langSlug, curr_len, 10)
+          .getCourses(langSlug, curr_len, 10, recommended)
           .then((res) {
         // Retrieves the list of Serialized ReducedCourses from the response.
 
-        var res_list = List<Map<String, dynamic>>.from(res.data!['LangCourse']);
-
         // Deserializes the response, creates models and returns a List<LangCourse>
+        //
+        final returnCourses = ReducedCourse.generateList(
+            List<Map<String, dynamic>>.from(res.data!['LangCourse']));
 
-        final returnCourse = LangCourseList.takeList(res_list).langCourses;
-
-        return CourseListSuccess(courses: returnCourse, hasReachedMax: false);
+        return CourseListSuccess(courses: returnCourses, hasReachedMax: false);
       });
     } on NetworkException catch (e, stackTrace) {
       log(e.toString());

@@ -4,10 +4,7 @@ import 'package:bro/blocs/preferred_language/preferred_language_bloc.dart';
 import 'package:bro/data/home_repository.dart';
 import 'package:bro/data/preferred_language_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mocktail/mocktail.dart';
-
-import '../../mock_data/course_mock.dart';
 
 class MockHomeRepository extends Mock implements HomeRepository {}
 
@@ -18,24 +15,17 @@ void main() {
   group('CourseListBloc', () {
     late HomeRepository homeRepository;
     late HomeBloc homeBloc;
-    late PreferredLanguageBloc preferredLanguageBloc;
-    preferredLanguageBloc =
-        PreferredLanguageBloc(repository: MockPreferredLanguageRepository());
+    PreferredLanguageBloc(repository: MockPreferredLanguageRepository());
     setUp(() {
       homeRepository = MockHomeRepository();
-      when(() => homeRepository.getRecommendedCourses(0, 10, 'NO')).thenAnswer(
-          (_) =>
-              Future.value(QueryResult(source: null, data: mockedCourseMap)));
       homeBloc = HomeBloc(
-          repository: homeRepository,
-          preferredLanguageBloc: preferredLanguageBloc);
+        homeRepository: homeRepository,
+      );
     });
 
     blocTest(
       'should emit Failed if repository throws',
       build: () {
-        when(() => homeRepository.getRecommendedCourses(0, 10, 'NO'))
-            .thenThrow(Exception('Woops'));
         when(() => homeRepository.getHome()).thenThrow(Exception('Woops'));
         return homeBloc;
       },

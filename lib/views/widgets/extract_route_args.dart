@@ -43,7 +43,7 @@ class ExtractResourceDetailScreen extends StatelessWidget {
         ),
         preferredLanguageBloc: preferredLanguageBloc,
       ),
-      child: ResourceDetailView(lang: args.lang, group: args.group),
+      child: ResourceDetailView(group: args.group),
     );
   }
 }
@@ -133,7 +133,7 @@ class ExtractResourceListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as ResourceListArguments;
-    return BlocProvider(
+    return BlocProvider<ResourceListBloc>(
       create: (context) => ResourceListBloc(
         repository: ResourceRepository(
           client: client,
@@ -155,13 +155,31 @@ class ExtractHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeBloc(
-        repository: HomeRepository(
-          client: client,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CourseListBloc>(
+          create: (context) => CourseListBloc(
+            repository: CourseRepository(
+              client: client,
+            ),
+            preferredLanguageBloc: preferredLanguageBloc,
+            recommended: true,
+          ),
         ),
-        preferredLanguageBloc: preferredLanguageBloc,
-      ),
+        BlocProvider<ResourceListBloc>(
+            create: (context) => ResourceListBloc(
+                repository: ResourceRepository(
+                  client: client,
+                ),
+                preferredLanguageBloc: preferredLanguageBloc,
+                recommended: true)),
+        BlocProvider<HomeBloc>(
+            create: (context) => HomeBloc(
+                  homeRepository: HomeRepository(
+                    client: client,
+                  ),
+                )),
+      ],
       child: HomeView(),
     );
   }

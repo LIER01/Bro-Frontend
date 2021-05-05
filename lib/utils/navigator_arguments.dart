@@ -10,10 +10,9 @@ class ResourceListArguments {
 }
 
 class ResourceDetailArguments {
-  final String lang;
   final String group;
 
-  ResourceDetailArguments({required this.lang, required this.group});
+  ResourceDetailArguments({required this.group});
 }
 
 class ResourceDetailWebViewArguments {

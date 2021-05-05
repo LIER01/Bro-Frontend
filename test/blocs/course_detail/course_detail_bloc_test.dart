@@ -1,6 +1,7 @@
 import 'package:bro/blocs/course_detail/course_detail_bucket.dart';
 import 'package:bro/blocs/preferred_language/preferred_language_bucket.dart';
 import 'package:bro/data/preferred_language_repository.dart';
+import 'package:bro/models/course.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:bloc_test/bloc_test.dart';
@@ -8,8 +9,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import '../../mock_data/course_detail_mock.dart';
 import 'package:bro/data/course_repository.dart';
 import 'test_helpers.dart';
-
-import '../../mock_data/new_course_mock.dart';
 
 class MockCourseRepository extends Mock implements CourseRepository {}
 
@@ -38,8 +37,7 @@ void mainBloc() {
       preferredLanguageBloc =
           PreferredLanguageBloc(repository: preferredLanguageRepository);
       when(() => courseRepository.getCourseQuery(any(), any())).thenAnswer(
-          (_) => Future.value(
-              QueryResult(source: null, data: course_detail_mock)));
+          (_) => Future.value(QueryResult(source: null, data: mockCourse)));
       courseDetailBloc = CourseDetailBloc(
           repository: courseRepository,
           preferredLanguageBloc: preferredLanguageBloc);
@@ -54,7 +52,7 @@ void mainBloc() {
       build: () => courseDetailBloc,
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           WrongEvent(
-              course: referenceCourse,
+              course: Course.fromJson(mockCourse),
               courseId: 1,
               isQuiz: false,
               isAnswer: true,
@@ -88,7 +86,7 @@ void mainBloc() {
       build: () => courseDetailBloc,
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
-              course: referenceCourses,
+              course: referenceCourse,
               courseGroupSlug: 'k1',
               isQuiz: false,
               isAnswer: false,
@@ -106,7 +104,7 @@ void mainBloc() {
       },
       act: (CourseDetailBloc courseDetailBloc) async => courseDetailBloc.add(
           CourseDetailRequested(
-              course: referenceCourses,
+              course: referenceCourse,
               courseGroupSlug: 'k1',
               isQuiz: true,
               isAnswer: false,

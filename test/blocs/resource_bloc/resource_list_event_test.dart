@@ -6,8 +6,8 @@ void main() {
   group('ResourceListEvents', () {
     group('ResourceListRequested', () {
       test('toString returns correct value', () {
-        expect(ResourceListRequested(lang: 'NO', category_id: '1').toString(),
-            'ResourceListRequested(NO)');
+        expect(ResourceListRequested(category_id: '1').toString(),
+            'ResourceListRequested(1)');
       });
     });
   });

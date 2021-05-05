@@ -22,7 +22,6 @@ void main() {
       err: 'Failed.',
     ));
     registerFallbackValue<ResourceDetailEvent>(ResourceDetailRequested(
-      lang: 'NO',
       group: 'resepter',
     ));
   });
@@ -67,7 +66,7 @@ void mainTest() {
           value: resourceDetailBloc,
           child: MaterialApp(
             home: Scaffold(
-              body: ResourceDetailView(lang: 'NO', group: 'resepter'),
+              body: ResourceDetailView(group: 'resepter'),
             ),
           ),
         ),

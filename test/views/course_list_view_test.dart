@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import '../mock_data/course_mock.dart';
+import '../mock_data/course_list_mock.dart';
 
 class MockCourseListView extends MockBloc<CourseListEvent, CourseListState>
     implements CourseListBloc {}
@@ -47,11 +47,11 @@ void mainTest() {
         ),
       );
     });
-    List<LangCourse> mockedLangCourseList;
+    List<ReducedCourse> mockedLangCourseList;
     testWidgets('renders properly with courses', (WidgetTester tester) async {
       mockedLangCourseList = [];
-      mockedCourseList.forEach((element) {
-        mockedLangCourseList.add(LangCourse.fromJson(element));
+      mockCourseList.forEach((element) {
+        mockedLangCourseList.add(ReducedCourse.fromJson(element));
       });
       when(() => courseListBloc.state).thenReturn(CourseListSuccess(
           courses: mockedLangCourseList, hasReachedMax: true));
