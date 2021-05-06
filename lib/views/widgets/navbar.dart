@@ -142,6 +142,8 @@ class _HomeTabState extends State<HomeTab> {
                       client: _client(),
                       preferredLanguageBloc: _preferredLanguageBloc,
                     );
+                  case ExtractResourseDetailWebViewScreen.routeName:
+                    return ExtractResourseDetailWebViewScreen();
                   case ExtractResourceDetailScreen.routeName:
                     return ExtractResourceDetailScreen(
                       client: _client(),
